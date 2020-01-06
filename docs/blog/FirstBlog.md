@@ -114,3 +114,19 @@ module.exports = {
   }
 }
 ```
+
+## 博客部署
+1 git bash 环境变量的问题 
+
+2 SSH 和 HTTPS 的问题
+
+3 nodejs 升级/降级带来的问题
+https://github.com/nodejs/node/issues/29287
+
+4 关于 git 分支新建的问题
+如何指定某个文件目录新建新的分支
+
+5 关于 GitHub Pages
+
+
+## 自动化部署 CI
