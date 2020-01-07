@@ -3,7 +3,7 @@
 ## JS 历史
 ### JS 是什么
 #### 基本知识
-`**JavaScript**`** **实际上就是 `**ECMAScript标准**`** **的一个实现
+`JavaScript` 实际上就是 `ECMAScript标准` 的一个实现
 
 
 JS语言区分字母大小写
@@ -76,7 +76,7 @@ async-await
 ### 开发中浏览器和服务器的交互
 ![image](https://user-images.githubusercontent.com/33750626/71914876-80ebcc80-31b5-11ea-9ef8-e1c4aa34563b.png)
 #### 页面渲染步骤
-请求页面 **==> **解析HTML** ==>** 渲染HTML** ==> **请求CSS.JS** ==>** 渲染CSS， 执行JS** ==>** 请求数据 **==>** 渲染数据
+请求页面 **==> **解析HTML ==> 渲染HTML ==> 请求CSS.JS ==>渲染CSS， 执行JS ==>请求数据 **==>** 渲染数据
 
 
 #### 前端交互实现点
