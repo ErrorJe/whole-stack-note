@@ -31,7 +31,7 @@ module.exports = {
               { text: "HTML 基础", link: "/p4/html-base/" },
               { text: "HTML5", link: "/p4/html-pro/" },
               { text: "CSS 基础", link: "/p4/css-base/" },
-              { text: "CSS3 / CSS4", link: "/p4/html-pro/" }
+              { text: "CSS3 / CSS4", link: "/p4/css-pro/" }
             ]
           },
           {
@@ -187,12 +187,12 @@ module.exports = {
           children: ["/blog/economics/"]
         }
       ],
-      "/javascript/": [
-        "/javascript/",
+      "/p4/javascript/": [
+        '',
         {
           title: "面向对象",
           collapsable: false,
-          children: ["/javascript/oop/"]
+          children: ["/p4/javascript/面向对象/"]
         }
       ]
     }
