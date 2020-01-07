@@ -255,7 +255,7 @@ module.exports = {
 在 windows 下找到环境变量，然后看用户变量中的 `path` , 把 `/bin` 目录配置进去。
 然后就可以在 `cmd` 中输入 bash（有 bash, sh 等，这是安装 Git 自带的程序）就会执行 Git bash
 
-### SSH 和 HTTPS 的问题（待理解）
+### SSH 和 HTTPS 的问题
 
 官方文档里，`deploy.sh` 中对于仓库的链接主要是 `SSH` 方式。
 但是根据仓库的特性，有些是 `HTTPS` 方式的，所以配置的时候注意一下方式
