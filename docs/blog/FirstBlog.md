@@ -286,6 +286,12 @@ https://github.com/nodejs/node/issues/29287
 当然，后面没有服务器的支持，只能够部署一些静态页面。这也够了，我们把项目打包后输出的就是静态资源 `dist` 。
 
 ## 自动化部署 CI
+### 什么是 Travis CI
+官网：https://travis-ci.com/ 直接使用 `github` 账号进行关联登录
+参考链接阮一峰：http://www.ruanyifeng.com/blog/2017/12/travis_ci_tutorial.html
+
+
+
 
 ## 关于 vuepress 对 md 的扩展用法
 
