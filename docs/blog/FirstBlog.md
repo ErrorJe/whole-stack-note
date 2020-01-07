@@ -290,12 +290,50 @@ https://github.com/nodejs/node/issues/29287
 官网：https://travis-ci.com/ 直接使用 `github` 账号进行关联登录
 参考链接阮一峰：http://www.ruanyifeng.com/blog/2017/12/travis_ci_tutorial.html
 
+之前，我们通过执行或者 `npm run deploy` 来部署
 
+### 配置文件 .travis.yml
+这个配置文件需要创建在项目根目录下，当存在这个文件时，`travis` 才会理你这个项目。
+注意这里的 `$token` 对应的是在 travis 中配置的环境变量 `token`
+```yml
+language: node_js
+node_js:
+  - lts/*
+install:
+  - yarn install # npm ci
+script:
+  - yarn docs:build # npm run docs:build
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: docs/.vuepress/dist
+  github_token: $token # 在 GitHub 中生成，用于允许 Travis 向你的仓库推送代码。在 Travis 的项目设置页面进行配置，设置为 secure variable
+  keep_history: true
+  on:
+    branch: master
+```
 
+有这个文件还不行，还要在本地执行 `yarn` 或 `npm install` 并且提交生成的 `lock` 文件（即 `yarn.lock` 或 `package-lock.json`），把生成的文件提交到 github 远程库
+
+### tarvis 如何关联 github 仓库
+#### 1）github 操作：生成 tokne
+就是要生成一个 `github token`，其他没有什么。
+从 github 的个人头像上进入 `setting` 然后侧边栏的最下面有个 ``
+![](https://user-images.githubusercontent.com/33750626/71869237-5285d700-314c-11ea-878b-45f915498a29.png)
+
+配置的 `note` 可以随便写，然后生成后就会有一个 `token` （记住，只会显示这样一次，所以要自己记下来，后面要用到）
+
+#### 2）travis 操作：配置环境变量
+配置环境变量 `address` 和 `token`
+用 github 快速登录后，找到自己博客所在的那个仓库，然后进入。再如图所示的方式进去配置`环境变量`
+![image](https://user-images.githubusercontent.com/33750626/71869346-b4ded780-314c-11ea-9412-0abef27f5208.png)
+
+大致要配2个，其中 `token` 是必须的，对应了 `.travis.yml` 中的变量名。这个 token 就是刚才拿到的 github token 字符串。 
+`address` 就是本仓库的地址，也就是 clone 的那个地址。
 
 ## 关于 vuepress 对 md 的扩展用法
 
-### 示信息
+### 提示信息用法扩展
 
 ::: tip
 这是一个提示
