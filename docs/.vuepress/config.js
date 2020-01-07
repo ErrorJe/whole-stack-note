@@ -56,7 +56,7 @@ module.exports = {
             text: "团队协作",
             items: [
               { text: "代码规范", link: "/p4/team/code-format/" },
-              { text: "开发工具链", link: "/p4/team/tools/" }
+              { text: "开发工具链", link: "/p4/team/tools/vue-press" }
             ]
           },
           {
@@ -194,6 +194,10 @@ module.exports = {
           collapsable: false,
           children: ["/p4/javascript/面向对象/"]
         }
+      ],
+      '/p4/team/tools/': [
+        'vue-press',
+        'github和picgo搭建图床'
       ]
     }
   },

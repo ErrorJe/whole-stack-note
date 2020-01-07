@@ -1,4 +1,4 @@
-# vuepress 博客搭建指南
+# Vue-press 博客搭建指南
 
 > 使用: vuepress + github Page
 
