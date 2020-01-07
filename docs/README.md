@@ -3,7 +3,7 @@ home: true
 heroImage: /homePage.jpg
 heroText: ErrorJE 前端研究所
 tagline: 主攻前端
-actionText: 第一页看起 →
+actionText: 搞起来 →
 actionLink: /blog/FirstBlog.md
 features:
 - title: 前端一把梭
