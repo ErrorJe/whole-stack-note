@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>vuepress 博客搭建指南 | FE 研究所</title>
+    <meta name="description" content="ErrorJE 直辖 Blog">
+    <link rel="icon" href="/whole-stack-note/logo.jpg">
+    
+    <link rel="preload" href="/whole-stack-note/assets/css/0.styles.4fc4b495.css" as="style"><link rel="preload" href="/whole-stack-note/assets/js/app.a5ab1a54.js" as="script"><link rel="preload" href="/whole-stack-note/assets/js/2.e4a81c01.js" as="script"><link rel="preload" href="/whole-stack-note/assets/js/6.af00c16d.js" as="script"><link rel="prefetch" href="/whole-stack-note/assets/js/10.6523a3fa.js"><link rel="prefetch" href="/whole-stack-note/assets/js/11.390cebfb.js"><link rel="prefetch" href="/whole-stack-note/assets/js/12.1a8e4c02.js"><link rel="prefetch" href="/whole-stack-note/assets/js/3.1335330b.js"><link rel="prefetch" href="/whole-stack-note/assets/js/4.1a07879d.js"><link rel="prefetch" href="/whole-stack-note/assets/js/5.5a4796e4.js"><link rel="prefetch" href="/whole-stack-note/assets/js/7.0632d050.js"><link rel="prefetch" href="/whole-stack-note/assets/js/8.d98f2579.js"><link rel="prefetch" href="/whole-stack-note/assets/js/9.08dde063.js">
+    <link rel="stylesheet" href="/whole-stack-note/assets/css/0.styles.4fc4b495.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/whole-stack-note/" class="home-link router-link-active"><!----> <span class="site-name">FE 研究所</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/whole-stack-note/" class="nav-link">首页</a></div><div class="nav-item"><a href="/whole-stack-note/blog/FirstBlog.html" class="nav-link router-link-exact-active router-link-active">FirstBlog</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="博客" class="dropdown-title"><span class="title">博客</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/whole-stack-note/blog/live/" class="nav-link">生活</a></li><li class="dropdown-item"><!----> <a href="/whole-stack-note/blog/econ/" class="nav-link">经济学</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="JavaScript" class="dropdown-title"><span class="title">JavaScript</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/whole-stack-note/javascript/DOM.html" class="nav-link">DOM</a></li><li class="dropdown-item"><h4>面向对象</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/whole-stack-note/javascript/OOP/" class="nav-link">原型链</a></li></ul></li></ul></div></div> <a href="https://github.com/ErrorJe" target="_blank" rel="noopener noreferrer" class="repo-link">
+    ErrorJE's GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/whole-stack-note/" class="nav-link">首页</a></div><div class="nav-item"><a href="/whole-stack-note/blog/FirstBlog.html" class="nav-link router-link-exact-active router-link-active">FirstBlog</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="博客" class="dropdown-title"><span class="title">博客</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/whole-stack-note/blog/live/" class="nav-link">生活</a></li><li class="dropdown-item"><!----> <a href="/whole-stack-note/blog/econ/" class="nav-link">经济学</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="JavaScript" class="dropdown-title"><span class="title">JavaScript</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/whole-stack-note/javascript/DOM.html" class="nav-link">DOM</a></li><li class="dropdown-item"><h4>面向对象</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/whole-stack-note/javascript/OOP/" class="nav-link">原型链</a></li></ul></li></ul></div></div> <a href="https://github.com/ErrorJe" target="_blank" rel="noopener noreferrer" class="repo-link">
+    ErrorJE's GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><a href="/whole-stack-note/blog/FirstBlog.html" class="active sidebar-link">vuepress 博客搭建指南</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#博客搭建过程" class="sidebar-link">博客搭建过程</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#hello-world-运行" class="sidebar-link">hello world 运行</a></li><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#创建必要的目录结构" class="sidebar-link">创建必要的目录结构</a></li></ul></li><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#默认主题配置" class="sidebar-link">默认主题配置</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#首页布局" class="sidebar-link">首页布局</a></li><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#导航栏" class="sidebar-link">导航栏</a></li><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#侧边栏" class="sidebar-link">侧边栏</a></li></ul></li><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#博客部署" class="sidebar-link">博客部署</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#编写-sh-脚本完成部署" class="sidebar-link">编写 sh 脚本完成部署</a></li><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#git-bash-环境变量的问题" class="sidebar-link">git bash 环境变量的问题</a></li><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#ssh-和-https-的问题（待理解）" class="sidebar-link">SSH 和 HTTPS 的问题（待理解）</a></li><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#nodejs-升级-降级带来的问题" class="sidebar-link">nodejs 升级/降级带来的问题</a></li><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#关于-git-分支新建的问题（待理解）" class="sidebar-link">关于 git 分支新建的问题（待理解）</a></li><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#关于-github-pages" class="sidebar-link">关于 GitHub Pages</a></li></ul></li><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#自动化部署-ci" class="sidebar-link">自动化部署 CI</a></li><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#关于-vuepress-对-md-的扩展用法" class="sidebar-link">关于 vuepress 对 md 的扩展用法</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#示信息" class="sidebar-link">示信息</a></li><li class="sidebar-sub-header"><a href="/whole-stack-note/blog/FirstBlog.html#某一行代码高亮" class="sidebar-link">某一行代码高亮</a></li></ul></li></ul></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>生活</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/whole-stack-note/blog/live/" class="sidebar-link">生活</a></li><li><a href="/whole-stack-note/blog/live/note.html" class="sidebar-link">日记本</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>经济</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="vuepress-博客搭建指南"><a href="#vuepress-博客搭建指南" class="header-anchor">#</a> vuepress 博客搭建指南</h1> <blockquote><p>使用: vuepress + github Page</p></blockquote> <h2 id="博客搭建过程"><a href="#博客搭建过程" class="header-anchor">#</a> 博客搭建过程</h2> <h3 id="hello-world-运行"><a href="#hello-world-运行" class="header-anchor">#</a> hello world 运行</h3> <p>准备一个新的文件目录，初始化 npm 项目后安装 <code>vue press</code></p> <ul><li>npm init -y</li> <li>npm i -D vuepress</li></ul> <p>然后在 <code>package.json</code> 中配置项目启动指令</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token punctuation">{</span>
+  <span class="token string">&quot;scripts&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&quot;docs:dev&quot;</span><span class="token operator">:</span> <span class="token string">&quot;vuepress dev docs&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;docs:build&quot;</span><span class="token operator">:</span> <span class="token string">&quot;vuepress build docs&quot;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>然后执行 <code>npm run docs:dev</code> 启动博客</p> <h3 id="创建必要的目录结构"><a href="#创建必要的目录结构" class="header-anchor">#</a> 创建必要的目录结构</h3> <div class="language-js extra-class"><pre class="language-js"><code><span class="token operator">--</span> 创建 docs 目录，以后这个就是博客主目录
+<span class="token operator">--</span><span class="token operator">--</span> 创建<span class="token punctuation">.</span>vuepress
+<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span> 创建 config<span class="token punctuation">.</span>js 配置文件
+<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span> <span class="token keyword">public</span> 目录，放一些资源
+<span class="token operator">--</span><span class="token operator">--</span> 创建 <span class="token constant">READEME</span><span class="token punctuation">.</span>md
+</code></pre></div><p>给 <code>config.js</code> 配置文件写入基本配置</p> <div class="language-js extra-class"><pre class="language-js"><code>module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  base<span class="token operator">:</span> <span class="token string">&quot;/blog-demo/&quot;</span><span class="token punctuation">,</span>
+  title<span class="token operator">:</span> <span class="token string">&quot;blog-demo&quot;</span><span class="token punctuation">,</span>
+  description<span class="token operator">:</span> <span class="token string">&quot;Vuepress blog demo&quot;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><h2 id="默认主题配置"><a href="#默认主题配置" class="header-anchor">#</a> 默认主题配置</h2> <blockquote><p>vuepress 提供了一个默认的主题
+主题包括了一些模块，如 <code>首页、导航栏、侧边栏、搜索框</code> 和其他周边模块</p></blockquote> <ul><li>关于路径问题，博客中配置相关的路径默认根目录都是 <code>docs</code></li> <li>修改配置文件 <code>config.js</code> 后都需要重启项目</li></ul> <h3 id="首页布局"><a href="#首页布局" class="header-anchor">#</a> 首页布局</h3> <p>对于首页布局的配置，是在 <code>README.md</code> 中进行的。用 <code>YAML front matter</code> 格式书写配置内容（查了一下是定义类似变量的内容块）</p> <blockquote><p>图片之类的路径都是 / ，代表 <code>.vuepress/public</code> 目录</p></blockquote> <div class="language-js extra-class"><pre class="language-js"><code><span class="token operator">--</span><span class="token operator">-</span>
+home<span class="token operator">:</span> <span class="token boolean">true</span>
+heroImage<span class="token operator">:</span> <span class="token operator">/</span>homePage<span class="token punctuation">.</span>jpg
+heroText<span class="token operator">:</span> ErrorJE 前端研究所
+tagline<span class="token operator">:</span> 主攻前端
+actionText<span class="token operator">:</span> 第一页看起 →
+actionLink<span class="token operator">:</span> <span class="token operator">/</span>blog<span class="token operator">/</span>FirstBlog<span class="token punctuation">.</span>md
+features<span class="token operator">:</span>
+<span class="token operator">-</span> title<span class="token operator">:</span> 前端一把梭
+  details<span class="token operator">:</span> <span class="token constant">JS</span><span class="token punctuation">,</span> <span class="token constant">TS</span><span class="token punctuation">,</span> NodeJS<span class="token punctuation">,</span> Vue<span class="token punctuation">,</span> React<span class="token punctuation">,</span> Webpack<span class="token punctuation">,</span> WebApp
+<span class="token operator">-</span> title<span class="token operator">:</span> 略懂后端
+  details<span class="token operator">:</span> <span class="token constant">JAVA</span><span class="token punctuation">,</span> Spring Boot<span class="token punctuation">,</span> Nginx<span class="token punctuation">,</span> Linux
+<span class="token operator">-</span> title<span class="token operator">:</span> 内功修炼
+  details<span class="token operator">:</span> 性能<span class="token punctuation">,</span> 算法<span class="token punctuation">,</span> 偏领域技术<span class="token punctuation">,</span> 学识
+footer<span class="token operator">:</span> <span class="token constant">MIT</span> Licensed <span class="token operator">|</span> Copyright © <span class="token number">2020</span><span class="token operator">-</span>present Error <span class="token constant">JE</span>
+<span class="token operator">--</span><span class="token operator">-</span>
+</code></pre></div><p>当然还可以在下面继续用 Markdown 写其他内容</p> <h3 id="导航栏"><a href="#导航栏" class="header-anchor">#</a> 导航栏</h3> <p>也就是顶部的那些导航菜单。配置文件是 <code>.vuepress/config.js</code></p> <div class="language-js extra-class"><pre class="language-js"><code>module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  base<span class="token operator">:</span> <span class="token string">&quot;/blog/&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 站点的基础路径</span>
+  title<span class="token operator">:</span> <span class="token string">&quot;FE 研究所&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 网站的标题</span>
+  description<span class="token operator">:</span> <span class="token string">&quot;ErrorJE 直辖 Blog&quot;</span><span class="token punctuation">,</span> <span class="token comment">// 网站的描述</span>
+
+  <span class="token comment">// 主题配置</span>
+  themeConfig<span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 你的GitHub仓库，请正确填写</span>
+    repo<span class="token operator">:</span> <span class="token string">&quot;https://github.com/ErrorJe&quot;</span><span class="token punctuation">,</span>
+    <span class="token comment">// 自定义仓库链接文字。</span>
+    repoLabel<span class="token operator">:</span> <span class="token string">&quot;ErrorJE's GitHub&quot;</span><span class="token punctuation">,</span>
+    nav<span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token comment">// 1 单个页面</span>
+      <span class="token punctuation">{</span> text<span class="token operator">:</span> <span class="token string">&quot;首页&quot;</span><span class="token punctuation">,</span> link<span class="token operator">:</span> <span class="token string">&quot;/&quot;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span> text<span class="token operator">:</span> <span class="token string">&quot;FirstBlog&quot;</span><span class="token punctuation">,</span> link<span class="token operator">:</span> <span class="token string">&quot;/blog/FirstBlog&quot;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token comment">// 2 嵌套页面，会自动分组</span>
+      <span class="token punctuation">{</span>
+        text<span class="token operator">:</span> <span class="token string">&quot;博客&quot;</span><span class="token punctuation">,</span>
+        items<span class="token operator">:</span> <span class="token punctuation">[</span>
+          <span class="token punctuation">{</span>
+            text<span class="token operator">:</span> <span class="token string">&quot;生活&quot;</span><span class="token punctuation">,</span>
+            link<span class="token operator">:</span> <span class="token string">&quot;/blog/live/&quot;</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">{</span>
+            text<span class="token operator">:</span> <span class="token string">&quot;经济学&quot;</span><span class="token punctuation">,</span>
+            link<span class="token operator">:</span> <span class="token string">&quot;/blog/econ/&quot;</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        text<span class="token operator">:</span> <span class="token string">&quot;JavaScript&quot;</span><span class="token punctuation">,</span>
+        items<span class="token operator">:</span> <span class="token punctuation">[</span>
+          <span class="token punctuation">{</span> text<span class="token operator">:</span> <span class="token string">&quot;DOM&quot;</span><span class="token punctuation">,</span> link<span class="token operator">:</span> <span class="token string">&quot;/javascript/DOM&quot;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">{</span>
+            text<span class="token operator">:</span> <span class="token string">&quot;面向对象&quot;</span><span class="token punctuation">,</span>
+            items<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> text<span class="token operator">:</span> <span class="token string">&quot;原型链&quot;</span><span class="token punctuation">,</span> link<span class="token operator">:</span> <span class="token string">&quot;/javascript/OOP/&quot;</span> <span class="token punctuation">}</span><span class="token punctuation">]</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><p>在编写导航栏配置的时候，注意路径必须 <code>/</code> 开始，若没有指定到具体的 <code>md</code> 文件，且配置 <code>/xx/</code> 这种形式，则会自动读取该目录下的 <code>README.md</code> 文件。</p> <h3 id="侧边栏"><a href="#侧边栏" class="header-anchor">#</a> 侧边栏</h3> <p>说白了，就是侧边配置目录，<code>名字对应地址</code></p> <p>还会把文档中 H2 级别的标题显示出来</p> <div class="language-js extra-class"><pre class="language-js"><code>module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  themeConfig<span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 数组形式</span>
+    sidebar<span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">[</span><span class="token string">&quot;/&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;首页&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token punctuation">[</span><span class="token string">&quot;/blog/FirstBlog.md&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;我的第一篇博客&quot;</span><span class="token punctuation">]</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 对象形式配置嵌套分组</span>
+    sidebar<span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token string">&quot;/blog/&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token string">&quot;FirstBlog&quot;</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+          title<span class="token operator">:</span> <span class="token string">&quot;生活&quot;</span><span class="token punctuation">,</span>
+          collapsable<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token comment">// 取消下拉</span>
+          children<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;/blog/live/&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;/blog/live/note&quot;</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+          title<span class="token operator">:</span> <span class="token string">&quot;经济&quot;</span><span class="token punctuation">,</span>
+          children<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;/blog/econ/&quot;</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token string">&quot;/javascript/&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><h2 id="博客部署"><a href="#博客部署" class="header-anchor">#</a> 博客部署</h2> <h3 id="编写-sh-脚本完成部署"><a href="#编写-sh-脚本完成部署" class="header-anchor">#</a> 编写 sh 脚本完成部署</h3> <p>我们这需要用到 <code>github pages</code> ，但是每次写完文档都需要手动上传的话，就非常麻烦了。所以我们编写 <code>deploy.sh</code> 这种 <code>shell</code> 脚本来完成一些固定操作。</p> <blockquote><p>需要注意的是 shell 脚本在 windows 上并不是那么容易被运行的。所以有后面对这部分有关的知识都进行了展开</p></blockquote> <h4 id="_1）编写-deploy-sh"><a href="#_1）编写-deploy-sh" class="header-anchor">#</a> 1）编写 deploy.sh</h4> <div class="language-sh extra-class"><pre class="language-sh"><code><span class="token shebang important">#!/usr/bin/env sh</span>
+
+<span class="token comment"># 上面这句话就是让 git bash 知道这是一个可执行文件</span>
+
+<span class="token comment"># 确保脚本抛出遇到的错误</span>
+<span class="token builtin class-name">set</span> -e
+
+<span class="token comment"># 生成静态文件</span>
+<span class="token function">npm</span> run docs:build
+
+<span class="token comment"># 进入生成的文件夹</span>
+<span class="token builtin class-name">cd</span> docs/.vuepress/dist
+
+<span class="token comment"># 如果是发布到自定义域名</span>
+<span class="token comment"># echo 'www.example.com' &gt; CNAME</span>
+
+<span class="token function">git</span> init
+<span class="token function">git</span> <span class="token function">add</span> -A
+<span class="token function">git</span> commit -m <span class="token string">'deploy'</span>
+
+<span class="token comment"># 如果发布到 https://&lt;USERNAME&gt;.github.io</span>
+<span class="token comment"># git push -f git@github.com:&lt;USERNAME&gt;/&lt;USERNAME&gt;.github.io.git master</span>
+
+<span class="token comment"># 如果发布到 https://&lt;USERNAME&gt;.github.io/&lt;REPO&gt;</span>
+<span class="token comment"># 这里原本是用 ssh 方式的 git@github 这种。但是我的仓库是 https 方式，所以改成以下方式</span>
+<span class="token function">git</span> push -f https://github.com/ErrorJe/whole-stack-note.git master:gh-pages
+
+<span class="token builtin class-name">cd</span> -
+
+</code></pre></div><h4 id="_2）配置-package-json"><a href="#_2）配置-package-json" class="header-anchor">#</a> 2）配置 package.json</h4> <p>就是一个 npm 指令</p> <ul><li>docs:build 用于生成 <code>dist</code> 打包后的静态资源</li> <li>deploy：使用的时候 <code>npm run deploy</code> 就是用来部署的</li></ul> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;scripts&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;docs:dev&quot;</span><span class="token operator">:</span> <span class="token string">&quot;vuepress dev docs&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;docs:build&quot;</span><span class="token operator">:</span> <span class="token string">&quot;vuepress build docs&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;deploy&quot;</span><span class="token operator">:</span> <span class="token string">&quot;bash deploy.sh&quot;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="_3）创建仓库"><a href="#_3）创建仓库" class="header-anchor">#</a> 3）创建仓库</h4> <p>可以在 github 上直接创建一个仓库，然后通过桌面版的 github 工具把这个空仓库 clone 下来，然后把博客项目复制进去。然后再 push 到 github 远程库。这样子主项目就占有了 <code>master</code> 主分支。</p> <p>后面打包出来的 <code>dist</code> 目录会作为分支，也是我们最后访问的静态资源内容。</p> <h4 id="_4）选择-github-pages-部署方式"><a href="#_4）选择-github-pages-部署方式" class="header-anchor">#</a> 4）选择 github pages 部署方式</h4> <p>pages 的展现方式有两种</p> <ul><li>user.github.io 直接访问首页，但是这个链接一个 github 用户也只能有一个，且仓库名也必须是这个
+所以还有一种就是为了让每个仓库都可以拥有访问页面 URL 能力的方式，就是加一个上下文</li> <li>user.github.io/context 这种方式的访问，需要让仓库具有分支，这样比较清晰</li></ul> <p>选择第二种方式，还需要注意 <code>vuepress</code> 在 <code>config.js</code> 中对于 <code>base</code> 的配置。</p> <blockquote><p>这都是约定的</p></blockquote> <div class="language-js extra-class"><pre class="language-js"><code>module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  base<span class="token operator">:</span> <span class="token string">&quot;/whole-stack-note/&quot;</span> <span class="token comment">// 其实就是仓库的名字 whole-stack-note</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><p>如果上面都弄完了，正常情况下执行 <code>npm run deploy</code> 就可以了。但是会因为 window 和网上教程的不一致导致很多问题。可以参考下面的描述和解决方式</p> <h3 id="git-bash-环境变量的问题"><a href="#git-bash-环境变量的问题" class="header-anchor">#</a> git bash 环境变量的问题</h3> <p>光是安装了 <code>git</code> 还不行，还需要对安装目录下的 <code>/bin</code> 进行环境变量的配置。
+在 windows 下找到环境变量，然后看用户变量中的 <code>path</code> , 把 <code>/bin</code> 目录配置进去。
+然后就可以在 <code>cmd</code> 中输入 bash（有 bash, sh 等，这是安装 Git 自带的程序）就会执行 Git bash</p> <h3 id="ssh-和-https-的问题（待理解）"><a href="#ssh-和-https-的问题（待理解）" class="header-anchor">#</a> SSH 和 HTTPS 的问题（待理解）</h3> <p>官方文档里，<code>deploy.sh</code> 中对于仓库的链接主要是 <code>SSH</code> 方式。
+但是根据仓库的特性，有些是 <code>HTTPS</code> 方式的，所以配置的时候注意一下方式</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// deploy.sh</span>
+<span class="token comment">// ...</span>
+git push <span class="token operator">-</span>f git@github<span class="token punctuation">.</span>com<span class="token operator">:</span><span class="token operator">&lt;</span><span class="token constant">USERNAME</span><span class="token operator">&gt;</span><span class="token operator">/</span><span class="token operator">&lt;</span><span class="token constant">REPO</span><span class="token operator">&gt;</span><span class="token punctuation">.</span>github<span class="token punctuation">.</span>io<span class="token punctuation">.</span>git master
+git push <span class="token operator">-</span>f https<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>github<span class="token punctuation">.</span>com<span class="token operator">/</span><span class="token operator">&lt;</span><span class="token constant">USERNAME</span><span class="token operator">&gt;</span><span class="token operator">/</span><span class="token operator">&lt;</span><span class="token constant">REPO</span><span class="token operator">&gt;</span><span class="token punctuation">.</span>git master<span class="token operator">:</span>gh<span class="token operator">-</span>pages
+</code></pre></div><h3 id="nodejs-升级-降级带来的问题"><a href="#nodejs-升级-降级带来的问题" class="header-anchor">#</a> nodejs 升级/降级带来的问题</h3> <p>https://github.com/nodejs/node/issues/29287
+简单来说，上面都弄好了，还执行不了，还报了这个链接里的错误。就是 nodejs 之前升级过了，遗留八竿子打不到的 bug 问题。</p> <blockquote><p>nodejs 升级后，除了常用的几个如 npm i ，其他比较偏的指令都报错
+最后就是把 C 盘用户下的 <code>npm</code>， <code>npm-cache</code> 都删除就好了。至于影不影响其他项目，到时候缺什么安装什么吧，反正有资格安装到全局的也没有多少包。</p></blockquote> <h3 id="关于-git-分支新建的问题（待理解）"><a href="#关于-git-分支新建的问题（待理解）" class="header-anchor">#</a> 关于 git 分支新建的问题（待理解）</h3> <p>如何指定某个文件目录新建新的分支</p> <h3 id="关于-github-pages"><a href="#关于-github-pages" class="header-anchor">#</a> 关于 GitHub Pages</h3> <p>这个东西原本 <code>github</code> 就是用来让开源库的作者能够更加丰富得介绍自己的项目，而不是仅仅局限于之前的 <code>README.md</code> 介绍文档。</p> <p>当然，后面没有服务器的支持，只能够部署一些静态页面。这也够了，我们把项目打包后输出的就是静态资源 <code>dist</code> 。</p> <h2 id="自动化部署-ci"><a href="#自动化部署-ci" class="header-anchor">#</a> 自动化部署 CI</h2> <h2 id="关于-vuepress-对-md-的扩展用法"><a href="#关于-vuepress-对-md-的扩展用法" class="header-anchor">#</a> 关于 vuepress 对 md 的扩展用法</h2> <h3 id="示信息"><a href="#示信息" class="header-anchor">#</a> 示信息</h3> <div class="custom-block tip"><p class="custom-block-title">TIP</p> <p>这是一个提示</p></div> <div class="custom-block warning"><p class="custom-block-title">WARNING</p> <p>这是一个警告</p></div> <div class="custom-block danger"><p class="custom-block-title">WARNING</p> <p>这是一个危险警告</p></div> <p>::: details
+这是一个详情块，在 IE / Edge 中不生效
+:::</p> <h3 id="某一行代码高亮"><a href="#某一行代码高亮" class="header-anchor">#</a> 某一行代码高亮</h3> <div class="custom-block tip"><p class="custom-block-title">TIP</p> <p><code>js{4} xxx</code></p></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><!----> <span class="next"><a href="/whole-stack-note/blog/live/">生活</a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/whole-stack-note/assets/js/app.a5ab1a54.js" defer></script><script src="/whole-stack-note/assets/js/2.e4a81c01.js" defer></script><script src="/whole-stack-note/assets/js/6.af00c16d.js" defer></script>
+  </body>
+</html>
