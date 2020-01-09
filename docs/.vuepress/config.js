@@ -2,6 +2,8 @@ const p4 = require("./nav-libs/p4.js");
 const p5 = require("./nav-libs/p5.js");
 const p6 = require("./nav-libs/p6.js");
 const blog = require("./nav-libs/blog.js");
+const backBase = require("./nav-libs/back-base.js");
+const backPro = require("./nav-libs/back-pro.js");
 
 module.exports = {
   base: "/whole-stack-note/", // 站点的基础路径
@@ -30,6 +32,8 @@ module.exports = {
       p4,
       p5,
       p6,
+      backBase,
+      backPro,
       blog,
       { text: "Resume", link: "/my-resume" }
     ],
