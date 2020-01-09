@@ -151,11 +151,11 @@ module.exports = {
         {
           title: "生活",
           collapsable: false, // 取消下拉
-          children: ["/blog/live/", "/blog/live/note"]
+          children: ["live/", "live/note"] // 路径是跟在上面的主路径后面的
         },
         {
           title: "经济",
-          children: ["/blog/econ/"]
+          children: ["econ/"]
         }
       ],
       "/javascript/": []

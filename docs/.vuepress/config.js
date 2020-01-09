@@ -44,28 +44,28 @@ module.exports = {
         {
           title: "生活",
           collapsable: false, // 取消下拉
-          children: ["/blog/live/", "/blog/live/note"]
+          children: ["live/", "live/note"]
         },
         {
           title: "经济",
-          children: ["/blog/economics/"]
+          children: ["economics/"]
         }
       ],
       "/p4/javascript/": [
-        '',
+        "",
         {
           title: "数据类型",
           collapsable: true,
           children: [
-           '数据类型/00 数据类型',
-           '数据类型/01 数据类型判断',
-           '数据类型/02 数据类型转换'
+            "数据类型/00 数据类型",
+            "数据类型/01 数据类型判断",
+            "数据类型/02 数据类型转换"
           ]
         },
         {
           title: "面向对象",
           collapsable: true,
-          children: ["/p4/javascript/面向对象/"]
+          children: ["面向对象/"]
         }
       ],
       "/p4/team/tools/": ["vue-press", "github和picgo搭建图床"]
