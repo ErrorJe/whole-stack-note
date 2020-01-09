@@ -52,10 +52,19 @@ module.exports = {
         }
       ],
       "/p4/javascript/": [
-        "",
+        '',
+        {
+          title: "数据类型",
+          collapsable: true,
+          children: [
+           '数据类型/00 数据类型',
+           '数据类型/01 数据类型判断',
+           '数据类型/02 数据类型转换'
+          ]
+        },
         {
           title: "面向对象",
-          collapsable: false,
+          collapsable: true,
           children: ["/p4/javascript/面向对象/"]
         }
       ],
