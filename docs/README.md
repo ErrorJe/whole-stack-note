@@ -3,7 +3,7 @@ home: true
 heroImage: /homePage.jpg
 heroText: ErrorJE 前端研究所
 tagline: 主攻前端
-actionText: 搞起来 →
+actionText: 开始梭哈
 actionLink: /p4/team/tools/vue-press
 features:
 - title: 前端一把梭
