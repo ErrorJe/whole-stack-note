@@ -32,7 +32,7 @@ module.exports = {
       text: "团队协作",
       items: [
         { text: "代码规范", link: "/p4/team/code-format/" },
-        { text: "开发工具链", link: "/p4/team/tools/vue-press" }
+        { text: "开发工具链", link: "/p4/team/tools/" }
       ]
     },
     {
