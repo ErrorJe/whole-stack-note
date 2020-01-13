@@ -370,4 +370,5 @@ deploy:
 - 去设置中拿到 `appID` 和 `appKey`
 - 按照官方或者下面网址里的方法创建组件或者以插件形式进行配置
 - 最后在需要加入评论的 md 文件中加入该全局组件就行
+- 最后记得把配置新独立出来，要设置 .gitignore
 https://www.cnblogs.com/CoderMonkie/p/blog-comment.html
