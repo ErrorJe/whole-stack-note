@@ -33,8 +33,11 @@ module.exports = {
       ]
     },
     {
-      text: "常见业务开发",
-      link: "/p5/business/"
+      text: "面试相关",
+      items: [
+        { text: "业务开发", link: "/p5/interview/business/" },
+        { text: "面试题", link: "/p5/interview/topic/" }
+      ]
     }
   ]
 };

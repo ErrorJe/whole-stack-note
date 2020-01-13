@@ -5,6 +5,13 @@ const blog = require("./nav-libs/blog.js");
 const backBase = require("./nav-libs/back-base.js");
 const backPro = require("./nav-libs/back-pro.js");
 
+const sp4 = require('./sidebar-libs/sp4.js')
+const sp5 = require('./sidebar-libs/sp5.js')
+const sp6 = require('./sidebar-libs/sp6.js')
+const sblog = require("./sidebar-libs/blog.js");
+const sbackBase = require("./sidebar-libs/back-base.js");
+const sbackPro = require("./sidebar-libs/back-pro.js");
+
 module.exports = {
   base: "/whole-stack-note/", // 站点的基础路径
   title: "FE 前端研究所", // 网站的标题
@@ -40,73 +47,9 @@ module.exports = {
 
     // 侧边栏配置
     sidebar: {
-      "/blog/": [
-        {
-          title: "生活",
-          collapsable: false, // 取消下拉
-          children: ["live/", "live/note"]
-        },
-        {
-          title: "经济",
-          children: ["economics/"]
-        }
-      ],
-      "/p4/javascript/": [
-        "",
-        {
-          title: "数据类型",
-          collapsable: false,
-          children: [
-            "数据类型/00 数据类型",
-            "数据类型/01 数据类型判断",
-            "数据类型/02 数据类型转换"
-          ]
-        },
-        {
-          title: "面向对象",
-          collapsable: false,
-          children: ["面向对象/"]
-        }
-      ],
-      "/p4/typescript/":[
-        "",
-        {
-          title: "特性概览",
-          collapsable: false,
-          children: [
-            "00 基础知识",
-            "01 数据类型",
-            "02 面向对象",
-            "10 Vue 应用"
-          ]
-        }
-      ],
-      '/p4/browser/': [
-        '',
-        '前端本地存储'
-      ],
-      "/p4/team/tools/": ['', "vue-press", "github和picgo搭建图床"],
-      // P5 级别
-      '/p5/business/': [
-        '',
-        '鉴权方式'
-      ],
-      '/p5/vue-element-admin/': [
-        '',
-        'admin 项目创建',
-        '路由菜单与用户权限',
-        'Layout 布局框架',
-        '布局、样式与图标',
-        'API 统一管理',
-        '环境变量配置',
-        '路由页面刷新方案',
-        '主题定制',
-        '国际化切换',
-        'Mock 服务',
-        'Node 本地开发服务器',
-        '单元测试',
-        '构建部署与发布'
-      ]
+      ...sblog,
+      ...sp4,
+      ...sp5,
     }
   },
   plugins: ["@vuepress/back-to-top"]
