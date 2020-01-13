@@ -12,12 +12,10 @@ export default {
       this.window = window
       window.AV = require('leancloud-storage')
     }
-    console.log('引入了吗')
-
+    const APP_KEY = require('../config/cfg.js')
     new Valine({
       el: '#vcomments',
-      appId: 'ka4MFCFtjrXuBMGCMlmdNeG0-gzGzoHsz', // your appId
-      appKey: 'YIhxzpl4dV9s6UtM0KWLAcbD', // your appKey
+      ...APP_KEY,
       path: window.location.pathname,
       notify: false,
       verify: false,

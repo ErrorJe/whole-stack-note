@@ -366,4 +366,8 @@ deploy:
 
 ## 插件使用
 ### 评论插件
+- 去https://leancloud.cn/ 注册，要认证实名
+- 去设置中拿到 `appID` 和 `appKey`
+- 按照官方或者下面网址里的方法创建组件或者以插件形式进行配置
+- 最后在需要加入评论的 md 文件中加入该全局组件就行
 https://www.cnblogs.com/CoderMonkie/p/blog-comment.html
