@@ -338,7 +338,7 @@ deploy:
 
 就是要生成一个 `github token`，其他没有什么。
 从 github 的个人头像上进入 `setting` 然后侧边栏的最下面有个 ``
-![](https://user-images.githubusercontent.com/33750626/71869237-5285d700-314c-11ea-878b-45f915498a29.png)
+<a data-fancybox title="" href="https://user-images.githubusercontent.com/33750626/71869237-5285d700-314c-11ea-878b-45f915498a29.png">![](https://user-images.githubusercontent.com/33750626/71869237-5285d700-314c-11ea-878b-45f915498a29.png)</a>
 
 配置的 `note` 可以随便写，然后生成后就会有一个 `token` （记住，只会显示这样一次，所以要自己记下来，后面要用到）
 
@@ -346,7 +346,7 @@ deploy:
 
 配置环境变量 `address` 和 `token`
 用 github 快速登录后，找到自己博客所在的那个仓库，然后进入。再如图所示的方式进去配置`环境变量`
-![image](https://user-images.githubusercontent.com/33750626/71869346-b4ded780-314c-11ea-9412-0abef27f5208.png)
+<a data-fancybox title="image" href="https://user-images.githubusercontent.com/33750626/71869346-b4ded780-314c-11ea-9412-0abef27f5208.png">![image](https://user-images.githubusercontent.com/33750626/71869346-b4ded780-314c-11ea-9412-0abef27f5208.png)</a>
 
 大致要配 2 个，其中 `token` 是必须的，对应了 `.travis.yml` 中的变量名。这个 token 就是刚才拿到的 github token 字符串。
 `address` 就是本仓库的地址，也就是 clone 的那个地址。
@@ -367,8 +367,11 @@ deploy:
 这是一个危险警告
 :::
 
-::: details
+::: details 点击查看代码
 这是一个详情块，在 IE / Edge 中不生效
+```js
+console.log('你好，VuePress！')
+```
 :::
 
 ### 某一行代码高亮

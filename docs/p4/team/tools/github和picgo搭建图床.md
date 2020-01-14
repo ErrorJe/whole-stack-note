@@ -22,7 +22,7 @@ github 用于图床的稳定性不用多说
 
 先进入位置
 
-![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108020745.png)
+<a data-fancybox title="" href="https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108020745.png">![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108020745.png)</a>
 
 
 
@@ -30,7 +30,7 @@ github 用于图床的稳定性不用多说
 
 > token 只会出现一次，所以要记住这个字符串
 
-![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108020811.png)
+<a data-fancybox title="" href="https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108020811.png">![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108020811.png)</a>
 
 ### 创建分支
 
@@ -38,7 +38,7 @@ github 用于图床的稳定性不用多说
 
 在这个地方，输入任意内容，如果没有找到该对应分支，就会帮你创建一个。
 
-![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108021004.png)
+<a data-fancybox title="" href="https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108021004.png">![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108021004.png)</a>
 
 
 
@@ -56,7 +56,7 @@ github 用于图床的稳定性不用多说
 
 这个软件支持很多图床服务器，为了看着干净，把其他图床都点了。这样就只显示 Github 图床
 
-![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108021156.png)
+<a data-fancybox title="" href="https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108021156.png">![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108021156.png)</a>
 
 
 
@@ -72,7 +72,7 @@ github 用于图床的稳定性不用多说
 
 - 自定义域名的作用是，在上传图片后成功后，PicGo会将“自定义域名+上传的图片名”生成的访问链接，放到剪切板上`https://raw.githubusercontent.com/用户名/RepositoryName/分支名，`，自定义域名需要按照这样去填写
 
-![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108021403.png)
+<a data-fancybox title="" href="https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108021403.png">![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108021403.png)</a>
 
 
 
@@ -80,7 +80,7 @@ github 用于图床的稳定性不用多说
 
 因为默认快捷键是基于 mac 来设置的，在 window 上使用推荐 `ctrl + shift + c` 的组合
 
-![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108021603.png)
+<a data-fancybox title="" href="https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108021603.png">![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200108021603.png)</a>
 
 每次截图完后，就可以按这个组合键，然后会自动上传到仓库中，最后可以直接 `ctrl + v` 贴到 markdown 中
 
