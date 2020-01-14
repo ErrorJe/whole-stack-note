@@ -1,13 +1,14 @@
 # Vue 函数式组件和 JSX 应用
 
-## （一）函数式组件
+## 函数式组件
 
 > 没有模板`template`，必须用 render 函数去渲染 HTML
 
 
-### 1 基本认识
 
-#### 1）创建函数式组件和 h 函数
+### 基本认识
+
+#### 创建函数式组件和 h 函数
 
 作为组件的一种，用的是 JSX 语法，其实也就是模仿的 React JSX。当然文件是 JS 而不是 vue 了。
 
@@ -32,7 +33,9 @@ export default {
 };
 ```
 
-#### 2）父组件引入方式
+
+
+#### 父组件引入方式
 
 其他都是一样的，无非就是引入的时候注意文件后缀是 JS。
 
@@ -59,12 +62,15 @@ export default {
 <style></style>
 ```
 
-### 2 用 JSX 的方式定制组件
+
+
+### 用 JSX 的方式定制组件
 
 > IView 组件库用这种方式比较多
 
 
-#### 1）父组件自定义 render 方法
+
+#### 父组件自定义 render 方法
 
 - 引入 List 组件用来渲染 li 列表
 - 自定义并给子组件传入 render 方法
@@ -100,7 +106,9 @@ export default {
 <style></style>
 ```
 
-#### 2）子组件 List.vue
+
+
+#### 子组件 List.vue
 
 - 接受父组件传来的数组和方法，并进行列表渲染
 - 以`是否接受到父组件的 render 方法`判断是否要屏蔽渲染默认的 li 列表
@@ -138,7 +146,9 @@ export default {
 </script>
 ```
 
-#### 3）函数式组件 ListItem.js
+
+
+#### 函数式组件 ListItem.js
 
 ```javascript
 export default {
@@ -157,13 +167,16 @@ export default {
 }
 ```
 
-### 3 element-ui 作用域插槽
+
+
+### element-ui 作用域插槽
 
 > element-ui 用这种方式比较多
 > 相当于数据在子组件中执行，然后传出来给父组件用
 
 
-#### 1）List 组件改装
+
+#### List 组件改装
 
 基于上面的 List 组件稍微调整下，使用 `slot` 的方式给用户留空
 
@@ -192,7 +205,9 @@ export default {
 </script>
 ```
 
-#### 2）父组件
+
+
+#### 父组件
 
 - 解构出 slot 中的数据对象，然后定制化使用
 - 普通插槽是在父组件中执行，作用域插槽是在子组件中执行，所以可以拿到子组件数据
@@ -206,7 +221,9 @@ export default {
 </List>
 ```
 
-## （二）iView 可编辑表格的实现
+
+
+## iView 可编辑表格的实现
 
 > 自己感受下就 OK
 

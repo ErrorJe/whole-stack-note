@@ -1,14 +1,14 @@
 # v-tooltip 中文文档翻译
 
-# 一、开始使用 v-tooltip
+## 开始使用 v-tooltip
 
 [https://github.com/Akryum/v-tooltip](https://github.com/Akryum/v-tooltip)
 
-## （一）Node 环境
+### Node 环境
 
 `npm i -save v-tooltip` 安装依赖
 
-### 1 全局注册插件
+#### 全局注册插件
 
 ```javascript
 import Vue from 'vue'
@@ -17,7 +17,9 @@ import VTooltip from 'v-tooltip'
 Vue.use(VTooltip)
 ```
 
-### 2 解构引入组件和指令
+
+
+#### 解构引入组件和指令
 
 除了全部引入还可以解构出组件或者指令分别引入
 
@@ -30,7 +32,9 @@ Vue.directive('close-popover', VClosePopover)
 Vue.component('v-popover', VPopover)
 ```
 
-## （二）浏览器环境
+
+
+### 浏览器环境
 
 CDN 引入插件 `<script src="https://unpkg.com/v-tooltip"></script>`
 
@@ -46,13 +50,15 @@ Vue.directive('close-popover', VTooltip.VClosePopover)
 Vue.component('v-popover', VTooltip.VPopover)
 ```
 
-## （三）样式选择
+
+
+### 样式选择
 
 是两种CSS编译器的样式示例。
 
 举例了主要的几个样式类，如 `tooltip-inner`，就是弹出的主内容区
 
-### 1 Sass / Less
+#### Sass / Less
 
 ```css
 .tooltip {
@@ -166,7 +172,9 @@ Vue.component('v-popover', VTooltip.VPopover)
 }
 ```
 
-### 2 CSS
+
+
+#### CSS
 
 ```javascript
 .tooltip {
@@ -276,17 +284,21 @@ Vue.component('v-popover', VTooltip.VPopover)
 }
 ```
 
-# 二、用法
+
+
+## 用法
 
 指令与组件的使用区别：指令通过配置对象来实现定制，组件通过元素属性来实现定制。
 
 本质上是一样的。
 
-## （一）指令方式
 
-### 1 基本使用方式
 
-#### 1）在 template 模板中
+### 指令方式
+
+#### 基本使用方式
+
+##### 在 template 模板中
 
 同时支持静态字符串或者是响应式属性
 
@@ -309,7 +321,9 @@ export default {
 </script>
 ```
 
-#### 2）修饰符列表
+
+
+##### 修饰符列表
 
 用修饰符来指定方位
 
@@ -333,7 +347,9 @@ export default {
 - `'left-start'`
 - `'left-end'`
 
-### 2 配置对象形式
+
+
+#### 配置对象形式
 
 上面的方式可以传入响应式属性或者是静态的字符串，其实还可以传入一个对象。通过对象属性 `options` 的配置来个性化定制 tooltip 的功能
 
@@ -389,7 +405,9 @@ export default {
 >Hover me!</button>
 ```
 
-### 3 移动端
+
+
+#### 移动端
 
 处于性能之类的考虑，可能会选择适配到移动端时，禁止气泡功能。
 
@@ -399,9 +417,11 @@ export default {
 VTooltip.enabled = window.innerWidth > 768
 ```
 
-## （二）组件方式
 
-### 1 组件形式的基本结构
+
+### 组件方式
+
+#### 组件形式的基本结构
 
 使用组件 `v-popover`
 
@@ -450,7 +470,9 @@ VTooltip.enabled = window.innerWidth > 768
 
 还可以注意下箭头的层级`.tooltip-arrow { z-index: 1;}`
 
-### 2 v-popover 组件属性
+
+
+#### v-popover 组件属性
 
 跟 `v-tooltip`类似，也有一点不同
 
@@ -479,7 +501,9 @@ VTooltip.enabled = window.innerWidth > 768
 - `openGroup` - 若设置了分组，将会统一关闭某组别的气泡和弹窗
 - `openClass` - 气泡弹出窗口时的类
 
-### 3 组件的事件
+
+
+#### 组件的事件
 
 - `update:open(Boolean)` - 允许在弹窗中使用 `.sync` 修饰符
 - `show`
@@ -492,7 +516,9 @@ VTooltip.enabled = window.innerWidth > 768
 - `close-group` - 弹出窗口关闭时发出，因为显示了另一个开放组的弹出窗口。
 - `resize` - 如上
 
-### 4 关闭指令 v-close-popover
+
+
+#### 关闭指令 v-close-popover
 
 ```vue
 <v-popover>
@@ -512,9 +538,11 @@ VTooltip.enabled = window.innerWidth > 768
 </v-popover>
 ```
 
-# 三、补充内容
 
-## （一）tooltip 所有配置属性
+
+## 补充内容
+
+### tooltip 所有配置属性
 
 ```json
 {
@@ -598,13 +626,17 @@ import VTooltip from 'v-tooltip'
 VTooltip.options.defaultClass = 'my-tooltip'
 ```
 
-## （二）在线示例
+
+
+### 在线示例
 
 [https://akryum.github.io/v-tooltip/#/](https://akryum.github.io/v-tooltip/#/)
 
 
-## （三）实战经验
-### 1 只能由鼠标控制显隐
+
+### 实战经验
+
+#### 只能由鼠标控制显隐
 这是在 `vue` 中的写法， 主要的控制属性 
 
 - show 控制显隐
@@ -623,7 +655,10 @@ VTooltip.options.defaultClass = 'my-tooltip'
 >名词解释</span>
 ```
 
-### 2 鼠标点击时关闭气泡
+
+
+#### 鼠标点击时关闭气泡
+
 绑定的事件改为 `click` ，使用属性 `hideOnTargetClick` <br />点击该气泡会显示，然后点击其他任意地方（触发click事件就行），就会关闭
 
 ```html

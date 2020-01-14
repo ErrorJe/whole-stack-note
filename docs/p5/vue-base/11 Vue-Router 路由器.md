@@ -14,15 +14,17 @@
 > 6 异步路由懒加载
 
 
-## （一）安装和介绍
+## 安装和介绍
 
-### 1 Vue-Router 解决的问题
+### Vue-Router 解决的问题
 
 - 监听URL变化，执行相应逻辑
 - URL 是组件的映射
 - 多种 API 来操作 URL（哈希模式不刷新浏览器）
 
-### 2 路由的类型
+
+
+### 路由的类型
 
 - hash 模式：丑。无法使用锚点定位。（用#号）
 - history 模式：需要后端配置。IE9不兼容（可用强制刷新处理）
@@ -35,7 +37,9 @@ routes: [
 ]
 ```
 
-### 3 Vue-Router 安装
+
+
+### Vue-Router 安装
 
 在cli3之前使用命令 `npm i vue-router --save`来安装
 
@@ -46,13 +50,15 @@ routes: [
 > 最后在源码根目录下会多一个 `router.js`
 
 
-## （二）基本配置
+
+## 基本配置
 
 > 路由的基本表现就是无刷新，底层是通过DOM的移除和重新渲染加载来实现的。
 > 在配置每个页面的路由之前，那个页面也需要存在。所以假设这里新建了页面 Page1.vue和Page2.vue
 
 
-### 1.router.js对路由的配置
+
+### router.js对路由的配置
 
 > 1 引入相关页面 import，可以使用相对路径或者是绝对路径(@)。建议后者
 > 2 挂载路由插件 Vue.use()，初始化路由实例new Router()
@@ -95,9 +101,11 @@ export default new Router({
 })
 ```
 
-### 2.路由的基本使用
 
-#### 1）挂载到全局
+
+### 路由的基本使用
+
+#### 挂载到全局
 
 首先需要在 `main.js` 中去注册这个选项
 
@@ -115,7 +123,9 @@ new  Vue({
 }).$mount('#app')
 ```
 
-#### 2）router-view 路由视口和 router-link 路由导航
+
+
+#### router-view 路由视口和 router-link 路由导航
 
 > 可以通过路由视图器来作为路由入口展现 `router-view`
 > 也可以通过`router-link`路由导航来跳转，相当于超链接 a 标签
@@ -143,7 +153,9 @@ new  Vue({
 <router-link :to="{ name: 'news.detail', query:{id: news.id}}">
 ```
 
-#### 3）vue.config.js 配置
+
+
+#### vue.config.js 配置
 
 ```javascript
 // 就是个 node 代码
@@ -167,7 +179,9 @@ module.exports = {
 }
 ```
 
-## （三）动态路由（路由传参）
+
+
+## 动态路由（路由传参）
 
 > 配置路由时，可以通过冒号 : 来写一个占位符，就是以后给参数放的。
 > 传参的方式:
@@ -180,9 +194,12 @@ module.exports = {
 > 	或者指令取参数`this.$route.params.msg`或`this.$route.query.foo`
 
 
-### 1.路由动态参数（必传参）和编程式路由
 
-#### 1）指令式路由 to 和占位符参数
+### 路由动态参数（必传参）和编程式路由
+
+
+
+#### 指令式路由 to 和占位符参数
 
 > 形式就是 www.baidu.com/xxx/xxx， 后面的 /xxx 就是必传参，如果不传，那无法找到指定页面
 > 使用 `/:xxxx`占位符， 用 `this.$route.params` 拿到响应的路径必传参
@@ -226,7 +243,9 @@ export default {
 }
 ```
 
-#### 2）this.$router.push 编程式路由
+
+
+#### this.$router.push 编程式路由
 
 > 另外，除了在URL中直接修改，还可以使用按钮之类的写指令逻辑来跳转和传值
 > `this.$router.push`就是编程式路由。参数是字符串路径，或地址对象
@@ -268,7 +287,9 @@ created() {
 },
 ```
 
-### 2.查询参数传值
+
+
+### 查询参数传值
 
 > 一次性获取路由参数和查询参数
 
@@ -322,7 +343,9 @@ export default {
 }
 ```
 
-### 3 router.replace() 路由返回
+
+
+### router.replace() 路由返回
 
 > 替换掉当前的 history 记录
 
@@ -345,7 +368,9 @@ push 方法也是可以的
 this.$router.push({path: '/home', replace: true})
 ```
 
-### 4 router.go(n)
+
+
+### router.go(n)
 
 > 参数是整数， 在 history 记录中前进或后退多少步，跟`window.history.go(n)`一样
 
@@ -366,12 +391,14 @@ router.go(100)
 ```
 
 
-## （四）嵌套路由
+
+## 嵌套路由
 
 > 应用场景，如必须先登录 login, 然后才能访问其下面的其他子路由
 
 
-### 1.创建登录页面（Login）和父级页面（Dashboard）
+
+### 创建登录页面（Login）和父级页面（Dashboard）
 
 > 父级路由页面，必须要有路由出口`router-view`给子路由展示的地方
 
@@ -382,7 +409,9 @@ router.go(100)
 <router-view></router-view>
 ```
 
-### 2.配置路由和更改url路径
+
+
+### 配置路由和更改url路径
 
 > 将之前写的路由，都作为子路由放进父级路由 Dashboard 中。需要注意：
 > 	children属性中的子路由 path 需要改成相对于父级的路径。去掉 '/'
@@ -451,7 +480,9 @@ export default new Router({
 <router-link to="/login">login</router-link>
 ```
 
-### 3 命名视图
+
+
+### 命名视图
 
 ```html
 <!-- 命名视图。当该组件需要出现多个视口时使用 -->
@@ -472,11 +503,13 @@ const routes = {
 }
 ```
 
-## （五）路由守卫
 
-### 1 全局路由守卫（程序级）
 
-#### 1）全局守卫生命周期
+## 路由守卫
+
+### 全局路由守卫（程序级）
+
+#### 全局守卫生命周期
 
 > 全局路由守卫就是，每次路由跳转都会被触发，即任何路由的请求都会被拦截
 > 需要改写 router.js ，去配置路由守卫。
@@ -500,7 +533,9 @@ router.afterEach((to, from) => {
 })
 ```
 
-#### 2）登录路由守卫
+
+
+#### 登录路由守卫
 
 > 判断是否登录，如果登录了就允许访问其他子路由。如果没有登录就去登录页面
 
@@ -564,7 +599,9 @@ router.beforeEach((to, from, next) => {
 export default router;
 ```
 
-#### 3）登录跳转实现
+
+
+#### 登录跳转实现
 
 > login 登录页面假设做了登录处理
 
@@ -595,7 +632,9 @@ export default router;
 </script>
 ```
 
-### 2 路由独享守卫（路由级）
+
+
+### 路由独享守卫（路由级）
 
 > 如果在 Dashboard 这个父级路由中写了，那之前的全局路由守卫只需要写 `next()`就行了。
 > 触发的时间在 `beforeEach` 和 `beforeResolve` 之间
@@ -617,7 +656,9 @@ router: [{
 }]
 ```
 
-### 3 组件级路由守卫
+
+
+### 组件级路由守卫
 
 > 还有组件级别的守卫。在这个层级，只能管自己页面的拦截。
 > 下面三个生命钩子，是写在组件内部的。
@@ -645,10 +686,16 @@ beforeRouteLeave(to, from, next) {
 }
 ```
 
-#### 1）路由守卫的调用顺序
+
+
+#### 路由守卫的调用顺序
+
 	调用全局 beforeEach<br />	重用组件中调用 beforeRouteUpdate,（仅参数更改）<br />	路由配置里调用 beforeEnter<br />	激活的组件里调用 beforeRouteEnter<br />	调用全局的 beforeResolve， 导航被确认<br />	调用全局 afterEach 钩子<br />		router.afterEach((to, form) => {}), 注意后面已经没有东西了，所以没有Next<br />	触发 DOM 更新
 
-#### 2）beforeRouterEnter 和 beforeRouterLeave 应用实例
+
+
+#### beforeRouterEnter 和 beforeRouterLeave 应用实例
+
 > 监听浏览器返回跳转到指定页面
 
 页面进来时，先保存源头的路由名
@@ -693,7 +740,9 @@ beforeRouteLeave(to, from, next) {
 },
 ```
 
-## （六）异步组件
+
+
+## 异步组件
 
 > 路由懒加载函数， vue 配合 webpack 实现。不需要另外引入组件。
 > 如果不访问这个路由，就不会发生加载。可以把主页之外的都设置为懒加载。

@@ -1,12 +1,12 @@
 # Vue 进阶语法
 
-## （一）数据响应式
-### 1 data 数据劫持
+## 数据响应式
+### data 数据劫持
 
 > 只有定义在 data 中的数据才能响应，vue 把响应式系统的数据放在了 `data选项中`
 
 
-#### 1）响应式原理
+#### 响应式原理
 
 > vue 是通过数据劫持，达到数据绑定。也就是在 data 第一次初始化注入的时候就决定了数据的绑定；
 > 1 Vue 底层将遍历 `data`选项中所有的属性，并在实例初始化时用 `Object.defineProperty` （ES5 中无法被 shim 的属性[就是在低级环境下无法实现的属性功能]，所以不支持 IE8 及更低的浏览器）把属性全转为 `getter/setter`
@@ -37,7 +37,9 @@ export default {
 }
 ```
 
-#### 2）全局和组件 data 选项的区别
+
+
+#### 全局和组件 data 选项的区别
 
 另外，使用 HTML 引入 vue 库中使用 data 的方式，和直接在 .vue 单文件中使用是不一样的
 
@@ -63,7 +65,9 @@ export default{
 }
 ```
 
-#### 3）不被感知的修改方式及其解决方案
+
+
+#### 不被感知的修改方式及其解决方案
 
 **数组中不被感知的2种情况**：
 
@@ -83,7 +87,9 @@ export default{
   - 直接加到原对象上是**不会响应**的， 如`this.msg = Object.assign(this.message, {t1:1, t2:2})`
   - 而是要用空对象去组合继承两个对象属性 `this.msg = Object.assign({}, this.message, {t1:1, t2:2})`
 
-### 2 数据来源
+
+
+### 数据来源
 
 只有三种方式
 
@@ -91,7 +97,9 @@ export default{
 - 自身组件状态 data
 - 状态管理器， vuex， Vue.observable
 
-### 3 computed 计算属性
+
+
+### computed 计算属性
 
 > 监听的数据必须是在响应式数据中的，普通变量无法监听。
 > 且是基于依赖的响应式数据进行缓存，只有相关依赖发生变化才会重新求值
@@ -126,7 +134,9 @@ export default {
 }
 ```
 
-### 4 watch 监听器
+
+
+### watch 监听器
 
 > 可以执行任何逻辑，如异步操作和DOM操作。
 > 是一个键值对象。键是要观察的表达式，值是对应回调函数（也可以是方法名或包含选项的对象）
@@ -176,7 +186,7 @@ export default {
 }
 ```
 
-#### 1）子组件获取异步数据
+#### 子组件获取异步数据
 
 > 仍然遵守单项数据流规则。可以监听父组件传来的数据，然后复制到子组件的data变量中。
 
@@ -207,7 +217,9 @@ export default {
 }
 ```
 
-#### 2）手动增加响应式对象属性
+
+
+#### 手动增加响应式对象属性
 
 > 若我们要给父组件传给子组件的数据中增加一些字段，这时候要注意。如果这个字段本身没有出现在 `props`或者 `data`选项中，那么是不被响应的。
 > 我们的解决方式是手动给它加上该字段的响应。
@@ -235,7 +247,9 @@ editDataList: function(val, oldVal) {
 
 要看该字段有没有被监听响应，可以打印出来。会有对每个字段的`get/set`方法。如果没有就说明没有响应。
 
-### 5 vm.$nextTick（cb）
+
+
+### vm.$nextTick（cb）
 
 > 异步执行，等DOM渲染完（数据更新后才会触发 DOM 重新渲染）之后才执行callback。
 
@@ -267,21 +281,25 @@ async function () {
 
 最后需要注意：跟 watch 的搭配使用时，他会在 watch 之前执行
 
-### 6 Vue.observable
+
+
+### Vue.observable
 
 - 传入一个需要响应式的对象，然后就会注入到vue实例
 - 然后定义修改这个对象值的 mutation 方法
 - 写个事件去触发这个 Mutation 方法
 
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/204082/1578162290138-f36c1115-e924-4ec2-8bba-19087314e0c6.png#align=left&display=inline&height=667&name=image.png&originHeight=667&originWidth=879&size=200029&status=done&style=none&width=879)
+![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200114083556.png)
 
-## （二）插槽（slot）
+
+
+## 插槽（slot）
 
 > 用于容器类的组件。实际上是一行注释，是一个占位符，用到的时候会被调换成真实的内容DOM。
 > 有具名插槽和匿名插槽，如果内容没有指定插槽，那就会分配到默认插槽空位中
 
 
-### 1 slot 基本用法
+### slot 基本用法
 
 > 创建一个 Win.vue 容器插槽。这里混合里两种插槽（匿名插槽和具名插槽）
 
@@ -314,14 +332,16 @@ async function () {
 </win>
 ```
 
-### 2 插槽也是父子组件的概念
+
+
+### 插槽也是父子组件的概念
 
 通过自定义属性，同样有参数父传子的用法。
 
 > 这里还有一个`编译作用域`的概念，也就是定义出来的插槽组件和使用这个插槽组件的父级组件之间，作用域是无关的。也就是父级组件在使用这个插槽组件的时候，无法直接使用插槽组件里的变量。
 
 
-#### 1）定义插槽组件（子）
+#### 定义插槽组件（子）
 
 这里定义一个名为 `navigation-link` 的插槽组件。绑定了 `href` 变量，在外面使用的时候，通过自定义属性 `url` 传入值。
 
@@ -331,7 +351,9 @@ async function () {
 </a>
 ```
 
-#### 2）使用插槽组件（父）
+
+
+#### 使用插槽组件（父）
 
 通过 `url` 自定义属性传入值。若在上面定义的时候，没有用到 `slot`坑位，则现在里面的 span 包括 文本都会被忽略渲染。
 
@@ -342,7 +364,9 @@ async function () {
 </navigation-link>
 ```
 
-### 3 后备内容
+
+
+### 后备内容
 
 也就是定义插槽组件时， 在 `slot` 中写的默认值。也只有当父级组件没有给出相应内容时，会渲染这个默认值。
 
@@ -359,13 +383,15 @@ async function () {
 <button type="submit">Submit </button>
 ```
 
-## （三）自定义指令
+
+
+## 自定义指令
 
 - 共享数据，建议用 `dataset`
 - 除了`el`，其他属性都是仅可读的。所以尽量不要去修改
 - 当我们需要对 DOM 做底层逻辑处理时，就可能需要用到自定义指令
 
-### 1 钩子函数
+### 钩子函数
 
 提供给指令的钩子函数
 
@@ -375,7 +401,9 @@ async function () {
 - componentUpdated，所有节点和其子节点更新完成后调用
 - unbind，指令与元素解绑时调用
 
-### 2 钩子函数的参数
+
+
+### 钩子函数的参数
 
 每个钩子都有这些参数
 
@@ -390,7 +418,9 @@ async function () {
 - vnode，vue编译生成的虚拟节点
 - oldVnode，上一个虚拟节点
 
-### 3 钩子的函数简写
+
+
+### 钩子的函数简写
 
 ```javascript
 Vue.directive('color-swatch', function(el, binding) {
@@ -398,7 +428,9 @@ Vue.directive('color-swatch', function(el, binding) {
 })
 ```
 
-### 4 钩子的对象字面量形式
+
+
+### 钩子的对象字面量形式
 
 ```javascript
 export default {
@@ -417,7 +449,9 @@ export default {
 <span v-demo="{color:'xxx'}"
 ```
 
-### 5 动态指令参数
+
+
+### 动态指令参数
 
 ```jsx
 <p v-pin:[direction]="200">I am pinned onto the page at 200px to the left.</p>
@@ -439,7 +473,9 @@ new Vue({
 })
 ```
 
-### 6 全局指令的注入
+
+
+### 全局指令的注入
 
 单独创建一个文件，引入所有的指令
 
@@ -464,12 +500,14 @@ import directives from "./plugins/directives.js"
 Vue.use(directives);
 ```
 
-## （四）过滤器Filter的使用
+
+
+## 过滤器Filter的使用
 
 > 全局的话还是在main**.**js中写：过滤器一般都是通用的，写在全局中比较好
 
 
-### 1 定义
+### 定义
 
 ```javascript
 Vue.filter('convertTime', function(data, formatStr) {
@@ -477,7 +515,9 @@ Vue.filter('convertTime', function(data, formatStr) {
 })
 ```
 
-### 2 使用
+
+
+### 使用
 
 > 这里有一个坑， 注意写法是一个 |,如果是写2个 ||,过滤方法是进不去的。
 > | 可以连续使用如 fn | a | b
@@ -493,11 +533,13 @@ new Vue({
 })
 ```
 
-## （五）继承与混合
+
+
+## 继承与混合
 
 混入 (mixin) 提供了一种非常灵活的方式，来分发 Vue 组件中的可复用功能。一个混入对象可以包含任意组件选项。
 
-### 1 Vue.extend
+### Vue.extend
 
 返回组件构造器，创建一个子类，参数就是包含组件选项的对象。
 
@@ -520,7 +562,9 @@ new Vue({
 // => "hello!"
 ```
 
-### 2 extends 选项
+
+
+### extends 选项
 
 用于扩展单文件组件。
 
@@ -550,21 +594,29 @@ new Vue({
 })
 ```
 
-### 3 合并策略
+
+
+### 合并策略
 
 当组件和混入对象含有同名选项时，这些选项将以恰当的方式进行“合并”。
 
-#### 1）生命周期
+
+
+#### 生命周期
 
 同名钩子函数将合并为一个数组，因此都将被调用。
 
 另外，混入对象的钩子将在组件自身钩子**之前**调用
 
-#### 2）data 选项
+
+
+#### data 选项
 
 数据对象在内部会进行递归合并，并在发生冲突时以组件数据优先。
 
-#### 3）值为对象的选项
+
+
+#### 值为对象的选项
 
 如 `props, methods, computed`，将被合并为同一个对象。两个对象键名冲突时，取组件对象的键值对。
 

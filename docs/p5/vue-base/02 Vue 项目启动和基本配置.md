@@ -1,23 +1,30 @@
 # Vue 项目启动和基本配置
 
 介绍几种启动方式
-## （一）最简起步
-### 1 事先要安装 node 环境
+## 最简起步
+### 事先要安装 node 环境
 
 1. 使用`node -v`来看版本, 最好是8.9以上
 1. 安装 vue-cli3
   1. 卸载 cli2.0，`npm uinstall vue-cli -g`
   1. `npm i -g @vue/cli`
 
-### 2 新建项目
+
+
+### 新建项目
 
 1. `vue create vue-cart`
 1. 选择配置
 
-### 3 运行项目
+
+
+### 运行项目
+
 `npm run serve`
 
-## （二）纯浏览器渲染
+
+
+## 纯浏览器渲染
 
 1. 新建一个HTML，构建基本模板
 1. 引入vuejs的cdn
@@ -39,12 +46,19 @@ new Vue({
 > 这种“对象”的写法，只能在 vue 实例中写。后面会介绍到单个组件的写法
 
 
-## （三）快速原型开发：单文件 .vue文件
-### 1 安装相应的包：可以不用引入任何文件，自动识别 .vue 文件
+
+## 快速原型开发：单文件 .vue文件
+
+### 安装相应的包
+
+> 可以不用引入任何文件，自动识别 .vue 文件
 
 1. `npm i -g @vue/cli-service-global`
 
-### 2 编写单文件组件
+
+
+### 编写单文件组件
+
 > 单文件就是包含了 html, css, js,
 > 比如创建 App.vue
 
@@ -81,16 +95,21 @@ const vm = new Vue({
 })
 ```
 
-### 3 执行项目，启动开发服务器
+
+
+### 执行项目，启动开发服务器
 
 1. cd 进入文件所在目录
 1. `vue serve ./App.vue`
 
 背后就是通过自动创建 `node_modules`然后引入了 `vue-loader`来对 Vue 文件进行编译
 
-## （四）使用 Vue-cli 脚手架快速创建项目
-### 1 使用 vue-cli 创建项目
-#### 1）脚手架创建配置
+
+
+## 使用 Vue-cli 脚手架快速创建项目
+
+### 使用 vue-cli 创建项目
+#### 脚手架创建配置
 
 - 全局安装 cli ，`npm i -g @vue/cli`， 目前最新版本 3
 - 创建项目 `vue create 项目名`，并进入目录
@@ -106,7 +125,9 @@ const vm = new Vue({
   - 配置文件选择：单独的配置文件  in dedicated config files（一般不选择只有 package.json）
   - 是否保存现有配置到本地：Y， 并对该配置文件起名字
 
-#### 2）安装依赖和运行
+
+
+#### 安装依赖和运行
 
 - 安装相关的依赖
   - `npm i ant-design-vue moment` 前者是UI库，后者是时间操作库
@@ -123,7 +144,10 @@ const vm = new Vue({
 }
 ```
 
-#### 3）vue-cli3下的项目目录
+
+
+#### vue-cli3下的项目目录
+
 ```javascript
 node_modules - 依赖
 public - 静态资源
@@ -177,8 +201,11 @@ export default {
 <style></style>
 ```
 
-### 2 自定义 webpack 和 babel 配置
-#### 1）全局引入 ant-design-vue
+
+
+### 自定义 webpack 和 babel 配置
+
+#### 全局引入 ant-design-vue
 在此之前先去掉 vue 示例里的一些无关代码，然后去 mian.js 中注入这个
 
 ```javascript
@@ -203,7 +230,10 @@ new Vue({
 }).$mount('#app')
 ```
 
-#### 2）根组件中测试 antd 组件
+
+
+#### 根组件中测试 antd 组件
+
 ```vue
 <template>
 	<div id="app">
@@ -220,7 +250,10 @@ new Vue({
 - less 版本过高
 - 没有配置 vue.config.js
 
-#### 3）在 vue.config.js 中配置 less
+
+
+#### 在 vue.config.js 中配置 less
+
 ```javascript
 // vue.config.js
 module.exports = {
@@ -234,7 +267,9 @@ module.exports = {
 }
 ```
 
-#### 4）按需引入 antd 组件
+
+
+#### 按需引入 antd 组件
 
 - 按需引入组件：尽管是按需引入，但是这样每个组件都要做一遍也是很繁琐
 ```javascript
@@ -275,7 +310,10 @@ Vue.use(Layout)
 
 最后重新访问页面，组件的 JS 和 CSS 代码都会按需加载
 
-### 3 vue.config.js 主要配置
+
+
+### vue.config.js 主要配置
+
 ```javascript
 let path = require('path')
 module.exports = {

@@ -4,6 +4,23 @@ module.exports = {
     '',
     '异步编程'
   ],
+  "/p5/vue-base/": [
+    '',
+    '01 Vue 基础',
+    '02 Vue 项目启动和基本配置',
+    '03 Vue 核心语法',
+    '04 Vue 进阶语法',
+    '05 Vue 组件基础',
+    '06 Vue 父子组件通信',
+    '07 Vue 跨层级组件通信',
+    '08 Vue 函数式组件和 JSX 应用',
+    '09 Vue 过渡和动画',
+    '10 Vue-Cli 脚手架',
+    '11 Vue-Router 路由器',
+    '12 Vuex 状态管理器',
+    '13 Vant 项目',
+    '14 v-tooltip 中文文档翻译'
+  ],
   "/p5/vue-element-admin/": [
     "",
     "admin 项目创建",

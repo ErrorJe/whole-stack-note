@@ -6,11 +6,15 @@
 
 官方对组件的引入方式提供了多种方案，其中自动按需引入组件是被推荐的方式。
 
+
+
 #### 安装
 
 先安装一下 `npm i vant -S`
 
 然后安装必要的 babel 插件来支持按需引入 `npm i babel-plugin-import -D`
+
+
 
 #### babel 配置文件
 
@@ -38,6 +42,8 @@ module.exports = {
 }
 ```
 
+
+
 #### 全局组件注册
 
 ```javascript
@@ -57,6 +63,8 @@ Vue.use(Lazyload)
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.2/lib/index.css">
 ```
 
+
+
 #### 布局组件注册
 
 ```javascript
@@ -69,6 +77,8 @@ export default {
 }
 ```
 
+
+
 ### 移动端字体 Rem 适配
 
 移动端用 flex 布局， 用 rem 或者 rem + vm 进行适配
@@ -77,6 +87,8 @@ export default {
 
 - `npm i postcss-pxtorem -D` 是一个 postcss 插件，可以将单位转换为 rem
 - `npm i lib-flexible -D` 用于设置 rem 的基准值。一般会设置到应用的根节点上，如 `html` 节点
+
+
 
 #### postcss 配置文件
 
@@ -105,6 +117,7 @@ module.exports = {
 ```
 
 
+
 #### 引入 lib-flexbale 库
 
 如 cubeUi 会自动引入，使用 vant 的话需要这样手动引入一下
@@ -116,6 +129,8 @@ module.exports = {
 import "lib-flexible/flexible"
 ```
 
+
+
 #### pxtorem 注意事项
 
 - 行内式，外链式的代码无法转成rem
@@ -123,21 +138,30 @@ import "lib-flexible/flexible"
 - 其他情况：目前发现简写 padding:5px 15px; 第一个 `5px` 不会被转换，要写全才行
 
 
+
 ### 移动端字体 rem 适配方案2
+
 #### 安装插件
 第一个是阿里的 flex 方案<br />这个库是上面那个库的爸爸，上面那个库是基于该库继续开发维护的
 ```javascript
 npm i amfe-flexble -S
 npm i postcss-pxtorem
 ```
-### 
+
+
+
+
 #### main.js 中引入
+
 这个就是在 Body 根节点加上 font-size
 ```javascript
 import 'amfe-flexible';
 ```
 
+
+
 #### 配置 postcss.config.js
+
 ```javascript
 const autoprefixer = require('autoprefixer')
 const pxtorem = require('postcss-pxtorem')
@@ -158,12 +182,18 @@ module.exports = () => {
 
 ```
 
+
+
 #### 增加 index.html meta
+
 ```javascript
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 ```
 
+
+
 #### 让某个样式不进行自动转换
+
 ```javascript
 // postcss.config.js
 const autoprefixer = require('autoprefixer')
@@ -217,8 +247,12 @@ module.exports = () => {
 }
 ```
 
+
+
 ### 移动端 Rem 适配源码实现
-一般是在 vue 项目 public/index.html 中写入<br />![image.png](https://cdn.nlark.com/yuque/0/2019/png/204082/1575560928482-c2fe60a5-f463-4573-b541-7990320a9edf.png#align=left&display=inline&height=398&name=image.png&originHeight=796&originWidth=854&size=234457&status=done&style=none&width=427)
+
+一般是在 vue 项目 public/index.html 中写入<br />![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200114084859.png)
+
 
 
 ### 移动端点击延迟
@@ -234,6 +268,8 @@ module.exports = () => {
 import FastClick from 'fastclick'
 FastClick.attack(document.body)
 ```
+
+
 
 ## 项目工程配置
 
@@ -257,6 +293,8 @@ NODE_ENV = 'production' // 开发环境
 BASE_URL = '/' // 基地址
 VUE_APP_BASE_API = '/prod-api' // 生产环境下
 ```
+
+
 
 ### Vue cli 3.0 配置
 
@@ -316,6 +354,8 @@ module.exports = {
 }
 ```
 
+
+
 ### 路由配置
 
 #### 路由引入
@@ -334,6 +374,8 @@ new Vue({
   // ...
 })
 ```
+
+
 
 #### 路由懒加载
 
@@ -356,6 +398,8 @@ new Vue({
 </keep-alive>
 <router-view v-else/>
 ```
+
+
 
 ## Vuex 动态模块
 
@@ -413,6 +457,8 @@ export default {
 }
 ```
 
+
+
 #### Vuex 主模块
 
 引入子模块
@@ -434,6 +480,8 @@ export default new Vuex.Store({
   }
 })
 ```
+
+
 
 #### Vuex 辅助方法
 
@@ -462,9 +510,13 @@ export default {
 }
 ```
 
+
+
 ### 全局通用组件 Loading
 
 比如使用 actions 时，我们无法得知其异步结束时间。通过给 actions 派发前后钩子，来控制派发前后行为。
+
+
 
 #### 动态注册模块
 
@@ -524,6 +576,8 @@ const createLoadingPlugin = ({ namespaced=NAMESPACED={} }) => {
 export default createLoadingPlugin
 ```
 
+
+
 #### 主模块中引入
 
 ```javascript
@@ -543,6 +597,8 @@ export default new Vuex.Store){
 ```javascript
 {{$store.state.myLoading.flag}}
 ```
+
+
 
 #### 实例中使用
 

@@ -2,7 +2,7 @@
 
 就是让数据在所有组件，全局之间共享。
 
-## （一）基本使用
+## 基本使用
 
 > 1 基本配置 state, mutaions, getters, actions
 > 2 使用
@@ -19,11 +19,14 @@
 > 	Module
 
 
-### 1.安装
+
+### 安装
 
 直接安装插件形式 `vue add vuex`， 根目录出现 `store.js`。在router.js中也会自动引入 `store.js`
 
-### 2.基本用法
+
+
+### 基本用法
 
 打开文件后，可以看到如下结构:
 
@@ -35,7 +38,8 @@
 > 之后可能因为项目比较大会处理模块化。
 
 
-#### 1）定义 store 变量
+
+#### 定义 store 变量
 
 ```javascript
 // store.js
@@ -73,7 +77,9 @@ export default new Vuex.Store({
 })
 ```
 
-#### 2）全局注入
+
+
+#### 全局注入
 
 > 在这之前需要在根组件（main.js）下注入 store 选项，这样下面所有的子组件都能以上述方式拿到 store 的变量值
 
@@ -93,7 +99,9 @@ new Vue({
 }).$mount('#app')
 ```
 
-#### 3）拿到 store 值
+
+
+#### 拿到 store 值
 
 > 在任意组件中通过 `$store.state.xxx`拿到数据
 > 但是要修改的话，就需要用到 `this.$store.commit('fn')`，这样才能触发在 `mutations` 中定义的方法来更改数据。也只有 `mutations`  才能更改数据。
@@ -120,9 +128,13 @@ new Vue({
 </script>
 ```
 
-### 3.优化使用-帮助方法总览
 
-#### 1）没有辅助方法的数据更新
+
+### 优化使用-帮助方法总览
+
+
+
+#### 没有辅助方法的数据更新
 
 > 需要配合 vue 实例的 `computed` 计算属性将拿到的 store 值更新到本实例中
 
@@ -136,7 +148,9 @@ computed: {
 }
 ```
 
-#### 2）辅助方法的引入方式
+
+
+#### 辅助方法的引入方式
 
 > 通过 vuex 自带的一些库，来帮助简化 vuex 的使用方式。
 > 不然的话获取多个 state 状态值，就要写很多的计算属性，就很冗余
@@ -168,7 +182,9 @@ export default {
 }
 ```
 
-#### 3）辅助方法的使用方式
+
+
+#### 辅助方法的使用方式
 
 ```html
 <button @click="inc">vuex-incre</button>
@@ -181,14 +197,17 @@ export default {
 <p>mapGetters脱壳: {{money}}</p>
 ```
 
-## （二）核心概念详解
 
-### 1 State 状态值
+
+## 核心概念详解
+
+### State 状态值
 
 > 不可直接拿出来修改，必须通过 `mutation` 来改变
 
 
-#### 1）state 定义
+
+#### state 定义
 
 ```javascript
 import Vue from 'vue'
@@ -212,7 +231,9 @@ const store = new Vuex.Store({
 })
 ```
 
-#### 2）根组件注入 store
+
+
+#### 根组件注入 store
 
 要让所有子组件都注入 `store` ，就要去根组件以 store 选项的方式注入
 
@@ -230,7 +251,9 @@ const app = new Vue({
 })
 ```
 
-#### 3）组件中使用 state
+
+
+#### 组件中使用 state
 
 需要用 `computed` 计算属性将得到的 state 值更新到响应式变量
 
@@ -243,7 +266,9 @@ computed: {
 }
 ```
 
-#### 4）辅助函数 mapState
+
+
+#### 辅助函数 mapState
 
 ```javascript
 // 1 引入方法
@@ -279,9 +304,13 @@ export default {
 }
 ```
 
-### 2 Getter 计算属性（派生状态）
 
-#### 1）定义方式
+
+### Getter 计算属性（派生状态）
+
+
+
+#### 定义方式
 
 ```javascript
 // ...
@@ -302,7 +331,9 @@ const store = new Vuex.Store({
 })
 ```
 
-#### 2）组件中通过属性访问 store.getters.xx
+
+
+#### 组件中通过属性访问 store.getters.xx
 
 ```javascript
 computed: {
@@ -312,7 +343,9 @@ computed: {
 }
 ```
 
-#### 3）组件中通过方法访问
+
+
+#### 组件中通过方法访问
 
 > 通过让 getter 方法返回一个函数，去接受一个参数用于查询计算
 
@@ -332,7 +365,9 @@ getters: {
 store.getters.getTodoById(2)
 ```
 
-#### 4）辅助函数 mapGetters
+
+
+#### 辅助函数 mapGetters
 
 > 将 store 中的 getter 映射到了局部组件的计算属性中
 
@@ -364,14 +399,17 @@ mapGetters({
 <view>{{doneCount}}</view>
 ```
 
-### 3 Mutation 控制 state
+
+
+### Mutation 控制 state
 
 > 只有 mutation 才能更改 state
 > 每个 mutation 理解为事件注册，只有触发了该类型的事件，才会触发该类型事件的回调函数
 > 重要的一点是，mutation 必须是同步事务。因为在 devtools 需要捕获和时间旅行
 
 
-#### 1）定义 mutation
+
+#### 定义 mutation
 
 ```javascript
 // 定义了很多 mutation 的替代常量，如 export const SOME_MUTATION = "SOME_MUTATION"
@@ -395,7 +433,9 @@ const store = new Vuex.Store({
 })
 ```
 
-#### 2）提交 mutation 方式
+
+
+#### 提交 mutation 方式
 
 ```javascript
 // 1 无载荷直接触发
@@ -411,7 +451,9 @@ store.commit({
 })
 ```
 
-#### 3）遵循 vue 响应式和常量事件类型
+
+
+#### 遵循 vue 响应式和常量事件类型
 
 就是出现需要在对象上添加新属性的情况
 
@@ -441,7 +483,9 @@ mutations: {
 }
 ```
 
-#### 4）组件中使用
+
+
+#### 组件中使用
 
 ```javascript
 // 1 直接使用（前提是在根组件中注入了 store）
@@ -460,14 +504,17 @@ methods:{
 }
 ```
 
-### 4 Action 提交 mutation 事务（可异步）
+
+
+### Action 提交 mutation 事务（可异步）
 
 > 在 store 中，只有 Mutation 可以更改 state。
 > action 只是比 mutation 多了处理异步的能力，结果是提交 mutation ，最后由 mutation 去控制 state。
 > dispatch 这个分发函数，返回的是 promise
 
 
-#### 1）注册 action
+
+#### 注册 action
 
 ```javascript
 const store = new Vuex.Store({
@@ -493,7 +540,9 @@ const store = new Vuex.Store({
 })
 ```
 
-#### 2）action 分发操作
+
+
+#### action 分发操作
 
 ```javascript
 // 1 载荷方式
@@ -508,7 +557,9 @@ store.dispatch({
 })
 ```
 
-#### 3）组件中使用
+
+
+#### 组件中使用
 
 ```javascript
 // 1 直接使用，先引入方法
@@ -526,7 +577,9 @@ methods:{
 }
 ```
 
-#### 4）异步控制
+
+
+#### 异步控制
 
 > dispatch 返回的是 promise
 
@@ -551,7 +604,9 @@ store.dispatch('actionA').then(() => {
 })
 ```
 
-### 5 Module 分割 store 模块
+
+
+### Module 分割 store 模块
 
 每个 module 都拥有自己的`state, getters, mutation, action`，
 
@@ -559,7 +614,9 @@ store.dispatch('actionA').then(() => {
 
 还有更复杂的模块嵌套，可以看文档学习
 
-#### 1）模块定义
+
+
+#### 模块定义
 
 > 作为模块的话，命名空间 `spacenamed`是必须开启的
 
@@ -630,7 +687,9 @@ export default new Vuex.Store({
 })
 ```
 
-#### 2）main.js 中引入
+
+
+#### main.js 中引入
 
 > 模块中的局部参数，可以拿到根节点状态s
 
@@ -648,7 +707,9 @@ new Vue({
 }).$mount('#app')
 ```
 
-#### 3）实际使用
+
+
+#### 实际使用
 
 ```
 {{$store.state.moduleA.count}}

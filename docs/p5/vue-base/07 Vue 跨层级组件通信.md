@@ -2,11 +2,16 @@
 
 介绍几种跨层级组件的通信方式，比如兄弟组件，爷爷孙子等关系组件
 
-### 1 孙向前辈通信（向上通知 $dispatch）
+
+
+## 孙向前辈通信（向上通知 $dispatch）
+
 > 首先这个 dispatch 是自己实现在 main.js 且挂载到 Vue.prototype 上的
 
 
-#### 1）孙向子组件通信 $parent
+
+### 孙向子组件通信 $parent
+
 ```javascript
 // 孙组件通过这个 API 先拿到子组件实例
 // 然后让子组件去派发 input 事件
@@ -14,11 +19,13 @@
 this.$parent.emit('input', 200)
 ```
 
-#### 2）孙向父组件通信 $dispatch
+
+
+### 孙向父组件通信 $dispatch
+
 > 孙在已经通知了子组件的情况下，子组件还要单独去实现向父组件派发孙给的事件的吗？
 
-
-- 实现 Vue.prototype.$dispatch
+#### 实现 Vue.prototype.$dispatch
 
 > 让孙组件的事件可以发到父组件， 而$dispatch方法也是由孙子组件（或者更深）派发的事件，让所有先辈监听和触发到该事件。
 
@@ -39,17 +46,22 @@ Vue.protytype.$dispatch = function(eventName, value) {
 }
 ```
 
-- 孙组件派发事件
+#### 孙组件派发事件
 
 ```javascript
 this.$dispatch('input', 200)
 ```
 
-### 2 祖向后辈通信（向下传递 $broadcast）
+
+
+## 祖向后辈通信（向下传递 $broadcast）
+
 > 也是广播的方式。这里要递归实现了，因为每个子组件可能有自己的很多个子组件
 
 
-#### 1）实现广播方法 $broadcast
+
+### 实现广播方法 $broadcast
+
 ```javascript
 // main.js
 Vue.prorotype.$broadcast = function(eventName, value) {
@@ -68,9 +80,11 @@ Vue.prorotype.$broadcast = function(eventName, value) {
 }
 ```
 
-#### 2）使用方式
 
-- 后辈组件监听某事件
+
+### 使用方式
+
+#### 后辈组件监听某事件
 
 ```vue
 <div @error="error"></div>
@@ -84,7 +98,7 @@ export default {
 </script>
 ```
 
-- 先辈组件统一通知
+#### 先辈组件统一通知
 
 > 让所有正在监听这个 error 事件的后辈组件都能被触发执行
 
@@ -94,9 +108,14 @@ export default {
 this.$broadcast('error')
 ```
 
-### 3 向下传属性集合 $attrs
 
-#### 1）基本 API（inheritAttrs）
+
+## 向下传属性集合 $attrs
+
+
+
+### 基本 API（inheritAttrs）
+
 > 基于 $attrs 用法的说明，实现子组件将父组件轮空的传值
 
 
@@ -145,14 +164,20 @@ export default {
 }
 ```
 
-#### 2）子组件 v-bind 继续传属性集合
+
+
+### 子组件 v-bind 继续传属性集合
+
 通过子组件的`this.$attrs`传给孙子组件
 
 ```vue
 <next-demo v-bind="$attrs"></next-demo>
 ```
 
-#### 3）孙子组件
+
+
+### 孙子组件
+
 ```javascript
 props : [ 'second' , 'third']
 ```
@@ -162,20 +187,28 @@ props : [ 'second' , 'third']
 - 使用 `$attrs`统一传递轮空的上层值
 - 配合 `inheritAttrs：false`实例配置
 
-### 4 向下传方法集合 $listeners
+
+
+## 向下传方法集合 $listeners
+
 > `$attrs` 是向下传递数据，`$listeners` 是向下传递方法。前者收集轮空的props，后者收集父组件给的所有事件。
 > 通过手动去调用 `$listeners` 对象里的方法，原理就是 `$emit` 监听事件，
 > `$listeners` 也可以看成一个包裹监听事件的一个对象。
 
 
-#### 1）父组件传方法
+
+### 父组件传方法
+
 子组件模板上面进行 changeData 和 another 两个事件监听
 
 ```html
 <demo v-on:changeData="changeData" v-on:another='another'></demo>
 ```
 
-#### 2）子组件 v-on 继续传方法集合
+
+
+### 子组件 v-on 继续传方法集合
+
 就用到了一个 `another` 事件，另一个事件通过 `$listeners收集并通过`v-on`继续传递给孙子组件
 
 ```html
@@ -183,17 +216,26 @@ props : [ 'second' , 'third']
 <next-demo  v-on='$listeners'></next-demo> <!-- 孙子组件 -->
 ```
 
-#### 3）孙子组件
+
+
+### 孙子组件
+
 从`$listeners`拿到其中的某个事件，直接调用执行（相当于 emit 触发事件了，不过是跨多层向上派发了事件触发通知）
 
 ```html
 <p @click='$listeners.changeData("change")'>孙子组件</p>
 ```
 
-### 5 Provide 和 injects 后辈组件继承遗产
+
+
+## Provide 和 injects 后辈组件继承遗产
 
 就是为了让后辈组件能够拿到前辈组件的数据，反过来让后辈给祖先组件传值就不行。<br />注意，一般用于组件开发，尽量不要用于日常开发。
-#### 1）Provide 生产
+
+
+
+### Provide 生产
+
 > 由先辈组件创建内容
 > 也可以传 this 这样的引用对象
 
@@ -214,7 +256,10 @@ export default {
 }
 ```
 
-#### 2）injects 注入
+
+
+### injects 注入
+
 > 子组件去消费内容。相当于是 consumer
 
 
@@ -227,18 +272,22 @@ export default {
 ```
 
 
-### 6 ref 拿到组件实例
+
+## ref 拿到组件实例
 
 - 用在元素上就是获取 DOM
 - 用在组件上就是获取组件实例
 
-#### 1）由父组件派发
+
+
+### 由父组件派发
+
 > 对应于上面的 provide 和 inject， 让父组件可以拿到子组件数据和调用子组件方法
 
 
 父组件通过 `ref` 属性去拿到子组件实例，然后就可以拿到子组件里面的方法。
 
-- 父组件拿到子组件实例
+#### 父组件拿到子组件实例
 
 ```javascript
 <son ref="id" ></son>
@@ -248,7 +297,7 @@ create(){
 }
 ```
 
-- 子组件
+#### 子组件
 
 ```javascript
 methods:{
@@ -256,7 +305,10 @@ methods:{
 }
 ```
 
-#### 2）由子组件派发（用到 $nextTick）
+
+
+### 由子组件派发（用到 $nextTick）
+
 > 先要知道组件的挂载顺序，先挂子后挂父。若在父组件中绑定事件，却在子组件的`mounted`中emit的事件其实不会被触发
 > 所以要让 $nextTick 去延迟执行，等待 DOM 渲染完毕
 
@@ -270,13 +322,17 @@ mounted:{
 }
 ```
 
-### 7 总线通信 $bus
+
+
+## 总线通信 $bus
 
 > 专门弄一个 vue 实例用于通信，如同级组件之间。
 > 缺陷就是必须定义到全局上了。容易触发同名的全部事件（当多人开发时）
 
 
-#### 1）根组件 main.js
+
+### 根组件 main.js
+
 这种方式也可以用来扩展 vue。相当于是公开的发布订阅
 
 ```javascript
@@ -284,7 +340,9 @@ mounted:{
 Vue.prototype.$bus = new Vue()
 ```
 
-#### 2）兄弟组件
+
+
+### 兄弟组件
 
 - 触发事件
 
