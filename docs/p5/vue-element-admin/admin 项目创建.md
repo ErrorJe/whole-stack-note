@@ -65,7 +65,7 @@ module.exports = {
 
 ## 项目结构分析
 
-![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200113015228.png)
+<a data-fancybox title="" href="https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200113015228.png">![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200113015228.png)</a>
 ### vue.config.js 基本配置组成
 
 ```javascript

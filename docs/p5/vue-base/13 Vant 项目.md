@@ -251,7 +251,7 @@ module.exports = () => {
 
 ### 移动端 Rem 适配源码实现
 
-一般是在 vue 项目 public/index.html 中写入<br />![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200114084859.png)
+一般是在 vue 项目 public/index.html 中写入<br /><a data-fancybox title="" href="https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200114084859.png">![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200114084859.png)</a>
 
 
 
@@ -403,7 +403,7 @@ new Vue({
 
 ## Vuex 动态模块
 
-![](https://cdn.nlark.com/yuque/0/2019/png/204082/1573746255880-535982f3-412f-4b53-90a7-ba5914d66c2c.png#align=left&display=inline&height=551&originHeight=551&originWidth=701&size=0&status=done&style=none&width=701)
+<a data-fancybox title="" href="https://cdn.nlark.com/yuque/0/2019/png/204082/1573746255880-535982f3-412f-4b53-90a7-ba5914d66c2c.png#align=left&display=inline&height=551&originHeight=551&originWidth=701&size=0&status=done&style=none&width=701">![](https://cdn.nlark.com/yuque/0/2019/png/204082/1573746255880-535982f3-412f-4b53-90a7-ba5914d66c2c.png#align=left&display=inline&height=551&originHeight=551&originWidth=701&size=0&status=done&style=none&width=701)</a>
 
 ### Vuex 系统
 

@@ -116,7 +116,7 @@
 
 ### 过渡的类名
 
-![](https://cdn.nlark.com/yuque/0/2019/png/204082/1576510785754-5041686b-b57f-4eb3-b739-085a71980c27.png#align=left&display=inline&height=600&originHeight=600&originWidth=1200&size=0&status=done&style=none&width=1200)<br />下面的 `v` 代表在 `transition` 组件中定义的 `name` 属性值。<br />若没有定义 `name` 属性，则 `v` 是默认前缀。
+<a data-fancybox title="" href="https://cdn.nlark.com/yuque/0/2019/png/204082/1576510785754-5041686b-b57f-4eb3-b739-085a71980c27.png#align=left&display=inline&height=600&originHeight=600&originWidth=1200&size=0&status=done&style=none&width=1200">![](https://cdn.nlark.com/yuque/0/2019/png/204082/1576510785754-5041686b-b57f-4eb3-b739-085a71980c27.png#align=left&display=inline&height=600&originHeight=600&originWidth=1200&size=0&status=done&style=none&width=1200)</a><br />下面的 `v` 代表在 `transition` 组件中定义的 `name` 属性值。<br />若没有定义 `name` 属性，则 `v` 是默认前缀。
 
 
 

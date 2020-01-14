@@ -4,7 +4,7 @@
 
 ### 后端 API 处理流程（验签）
 
-![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200110215357.png)
+<a data-fancybox title="" href="https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200110215357.png">![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200110215357.png)</a>
 
 
 

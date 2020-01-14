@@ -289,7 +289,7 @@ async function () {
 - 然后定义修改这个对象值的 mutation 方法
 - 写个事件去触发这个 Mutation 方法
 
-![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200114083556.png)
+<a data-fancybox title="" href="https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200114083556.png">![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200114083556.png)</a>
 
 
 
