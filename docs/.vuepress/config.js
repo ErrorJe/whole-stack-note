@@ -28,7 +28,10 @@ module.exports = {
     // 侧边栏深度到 h3
     sidebarDepth: 2,
     // 全部展开
-    displayAllHeaders: false,
+    displayAllHeaders: true,
+    // 基于 git 的更新时间
+    lastUpdated: '上次更新时间',
+    smoothScroll: true,
 
     // 导航栏配置:路径配置 / 以 docs/ 开始
     nav: [
