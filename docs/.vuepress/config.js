@@ -5,9 +5,9 @@ const blog = require("./nav-libs/blog.js");
 const backBase = require("./nav-libs/back-base.js");
 const backPro = require("./nav-libs/back-pro.js");
 
-const sp4 = require('./sidebar-libs/sp4.js')
-const sp5 = require('./sidebar-libs/sp5.js')
-const sp6 = require('./sidebar-libs/sp6.js')
+const sp4 = require("./sidebar-libs/sp4.js");
+const sp5 = require("./sidebar-libs/sp5.js");
+const sp6 = require("./sidebar-libs/sp6.js");
 const sblog = require("./sidebar-libs/blog.js");
 const sbackBase = require("./sidebar-libs/back-base.js");
 const sbackPro = require("./sidebar-libs/back-pro.js");
@@ -17,7 +17,36 @@ module.exports = {
   title: "FE 前端研究所", // 网站的标题
   description: "ErrorJE 直辖 Blog", // 网站的描述
   // favicon
-  head: [["link", { rel: "icon", href: "/logo.jpg" }]],
+  head: [
+    ["link", { rel: "icon", href: "/logo.jpg" }], 
+    // 增加下面三个实现图片预览
+    // <a data-fancybox title="xx" href="sss">![xx](sss)</a>
+    // vscode 插件 vuepress-img-format
+    // 命令 img format 可以格式化当前文档的所有图片，img reset format 可以重置格式化
+    [
+      "script",
+      {
+        src:
+          "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"
+      }
+    ],
+    [
+      "script",
+      {
+        src:
+          "https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.2/jquery.fancybox.min.js"
+      }
+    ],
+    [
+      "link",
+      {
+        rel: "stylesheet",
+        type: "text/css",
+        href:
+          "https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.2/jquery.fancybox.min.css"
+      }
+    ]
+  ],
 
   // 主题配置
   themeConfig: {
@@ -30,8 +59,8 @@ module.exports = {
     // 全部展开
     displayAllHeaders: true,
     // 基于 git 的更新时间
-    lastUpdated: '上次更新时间',
-    smoothScroll: true,
+    lastUpdated: "上次更新时间",
+    smoothScroll: true, // 滚动效果
 
     // 导航栏配置:路径配置 / 以 docs/ 开始
     nav: [
@@ -52,7 +81,7 @@ module.exports = {
     sidebar: {
       ...sblog,
       ...sp4,
-      ...sp5,
+      ...sp5
     }
   },
   plugins: ["@vuepress/back-to-top"]

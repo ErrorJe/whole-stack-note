@@ -14,12 +14,12 @@ JS语言区分字母大小写
 - **编译型**：需要一个编译过程，通过编译器翻译成机器语言。
   - 运行效率高，但是开发效率低
 
-![image](https://user-images.githubusercontent.com/33750626/71914744-3a966d80-31b5-11ea-9b35-2900b0084ae2.png)
+<a data-fancybox title="image" href="https://user-images.githubusercontent.com/33750626/71914744-3a966d80-31b5-11ea-9b35-2900b0084ae2.png">![image](https://user-images.githubusercontent.com/33750626/71914744-3a966d80-31b5-11ea-9b35-2900b0084ae2.png)</a>
 
 - **解释型**：一条语句执行的时候才翻译
   - 开发效率高，运行效率低
 
-![image](https://user-images.githubusercontent.com/33750626/71914778-4d10a700-31b5-11ea-9cd9-a9451e122f8a.png)
+<a data-fancybox title="image" href="https://user-images.githubusercontent.com/33750626/71914778-4d10a700-31b5-11ea-9cd9-a9451e122f8a.png">![image](https://user-images.githubusercontent.com/33750626/71914778-4d10a700-31b5-11ea-9cd9-a9451e122f8a.png)</a>
 #### 浏览器之争
 是由 `Netscape` 和 `sun `一起开发的（浏览器之争，微软赢了）。`DOM 0`
 由 `W3C` 制定新的标准。`DOM 1`
@@ -49,7 +49,7 @@ async-await
 
 ## JS 的执行引擎和运行环境
 ### JS 运行环境（V8）
-![image](https://user-images.githubusercontent.com/33750626/71914801-57cb3c00-31b5-11ea-8063-fa3d7a50101e.png)
+<a data-fancybox title="image" href="https://user-images.githubusercontent.com/33750626/71914801-57cb3c00-31b5-11ea-8063-fa3d7a50101e.png">![image](https://user-images.githubusercontent.com/33750626/71914801-57cb3c00-31b5-11ea-8063-fa3d7a50101e.png)</a>
 
 对我们来说，整个运行环境跟我们无关，相当于一个**黑盒**
 
@@ -57,12 +57,12 @@ async-await
   - **V8引擎**：对代码进行预处理的过程。
 - 对于**内置库**，我们只需要关心其**API接口**，而无需关心其具体实现
 
-![image](https://user-images.githubusercontent.com/33750626/71914819-631e6780-31b5-11ea-87dd-15af7070b62b.png)
+<a data-fancybox title="image" href="https://user-images.githubusercontent.com/33750626/71914819-631e6780-31b5-11ea-87dd-15af7070b62b.png">![image](https://user-images.githubusercontent.com/33750626/71914819-631e6780-31b5-11ea-87dd-15af7070b62b.png)</a>
 
 
 ### 浏览器和 node
 
-![image](https://user-images.githubusercontent.com/33750626/71914828-6d406600-31b5-11ea-9eb5-65261a65d3e5.png)
+<a data-fancybox title="image" href="https://user-images.githubusercontent.com/33750626/71914828-6d406600-31b5-11ea-9eb5-65261a65d3e5.png">![image](https://user-images.githubusercontent.com/33750626/71914828-6d406600-31b5-11ea-9eb5-65261a65d3e5.png)</a>
 
 他们两个环境，都有**JS内置对象**，就是JS的编程特性。
 但是不同的环境中，提供的服务是有差异性的：
@@ -70,10 +70,10 @@ async-await
 - 如在**浏览器**中可以使用alert出现弹窗
 - 而在**黑框node**中，不允许这么使用
 
-![image](https://user-images.githubusercontent.com/33750626/71914848-77626480-31b5-11ea-84a3-b42664bafbd7.png)
+<a data-fancybox title="image" href="https://user-images.githubusercontent.com/33750626/71914848-77626480-31b5-11ea-84a3-b42664bafbd7.png">![image](https://user-images.githubusercontent.com/33750626/71914848-77626480-31b5-11ea-84a3-b42664bafbd7.png)</a>
 
 ### 开发中浏览器和服务器的交互
-![image](https://user-images.githubusercontent.com/33750626/71914876-80ebcc80-31b5-11ea-9ef8-e1c4aa34563b.png)
+<a data-fancybox title="image" href="https://user-images.githubusercontent.com/33750626/71914876-80ebcc80-31b5-11ea-9ef8-e1c4aa34563b.png">![image](https://user-images.githubusercontent.com/33750626/71914876-80ebcc80-31b5-11ea-9ef8-e1c4aa34563b.png)</a>
 #### 页面渲染步骤
 请求页面 **==> **解析HTML ==> 渲染HTML ==> 请求CSS.JS ==>渲染CSS， 执行JS ==>请求数据 **==>** 渲染数据
 
@@ -88,7 +88,7 @@ async-await
 
 ## 如何学习 JS
 
-![image](https://user-images.githubusercontent.com/33750626/71914888-8a753480-31b5-11ea-9113-618aa25f60fd.png)
+<a data-fancybox title="image" href="https://user-images.githubusercontent.com/33750626/71914888-8a753480-31b5-11ea-9113-618aa25f60fd.png">![image](https://user-images.githubusercontent.com/33750626/71914888-8a753480-31b5-11ea-9113-618aa25f60fd.png)</a>
 ### 如何开始
 **掌握编程语言**，用编程方式**调用服务（内置库，第三方库）**来完成你的需求
 

@@ -91,10 +91,17 @@ module.exports = {
 
   // 主题配置
   themeConfig: {
+    // 自定义仓库链接文字。
+    repoLabel: "GitHub",
     // 你的GitHub仓库，请正确填写
     repo: "https://github.com/ErrorJe",
-    // 自定义仓库链接文字。
-    repoLabel: "ErrorJE's GitHub",
+    // 侧边栏深度到 h3
+    sidebarDepth: 2,
+    // 全部展开
+    displayAllHeaders: true,
+    // 基于 git 的更新时间
+    lastUpdated: "上次更新时间",
+    smoothScroll: true, // 滚动效果
     nav: [
       // 1 单个页面
       { text: "首页", link: "/" },
@@ -260,9 +267,9 @@ module.exports = {
 官方文档里，`deploy.sh` 中对于仓库的链接主要是 `SSH` 方式。
 但是根据仓库的特性，有些是 `HTTPS` 方式的，所以配置的时候注意一下方式
 
-> 前者（HTTPS）可以随意克隆github上的项目，而不管是谁的；而后者则是你必须是你要克隆的项目的拥有者或管理员，且需要先添加 SSH key ，否则无法克隆。
-> https url 在push的时候是需要验证用户名和密码的；而 SSH 在push的时候，是不需要输入用户名的，如果配置SSH key的时候设置了密码，则需要输入密码的，否则直接是不需要输入密码的。
-> 可见SSH拥有更安全的属性，且不用每次push都输入密码
+> 前者（HTTPS）可以随意克隆 github 上的项目，而不管是谁的；而后者则是你必须是你要克隆的项目的拥有者或管理员，且需要先添加 SSH key ，否则无法克隆。
+> https url 在 push 的时候是需要验证用户名和密码的；而 SSH 在 push 的时候，是不需要输入用户名的，如果配置 SSH key 的时候设置了密码，则需要输入密码的，否则直接是不需要输入密码的。
+> 可见 SSH 拥有更安全的属性，且不用每次 push 都输入密码
 
 ```js
 // deploy.sh
@@ -292,15 +299,19 @@ https://github.com/nodejs/node/issues/29287
 当然，后面没有服务器的支持，只能够部署一些静态页面。这也够了，我们把项目打包后输出的就是静态资源 `dist` 。
 
 ## 自动化部署 CI
+
 ### 什么是 Travis CI
+
 官网：https://travis-ci.com/ 直接使用 `github` 账号进行关联登录
 参考链接阮一峰：http://www.ruanyifeng.com/blog/2017/12/travis_ci_tutorial.html
 
 之前，我们通过执行或者 `npm run deploy` 来部署
 
 ### 配置文件 .travis.yml
+
 这个配置文件需要创建在项目根目录下，当存在这个文件时，`travis` 才会理你这个项目。
 注意这里的 `$token` 对应的是在 travis 中配置的环境变量 `token`
+
 ```yml
 language: node_js
 node_js:
@@ -322,7 +333,9 @@ deploy:
 有这个文件还不行，还要在本地执行 `yarn` 或 `npm install` 并且提交生成的 `lock` 文件（即 `yarn.lock` 或 `package-lock.json`），把生成的文件提交到 github 远程库
 
 ### tarvis 如何关联 github 仓库
+
 #### 1）github 操作：生成 tokne
+
 就是要生成一个 `github token`，其他没有什么。
 从 github 的个人头像上进入 `setting` 然后侧边栏的最下面有个 ``
 ![](https://user-images.githubusercontent.com/33750626/71869237-5285d700-314c-11ea-878b-45f915498a29.png)
@@ -330,11 +343,12 @@ deploy:
 配置的 `note` 可以随便写，然后生成后就会有一个 `token` （记住，只会显示这样一次，所以要自己记下来，后面要用到）
 
 #### 2）travis 操作：配置环境变量
+
 配置环境变量 `address` 和 `token`
 用 github 快速登录后，找到自己博客所在的那个仓库，然后进入。再如图所示的方式进去配置`环境变量`
 ![image](https://user-images.githubusercontent.com/33750626/71869346-b4ded780-314c-11ea-9412-0abef27f5208.png)
 
-大致要配2个，其中 `token` 是必须的，对应了 `.travis.yml` 中的变量名。这个 token 就是刚才拿到的 github token 字符串。 
+大致要配 2 个，其中 `token` 是必须的，对应了 `.travis.yml` 中的变量名。这个 token 就是刚才拿到的 github token 字符串。
 `address` 就是本仓库的地址，也就是 clone 的那个地址。
 
 ## 关于 vuepress 对 md 的扩展用法
@@ -363,12 +377,52 @@ deploy:
 `js{4} xxx`
 :::
 
-
 ## 插件使用
+
 ### 评论插件
+
 - 去https://leancloud.cn/ 注册，要认证实名
 - 去设置中拿到 `appID` 和 `appKey`
 - 按照官方或者下面网址里的方法创建组件或者以插件形式进行配置
 - 最后在需要加入评论的 md 文件中加入该全局组件就行
 - 最后记得把配置新独立出来，要设置 .gitignore
-https://www.cnblogs.com/CoderMonkie/p/blog-comment.html
+  https://www.cnblogs.com/CoderMonkie/p/blog-comment.html
+
+### 全文搜索
+
+> 去三方申请后需要大概 1 天左右才有结果
+
+### 图片放大预览
+
+```js
+head: [
+    ["link", { rel: "icon", href: "/logo.jpg" }],
+    // 增加下面三个实现图片预览
+    // <a data-fancybox title="xx" href="sss">![xx](sss)</a>
+    // vscode 插件 vuepress-img-format
+    // 命令 img format 可以格式化当前文档的所有图片，img reset format 可以重置格式化
+    [
+      "script",
+      {
+        src:
+          "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"
+      }
+    ],
+    [
+      "script",
+      {
+        src:
+          "https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.2/jquery.fancybox.min.js"
+      }
+    ],
+    [
+      "link",
+      {
+        rel: "stylesheet",
+        type: "text/css",
+        href:
+          "https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.2/jquery.fancybox.min.css"
+      }
+    ]
+  ],
+```
