@@ -57,7 +57,7 @@ module.exports = {
     // 侧边栏深度到 h3
     sidebarDepth: 2,
     // 全部展开
-    displayAllHeaders: true,
+    displayAllHeaders: false,
     // 基于 git 的更新时间
     lastUpdated: "上次更新时间",
     smoothScroll: true, // 滚动效果
