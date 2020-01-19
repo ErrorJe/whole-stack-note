@@ -2,7 +2,9 @@ module.exports = {
   "/p5/interview/business/": ["", "鉴权方式"],
   "/p5/interview/topic/": [
     '',
-    '异步编程'
+    '异步编程',
+    '面向对象',
+    '闭包作用域'
   ],
   "/p5/vue-base/": [
     '',
