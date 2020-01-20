@@ -22,7 +22,6 @@ module.exports = {
     {
       text: "项目包管理",
       items: [
-        { text: "前端模块化", link: "/p4/package/modules/" },
         { text: "NPM", link: "/p4/package/npm/" },
         { text: "YARN", link: "/p4/package/yarn/" },
         { text: "LEARN", link: "/p4/package/learn/" }
