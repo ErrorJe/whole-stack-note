@@ -16,7 +16,8 @@ module.exports = {
         { text: "JavaScript", link: "/p4/javascript/" },
         { text: "ES-Next", link: "/p4/es-next/" },
         { text: "TypeScript", link: "/p4/typescript/" },
-        { text: "JQuery", link: "/p4/jquery/" }
+        { text: "JQuery", link: "/p4/jquery/" },
+        { text: "浏览器原理", link: "/p4/browser/" },
       ]
     },
     {
@@ -32,13 +33,6 @@ module.exports = {
       items: [
         { text: "代码规范", link: "/p4/team/code-format/" },
         { text: "开发工具链", link: "/p4/team/tools/" }
-      ]
-    },
-    {
-      text: "其他",
-      items: [
-        { text: "浏览器原理", link: "/p4/browser/" },
-        { text: "网络通信层", link: "/p4/request/" }
       ]
     }
   ]
