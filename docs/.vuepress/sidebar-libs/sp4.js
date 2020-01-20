@@ -69,6 +69,11 @@ module.exports = {
     }
   ],
   // 没有子目录就一个数组
-  "/p4/browser/": ["", "前端本地存储"],
+  "/p4/browser/": [
+    'DOM',
+    'BOM',
+    'CSSOM',
+    "前端本地存储"
+  ],
   "/p4/team/tools/": ["", "vue-press", "github和picgo搭建图床"]
 };
