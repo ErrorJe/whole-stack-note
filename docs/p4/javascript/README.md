@@ -75,7 +75,7 @@ async-await
 ### 开发中浏览器和服务器的交互
 <a data-fancybox title="image" href="https://user-images.githubusercontent.com/33750626/71914876-80ebcc80-31b5-11ea-9ef8-e1c4aa34563b.png">![image](https://user-images.githubusercontent.com/33750626/71914876-80ebcc80-31b5-11ea-9ef8-e1c4aa34563b.png)</a>
 #### 页面渲染步骤
-请求页面 **==> **解析HTML ==> 渲染HTML ==> 请求CSS.JS ==>渲染CSS， 执行JS ==>请求数据 **==>** 渲染数据
+请求页面 ==> 解析HTML ==> 渲染HTML ==> 请求CSS.JS ==>渲染CSS， 执行JS ==>请求数据==> 渲染数据
 
 
 #### 前端交互实现点

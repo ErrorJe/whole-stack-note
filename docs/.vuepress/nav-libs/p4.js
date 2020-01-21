@@ -17,7 +17,7 @@ module.exports = {
         { text: "ES-Next", link: "/p4/es-next/" },
         { text: "TypeScript", link: "/p4/typescript/" },
         { text: "JQuery", link: "/p4/jquery/" },
-        { text: "浏览器原理", link: "/p4/browser/" },
+        { text: "浏览器原理", link: "/p4/browser/DOM" },
       ]
     },
     {
