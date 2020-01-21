@@ -58,10 +58,21 @@ module.exports = {
     }
   ],
   "/p4/es-next/": [
-    '前端模块化'
+    '01 let 变量和 const 常量',
+    '02 数值的新特性',
+    '03 字符串的新特性',
+    '04 数组的新特性',
+    '05 对象的新特性',
+    '06 函数的新特性',
+    '07 解构赋值（脱壳）',
+    '08 class 类',
+    '09 Set 和 Map 数据结构',
+    '10 Promise 和 async_await',
+    '11 Proxy 和 Reflect 代理对象',
+    '12 Generator 异步迭代器',
+    '13 前端模块化'
   ],
   "/p4/typescript/": [
-    "",
     {
       title: "特性概览",
       collapsable: false,

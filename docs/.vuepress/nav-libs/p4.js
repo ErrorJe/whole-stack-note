@@ -14,8 +14,8 @@ module.exports = {
       text: "JS 基础与进阶",
       items: [
         { text: "JavaScript", link: "/p4/javascript/" },
-        { text: "ES-Next", link: "/p4/es-next/" },
-        { text: "TypeScript", link: "/p4/typescript/" },
+        { text: "ES-Next", link: "/p4/es-next/01 let 变量和 const 常量" },
+        { text: "TypeScript", link: "/p4/typescript/00 基础知识" },
         { text: "JQuery", link: "/p4/jquery/" },
         { text: "浏览器原理", link: "/p4/browser/DOM" },
       ]
