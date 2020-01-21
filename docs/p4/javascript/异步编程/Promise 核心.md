@@ -391,9 +391,9 @@ catch(errCallback) {
 // promise.all 一个失败就算失败
 // 是 Promise 的静态方法
 Promise.all([fn1, fn2, fn3]).then(data => {
-	
+
 }).catch(err => {
-	
+
 })
 
 // 源码实现
@@ -407,27 +407,28 @@ function isPromise(x) {
   return false
 }
 
-Promise.all = function(promises) {
+Promise.all = function(promiseArray) {
+  if (!Array.isArray(promiseArray)) {
+    throw new TypeError('The arguments should be an array!')
+  }
   return new Promise((resolve, reject) => {
-    let arr = []
-    let idx = 0 // 处理异步要加个计数器
-    let processData = (value, index) => {
-      arr[index] = value
-      // arr 异步数组长度不一定是 promises 实际长度
-      if (++idx === promises.length) {
-        resolve(arr)
+    try {
+      let resultArray = []
+
+      const length = promiseArray.length
+
+      for (let i = 0; i <length; i++) {
+        promiseArray[i].then(data => {
+          resultArray.push(data)
+
+          if (resultArray.length === length) {
+            resolve(resultArray)
+          }
+        }, reject)
       }
     }
-    
-    for (let i=0; i < promises.length; i++) {
-      let currentValue = promises[i]
-      if (isPromise(currentValue)) {
-        currentValue.then((y) => {
-          processData(y, i)
-        }, reject)
-      } else {
-        processData(currentValue, i)
-      }
+    catch(e) {
+      reject(e)
     }
   })
 }
@@ -484,11 +485,18 @@ Promise.reject = function(value) {
 #### Promise.finally
 
 ```js
-// TODO
-
+Promise.prototype.finally = function (callback) {
+  return this.then((value) => {
+    return Promise.resolve(callback()).then(() => {
+      return value;
+    });
+  }, (err) => {
+    return Promise.resolve(callback()).then(() => {
+      throw err;
+    });
+  });
+}
 ```
-
-
 
 
 
@@ -564,6 +572,5 @@ function promisify(fn) {
   }
 }
 ```
-
 
 
