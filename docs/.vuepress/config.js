@@ -70,9 +70,9 @@ module.exports = {
       // 一般都指向 README.md 详细的目录去侧边栏配置
       p4,
       p5,
-      p6,
-      backBase,
-      backPro,
+      // p6,
+      // backBase,
+      // backPro,
       blog,
       { text: "Resume", link: "/my-resume" }
     ],

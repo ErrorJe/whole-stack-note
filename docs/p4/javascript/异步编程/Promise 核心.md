@@ -77,7 +77,6 @@ class Promise {
         // 让成功的方法依次执行
         this.onResolvedCallbacks.forEach(fn => fn())
       }
-      
     }
     
     let reject = (reason) => {
