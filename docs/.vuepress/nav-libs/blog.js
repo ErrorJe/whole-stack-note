@@ -8,6 +8,10 @@ module.exports = {
     {
       text: "经济学",
       link: "/blog/economics/"
+    },
+    {
+      text: '程序员成长',
+      link: '/blog/growth/'
     }
   ]
 };
