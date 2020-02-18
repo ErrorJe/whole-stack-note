@@ -49,6 +49,8 @@ new Vue({
 
 ## 快速原型开发：单文件 .vue文件
 
+直接解析 .vue 文件，方便写例子
+
 ### 安装相应的包
 
 > 可以不用引入任何文件，自动识别 .vue 文件
@@ -90,7 +92,7 @@ import Vue from 'vue'
 import App from './App'
 
 const vm = new Vue({
-  el:'#app',
+  el:'#app', 
   render:h => h(App)
 })
 ```

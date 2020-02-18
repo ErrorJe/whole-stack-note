@@ -13,7 +13,13 @@
 
 
 
+`{{}}` 中放的表达式要有返回值，因为在编译后的结果是执行一个函数 `_xxx(yyy)` 其中 yyy 就是我们写的模板表达式内容
+
+
+
 ### 常用指令
+
+指令一般是用于操作 DOM 的
 
 #### v-text 和 {{}} 是一样的
 
@@ -24,6 +30,8 @@
 #### v-html 动态渲染 HTML
 
 > 在网页上动态渲染任何 HTML 都是不安全的，有 XSS 攻击
+>
+> 是覆盖子元素的
 
 
 这个属性其实就是 js 里的 `innerHTML` 用法，直接渲染 HTML
@@ -50,7 +58,7 @@
 
 
 
-### v-bind 简写为
+### v-bind 简写 ：
 
 可以同时绑定多个值
 
@@ -101,13 +109,24 @@
 <p :style="{color:'red', fontSize:'12px'}">test</p>
 ```
 
+
+
 可以把这一个内联样式对象提取到 data 选项中，这也是推荐的做法
+
+```jsx
+<p :style="[{color:'red', fontSize:'12px'}, xxx]">test</p>
+
+// data 定义 xxx 变量
+data() {
+  return {
+    xxx: {color:red}
+  }
+}
+```
 
 
 
 ## 条件渲染
-
-
 
 ### v-if 的使用
 
@@ -150,31 +169,118 @@ v-show 只是控制了元素的 `display` 属性，而不像 v-if 是对 DOM 进
 
 - v-if 第一次为 false 时，组件是不会渲染的。直到 true 才会开始渲染。是有切换开销的
 - v-show 就是控制了 css 的 display 属性
+- 不能与 `template` 标签一起使用
 
 > 不支持 template 的那种用法， 也不支持 v-else
-
 
 相应的还有 `v-hide`
 
 
 
+所以，使用经验就是
+
+- v-if， 控制 DOM 是否产生。
+  - 好处是可以控制子级 v-if 等渲染逻辑的发生
+  - 因为实际上 v-if 在底层就是方法的执行
+- v-show， 频繁切换 DOM 显隐
+
+
+
 ### 与 v-for 同时出现的优先级
 
-v-for 优先级高。也就是当 v-if 与其一起用在一个元素上时，意味着每次循环都要经历一次 v-if 判断。
+最好不要使用两者结合的方式，可以用`computed` 先经过计算拿到结果列表，再一次性渲染比较好
+
+#### v-for 优先级高
+
+也就是当 v-if 与其一起用在一个元素上时，意味着每次循环都要经历一次 v-if 判断。
+
+```jsx
+<div v-for="item of arr" :key="item" v-if="false">{{xxx}}</div>
+
+// 先把 DOM 遍历出来，然后对每个 DOM 进行判断，相当于
+arr.map(item => {
+  return {true} ? item : ''
+})
+```
+
+
+
+#### template 改进与转换
+
+面对这种情况，我们会利用 `template` 先进行 `v-if` 判断，然后再走循环渲染。
+
+这样可以避免不必要的循环渲染和性能浪费。
+
+```jsx
+<template v-if="false">
+	<div v-for="item of arr"></div>
+</template>
+```
+
+
+
+硬要 `v-for` 先使用，也是可以的，思路就是每次遍历都去判断
+
+```jsx
+<div v-for="item of arr">
+	<template v-if="true">xxx</template>
+  <template else>xxx</template>
+</div>
+```
+
+
+
+注意，`template` 和 `v-for` 的 `key` 不能同时使用，因为它不是一个真实的 DOM
+
+- 把 `key` 写到涉及到的真实 DOM 中去
+
+```jsx
+<template v-for="(item, index) of arr">
+	<template v-if="true">
+  	<div :key="index">xxx</div>
+  </template>
+  <template else>
+  	<div :key="index">yyy</div>
+  </template>
+</template>
+```
+
+
 
 
 
 ## 循环渲染
 
+### 列表渲染 v-for 中不同的数据源（数据/对象）
+
+渲染数组对象和对象有一些不同，区别在于回调参数的不同
+
+```html
+// 1 数组列表，数组元素，索引。in 也可以用 of 替换，是一样的
+<li v-for="(item, index) of items"></li>
+
+// 一种数组的简写方式
+// item 就是 1-3
+<li v-for="(item, index) in 3"></li>
+
+// 2 对象列表, 对象属性值，对象键名， 对象索引
+<div v-for="(value, key, index) in object">
+  {{ index }}. {{ key }}: {{ value }}
+</div>
+```
+
 
 
 ### 循环渲染 v-for 中的 key
 
-
-
 #### 避免渲染错误和性能提升
 
-涉及到虚拟 DOM 的操作。key 是一个标识，想象一下尾删除是没有什么变化。但是如果是头部删除，那么后面的会自动排到前面。而之前对应的 index 索引都出错了。
+涉及到虚拟 DOM 的操作。
+
+- key 是一个标识，想象一下尾删除是没有什么变化。
+
+- 但是如果是头部删除，那么后面的会自动排到前面。而之前对应的 index 索引都出错了。
+- 若不是一次性渲染，在 Key 的使用值上不要使用数组的索引，要使用也是要加点别的东西进去。
 
 而且在普通表单元素中设置，可以说明该 input 是独立不复用的，每次刷新都会重新被渲染
 
@@ -197,98 +303,9 @@ v-for 优先级高。也就是当 v-if 与其一起用在一个元素上时，�
 
 
 
-### 列表渲染 v-for 中不同的数据源（数据/对象）
-
-渲染数组对象和对象有一些不同，区别在于回调参数的不同
-
-```html
-// 1 数组列表，数组元素，索引。in 也可以用 of 替换，是一样的
-<li v-for="(item, index) in items"></li>
-
-// 2 对象列表, 对象属性值，对象键名， 对象索引
-<div v-for="(value, key, index) in object">
-  {{ index }}. {{ key }}: {{ value }}
-</div>
-```
-
 
 
 ## 双向数据绑定
-
-
-
-### v-model 语法糖
-
-
-
-#### 基本概念
-
-> :key 用来表示数据的唯一性，一般是数据库中传来的主键。
-> 这样做的好处，就是vue会自动去判断。在每次数据发生变化时，不会经常去重排渲染DOM。
-> v-model 会忽略所有表单元素如 `value, checked, selected`特性的初始值，所以必须去 data 选项中定义数据变量。
-
-
-
-#### 原理实现 input 绑定
-
-> v-model 双向数据绑定（是一个语法糖利用了@change/@input事件回调去更新data 值， Vue 是单向数据流），一般用于 input 中。
-> 即视图中和数据和JS中的数据，无论哪边变化，都会一起改变。于此区别的是单向数据流，即只能由JS改变数据，然后去通知视图以发生变化。
-
-
-```html
-<input v-model="something">
-
-<input
-  v-bind:value="something"
-  v-on:input="something = $event.target.value">
-```
-
-上面两种方式是一样的作用。先知道`Input元素`上本身有个`oninput事件`，这是`HTML5新增加`的，类似 onchange，每当输入框内容发生变化的时候，就会触发`Input事件`，然后把 Input 输入框中 value 值再次传递给 something。
-
-
-
-#### checkbox 和 radio 原理
-
-下面就是这2个控件的原理实现。改变绑定的`:checked`值，就会自动触发 change 事件。跟 input 通过value值触发 `input` 事件原理是一样的。
-
-```html
-<input type="checkbox" :checked="status" @change="status = $event.target.checked" />
-<input type="radio" :checked="status" @change="status = $event.target.chec
-```
-
-多个 checkbox 一起使用时， v-model 绑定的数据需要是同一个数组。
-
-
-
-#### textarea 绑定
-
-由 msg 显示多行文本
-
-```vue
-<textarea v-model="msg"></textarea>
-```
-
-
-
-#### select 绑定
-
-```vue
-<select v-model="selected">
-  <option>A</option>
-  <option>B</option>
-</select>
-<span>{{selected}}</span>
-
-// 响应数据声明
-data(){
-	return {
-		selected:'',
-		selected: [],// 当 select 是多选时，需要提供数组
-	}
-}
-```
-
-
 
 ### v-model 使用方式
 
@@ -324,17 +341,148 @@ methods: {
 
 
 
+### v-model 语法糖
+
+#### 基本概念
+
+- :key 用来表示数据的唯一性，一般是数据库中传来的主键。
+- 这样做的好处，就是vue会自动去判断。在每次数据发生变化时，不会经常去重排渲染DOM。
+- v-model 会忽略所有表单元素如 `value, checked, selected`特性的初始值，所以必须去 data 选项中定义数据变量。
+
+
+
+#### 原理实现 input 绑定
+
+- v-model 双向数据绑定（是一个语法糖利用了@change/@input事件回调去更新data 值， Vue 是单向数据流），一般用于 input 中。
+- 即视图中和数据和JS中的数据，无论哪边变化，都会一起改变。于此区别的是单向数据流，即只能由JS改变数据，然后去通知视图以发生变化。
+
+
+```jsx
+<input v-model="something" />
+
+// 就是下面的简写
+<input :value="something" @input="something = $event.target.value" />
+```
+
+上面两种方式是一样的作用。先知道`Input元素`上本身有个`oninput事件`，这是`HTML5新增加`的，类似 `onchange`
+
+每当输入框内容发生变化的时候，就会触发`Input事件`，然后把 Input 输入框中 value 值再次传递给 something。
+
+
+
+#### checkbox 和 radio 原理
+
+下面就是这2个控件的原理实现。改变绑定的`:checked`值，就会自动触发 change 事件。跟 input 通过value值触发 `input` 事件原理是一样的。
+
+```html
+<input type="checkbox" :checked="status" @change="status = $event.target.checked" />
+<input type="radio" :checked="status" @change="status = $event.target.chec
+```
+
+多个 checkbox 一起使用时， v-model 绑定的数据需要是同一个数组。（radio 原理一样）
+
+```jsx
+<div>
+  <input type="checkbox" v-model="checked" value="游泳" />游泳
+  <input type="checkbox" v-model="checked" value="洗澡" />洗澡
+</div>
+
+// 对应数据
+data() {
+  return {
+    checked: []
+  }
+}
+```
+
+
+
+#### textarea 绑定
+
+由 msg 显示多行文本
+
+```vue
+<textarea v-model="msg"></textarea>
+```
+
+
+
+#### select 绑定
+
+```jsx
+<select v-model="selected" multiple>
+  <option value="" disabled>请选择</option>
+  <option v-for="o in opts" :key="o.value" :value="o.value">{{o.name}}</option>
+</select>
+<span>{{selected}}</span>
+
+// 响应数据声明
+data(){
+	return {
+    opts: [{value:1, name:'a'}, {value:2, namw:'b'}]
+		selected:'', // 单选时，值就是选中项的 value
+		selected: [],// 当 select 是多选时，需要提供数组。原生需要按住 ctrl 键进行多选操作
+	}
+}
+```
+
+
+
+### v-model 的表单修饰符
+
+- .layz，延迟更新
+
+本质是将 Input 触发事件改为 change，必须点击（失焦）后才能触发（输入完后光标消失才会触发视图的更新）
+
+- .number
+
+转换输入值为 number 类型，若转换后是 NaN 则返回原数据<br />如果你先输入字符串，那它就相当于没有加.number
+
+- .trim
+
+自动过滤首尾空格
+
+
+
 ## 事件处理和修饰符
 
 
 
-### v-on 事件绑定和修饰符
+### v-on 事件绑定和修饰符 @
 
-缩写 `@click="handlerFn"`，如果是内敛语句还可以访问 `$event`
+#### @click 和 .native
+
+缩写 `@click="handlerFn"`
+
+- 需要注意的是，vue 的`@click`事件，是直接绑定在当前 DOM 上，而不是通过常用的代理手段委托
+- 如果是内敛语句还可以访问 `$event`
 
 ```javascript
 <button @click="fn('xxx', $event)"
 ```
+
+
+
+若 `click` 绑定在组件上，就有一点区别
+
+- 绑定的位置不是子组件最外层的 DOM，而是 vue 把这个事件绑定到使用了 `@click` 的 DOM 位置上
+
+```jsx
+// 父组件，不会触发 dom1， 而是会去触发 dom2
+<son @click="fn"></son>
+
+// 子组件，其实上事件被绑定在了 @fn 的DOM 上
+<template>
+	<div id="dom1">
+    <p>儿子</p>
+  	<div id="dom2" @fn="sonFn"></div>
+  </div>
+</template>
+```
+
+
+
+解决这个问题的办法，就是使用 `.native` 修饰符。这样就相当于在 `id="dom1"` 的最外层 DOM 上绑定了点击事件
 
 
 
@@ -415,6 +563,8 @@ new Vue({
 - .passive
 
 表示不会在监听函数里添加 `preventDefault()` 来阻止默认行为，即会立即触发
+
+主要是用于提高滚动事件的效率
 
 - .native
 
@@ -498,22 +648,6 @@ Vue.config.keyCodes.f1 = 112 // @keyup.f1
 
 
 
-### v-model 的表单修饰符
-
-- .layz，延迟更新
-
-本质是将 Input 触发事件改为 change，必须点击（失焦）后才能触发（输入完后光标消失才会触发视图的更新）
-
-- .number，
-
-转换输入值为 number 类型，若转换后是 NaN 则返回原数据<br />如果你先输入字符串，那它就相当于没有加.number
-
-- .trim
-
-自动过滤首尾空格
-
-
-
 ## 实例方法
 
 ### ref 获取 DOM 实例
@@ -532,9 +666,19 @@ $el 组件对象的 DOM 元素
 
 
 
-### 其他 API
+### 实例对象的 API
 
 .$destroy()----主动销毁实例，结束所有事件监听和watch
+
+$delete ---- 删除对象/数组属性
+
+$watch ---- 监听变量响应
+
+```js
+vm.$watch('msg', function(new, old) {
+  console.log(...)
+})
+```
 
 .$props----vue中props属性中的内容
 
@@ -542,13 +686,13 @@ $el 组件对象的 DOM 元素
 
 .$root----vue对象本身，可以通过链式修改属性和方法
 
-.$el----对HTML节点的引用
+.$el----对 HTML节点 的引用
 
 .$children----就是el下的子节点
 
 .$set(app.obj, 'a', i)-----给vue实例中的obj对象({})中的a属性，赋值i
 
-.$options----返回的实例本身，但是通过这个修改数据是无效的
+.$options----返回的实例本身，也就是用户传入组件实例的参数所有的选项和 vue 中的内置属性，但是通过这个修改数据是无效的
 
 ```javascript
 // ----在实例上修改一个值，但是只能等页面再次渲染时，即数据发生变动时才生效
@@ -558,3 +702,15 @@ $el 组件对象的 DOM 元素
 
 }
 ```
+
+$off ---- 移除自定义事件的监听器，也就是移除 watcher
+
+```js
+vm.$off( [event, callback] )
+如果没有提供参数，则移除所有的事件监听器；
+
+如果只提供了事件，则移除该事件所有的监听器；
+
+如果同时提供了事件与回调，则只移除这个回调的监听器。
+```
+

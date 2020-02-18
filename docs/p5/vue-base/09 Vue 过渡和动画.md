@@ -1,6 +1,14 @@
 # Vue 过渡和动画
 
-## 过渡与动画
+Vue 可以对 DOM 的显隐进行动画管理
+
+- v-if
+- v-for
+- v-show
+
+
+
+## 过渡与动画基础
 
 > vue 中的过渡动画触发时机是在 DOM 被插入、更新或删除的时刻。
 > 在 vue 中使用过渡动画，有三种方式。
@@ -114,9 +122,25 @@
 
 
 
-### 过渡的类名
+## Vue 的动画使用
 
-<a data-fancybox title="" href="https://cdn.nlark.com/yuque/0/2019/png/204082/1576510785754-5041686b-b57f-4eb3-b739-085a71980c27.png#align=left&display=inline&height=600&originHeight=600&originWidth=1200&size=0&status=done&style=none&width=1200">![](https://cdn.nlark.com/yuque/0/2019/png/204082/1576510785754-5041686b-b57f-4eb3-b739-085a71980c27.png#align=left&display=inline&height=600&originHeight=600&originWidth=1200&size=0&status=done&style=none&width=1200)</a><br />下面的 `v` 代表在 `transition` 组件中定义的 `name` 属性值。<br />若没有定义 `name` 属性，则 `v` 是默认前缀。
+### 定义样式的模式
+
+一共可以控制 6 个时机，其中会在 2 个 `...active` 钩子中写过渡，比如 `transition: all 2s linear`
+
+其他 4 个都是定义开始/结束的状态，如 `background: blue`
+
+<a data-fancybox title="" href="https://cdn.nlark.com/yuque/0/2019/png/204082/1576510785754-5041686b-b57f-4eb3-b739-085a71980c27.png#align=left&display=inline&height=600&originHeight=600&originWidth=1200&size=0&status=done&style=none&width=1200">![](https://cdn.nlark.com/yuque/0/2019/png/204082/1576510785754-5041686b-b57f-4eb3-b739-085a71980c27.png#align=left&display=inline&height=600&originHeight=600&originWidth=1200&size=0&status=done&style=none&width=1200)</a>
+
+下面的 `v` 代表在 `transition` 组件中定义的 `name` 属性值。
+
+若没有定义 `name` 属性，则 `v` 是默认前缀。
+
+```jsx
+<transition name="fade">
+		// 包裹的 DOM
+</transition>
+```
 
 
 
@@ -138,25 +162,56 @@
 
 
 
-### JS 钩子方式示例
+```css
+.box{
+  background: red;
+}
+/*  定义颜色初始化时的状态 进入的一瞬间 */
+.fade-enter{
+  background: blue;
+}
+.fade-enter-active{
+  transition: all 2s linear;
+}
+.fade-enter-to{
+  background: yellow;
+}
+/* 当动画结束之后 会去掉所有样式 */
+/* 只是为了美感而生 没有实际意义 */
+.fade-leave{ 
+  background: purple;
+}
+.fade-leave-active{
+  transition: all 2s linear;
+}
+.fade-leave-to{
+  background: blue;
+}
+```
+
+
+
+### 定义方法的模式
 
 可以在 HTML 属性中声明 JS 钩子。
 
 ```html
 <transition
-  v-on:before-enter="beforeEnter"
-  v-on:enter="enter"
-  v-on:after-enter="afterEnter"
-  v-on:enter-cancelled="enterCancelled"
+  @before-enter="beforeEnter"
+  @enter="enter"
+  @after-enter="afterEnter"
+  @enter-cancelled="enterCancelled"
 
-  v-on:before-leave="beforeLeave"
-  v-on:leave="leave"
-  v-on:after-leave="afterLeave"
-  v-on:leave-cancelled="leaveCancelled"
+  @before-leave="beforeLeave"
+  @leave="leave"
+  @after-leave="afterLeave"
+  @leave-cancelled="leaveCancelled"
 >
   <!-- ... -->
 </transition>
 ```
+
+
 
 这对应的不是 CSS 样式类名了，而是在 Vue 实例方法选项中的各个方法。
 
@@ -168,9 +223,12 @@
 // ...
 methods: {
   // 1 进入中
-  beforeEnter: function (el) {},
+  beforeEnter: function (el) {
+    el.style.color = 'red'
+  },
   
   // 2 与 CSS 结合使用时, 回调函数 done 是可选的
+  // 调用后进入 afterEnter
   enter: function (el, done) {
     done()
   },
@@ -194,6 +252,8 @@ methods: {
 
 ### Vue + Velocity.js
 
+> 这是官方动画库，也就是当我们选择使用 JS 的方式去写动画
+
 cnd 方式引入该库
 
 ```html
@@ -215,6 +275,8 @@ cnd 方式引入该库
   </transition>
 </div>
 ```
+
+
 
 应用动画的方式就是调用 API
 
@@ -249,19 +311,21 @@ new Vue({
 
 
 
-## 列表过渡
 
 
+## 列表和状态动画
 
-### appear 初始渲染过渡
+### 初始渲染过渡
 
 就是组件初次渲染时的动画
+
+ 可以通过 `appear` attribute 设置节点在初始渲染的过渡 
 
 ```html
 <transition
   appear
   appear-class="custom-appear-class"
-  appear-to-class="custom-appear-to-class" (2.1.8+)
+  appear-to-class="custom-appear-to-class" 
   appear-active-class="custom-appear-active-class"
 >
   <!-- ... -->
@@ -271,8 +335,6 @@ new Vue({
 
 
 ### 多元素过渡
-
-
 
 #### 两个元素过渡
 
@@ -364,18 +426,152 @@ new Vue({
 
 
 
-### 列表过渡
+### 列表动画
 
-1）列表进/出过渡<br />2）列表排序过渡<br />3）列表交错过渡
+就是当动画包裹的是 `v-for` 渲染出来的元素的时候，需要用 `transition-group` 统一管理
 
+- 使用 ` animate` 动画库，能够更方便得完成任务
 
-
-### 可复用过渡
-
-
-
-### 动态过渡
-
+```js
+// 具体引入方式有很多种，动画的样式名字可以看 github
+核心就是 class="animated  bounceInLeft" 后面的样式名可以去找
+```
 
 
-## 状态过渡
+
+- 这里实现一个通过搜索功能，增删列表节点的动画
+
+```jsx
+<input type="text" v-model="content" />
+<!-- 不建议使用 v-for + v-if -->
+<!-- 合理的方式是通过计算属性先算出结果后再统一渲染 -->
+<transition-group 
+  enter-active-class="animated  bounceInLeft"
+  leave-active-class=" animated  bounceOutRight"
+  >
+  <li v-for="arr in computedArr" :key="arr">{{arr}}</li>
+</transition-group>
+
+// vue 实例定义
+let vm = new Vue({
+  el:'#app',
+  data(){
+    return {
+      content:'',
+      arrs:['abc','bcd','def','yyy','zzz']
+    }
+  },
+  computed:{
+    computedArr(){
+      return this.arrs.filter(item=>item.includes(this.content));
+    }
+  }
+})
+```
+
+
+
+## 经典案例
+
+### 购物车加购
+
+场景：加购某个商品，让商品的图片从原位置动画移动到购物车图标位置
+
+思路：移动过程中的图片，是另外加的，与原图无关。
+
+```jsx
+// 列表循环出来的商品图片
+<div v-for="(p,index) in products" ref="lists">
+  <img :src="p" alt="" />
+  <button @click="addCart(index)">添加购物车</button>
+</div>
+
+// 用动画组件包裹了展现动画效果的图片
+<transition @enter="enter" @after-enter="afterEnter">
+  // 要移动的缩略图（理解为小球）
+  <div class="animate" v-if="isShow"></div>
+</transition>
+
+// 购物车图标
+<div class="cart" ref="cart"></div>
+```
+
+
+
+定义必要的控制变量和方法
+
+```js
+let vm = new Vue({
+  el:'#app',
+  data(){
+    return {
+      isShow:false, // 默认控制动画的属性
+      currentIndex:-1, // 我当前点击的是谁
+      // 2张图片
+      products:[
+        'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=139670673,2550279246&fm=26&gp=0.jpg',
+        "https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2093425964,1763924149&fm=26&gp=0.jpg"
+      ]
+    }
+  },
+  
+  methods:{
+    // 动画结束，隐藏那个小球
+    afterEnter(el){
+      this.isShow = false;
+    },
+    
+    // 移动过程
+    enter(el,done){ // 让当前这个div 获取到点击是哪一个
+      // 关于 refs 若是 v-for 出来的则是一个数组。不然就是单个的
+      let div = this.$refs.lists[this.currentIndex];
+      
+      // 将刚才需要创建动画的元素 给她定位到被加购的商品图片位置
+      let {x,y} = div.getBoundingClientRect();
+      el.style.left = x + 'px';
+      el.style.top = y+'px';
+      el.style.background=`url(${this.products[this.currentIndex]})`;
+      el.style.backgroundSize = "100% 100%";
+			
+      // 获取购物车图标的位置
+      let {x:cartX,y:cartY} = this.$refs.cart.getBoundingClientRect();
+      
+      // 做动画，要配合 CSS 动画样式
+      // scale(0,0) 是缩放
+      el.style.transform = `translate3d(${cartX-x}px,${cartY - y}px,0) scale(0,0)`;
+      
+      // h5的方法 不调用 下次动画就无法生效了
+      el.addEventListener('transitionend',done)
+    },
+		
+    // 点击加购操作，显示小球，且锁定商品索引
+    addCart(index){
+      this.isShow = true;// 切换显示效果
+      this.currentIndex = index;
+    }
+  }
+})
+```
+
+
+
+必要的 CSS 样式
+
+```css
+// 购物车位置
+.cart{
+  position: absolute;
+  right:0;
+  bottom:0;
+  width: 50px;
+  height:50px;
+  background: red;
+}
+.animate{
+  position: absolute; // 运动范围是全屏，所以要绝对定位
+  width: 200px; // 设置和商品原图一样的初始大小
+  height:200px;
+  transition: 1s linear; // 1秒的线性动画
+}
+```
+

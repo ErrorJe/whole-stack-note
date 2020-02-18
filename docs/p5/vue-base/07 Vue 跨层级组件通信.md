@@ -4,9 +4,59 @@
 
 
 
+## provide 和 injects 后辈组件继承遗产
+
+就是为了让后辈组件能够拿到前辈组件的数据，反过来让后辈给祖先组件传值就不行。
+
+注意，一般用于组件开发，尽量不要用于日常开发。
+
+- 单向数据流混乱
+- 实现工具库，可以使用这个方式
+
+
+
+### provide 生产
+
+> 由先辈组件创建内容
+> 也可以传 this 这样的引用对象
+
+```javascript
+export default {
+  // 作为祖先，给后人留下的数据遗产。可以跨代传递。跟 data 钩子的用法一致。
+  provide() {
+    return {
+      someValue: '来自祖先的神秘遗产'，
+      parent:this // 把自己实例给传下去（使用最多的场景）
+    }
+  },
+  
+  // 对象形式也可以
+  provide:{
+  	someValue: '来自祖先的神秘遗产'
+  }
+}
+```
+
+
+
+### injects 注入
+
+> 后辈组件去消费内容。相当于是 consumer
+
+
+```javascript
+export default {
+  // 继承祖先遗产。用法和 props 一致。可以直接使用 {{someValue}}
+  // 所以不要与 data 重名
+  inject: ['someValue' 'parent'],
+}
+```
+
+
+
 ## 孙向前辈通信（向上通知 $dispatch）
 
-> 首先这个 dispatch 是自己实现在 main.js 且挂载到 Vue.prototype 上的
+> 首先这个 dispatch 是自己实现在 main.js 且挂载到 `Vue.prototype` 上的
 
 
 
@@ -46,10 +96,35 @@ Vue.protytype.$dispatch = function(eventName, value) {
 }
 ```
 
+
+
+优化版本：当前是所有前辈都会触发，现在想要指定某个前辈组件触发，要改动代码
+
+```js
+Vue.protytype.$dispatch = function(eventName, componentNames, value) {
+  let parent = this.$parent
+  
+  while(parent) {
+    // 触发指定组件的方法
+    if (parent.$options.name === componentNames){
+      parent.$emit(eventName, value)
+      return
+    }
+    parent = parent.$parent
+  }
+}
+```
+
+
+
 #### 孙组件派发事件
 
 ```javascript
+// 简单版本
 this.$dispatch('input', 200)
+
+// 指定组件版本使用，指定组件名为 parent1 的触发 input 方法
+this.$dispatch('input', 'parent1', 200)
 ```
 
 
@@ -58,13 +133,14 @@ this.$dispatch('input', 200)
 
 > 也是广播的方式。这里要递归实现了，因为每个子组件可能有自己的很多个子组件
 
-
+- 与 `$parent` 一样也有一个 `$children` 事件，用于调用儿子组件的方法或属性
 
 ### 实现广播方法 $broadcast
 
 ```javascript
 // main.js
 Vue.prorotype.$broadcast = function(eventName, value) {
+  let children = this.$children
   // 通知事件
   const broadcast = (children) => {
     // 遍历每个孩子
@@ -76,8 +152,35 @@ Vue.prorotype.$broadcast = function(eventName, value) {
       }
     })
   }
-  broadcast(this.$children)
+  broadcast(children)
 }
+```
+
+
+
+优化版本：指定多个儿子
+
+```js
+Vue.prorotype.$broadcast = function(eventName, compNames, value) {
+  let children = this.$children // 是个数组
+  function broadcast(children) {
+    for(let i=0;  i<children.length; i++) {
+      let child = children[i]
+      if (Array.isArray(compNames) && compNames.includes(child.$options.name)) {
+        child.$emit(eventName, value)
+        return
+      } else {
+        if (child.$children) {
+					broadcast(child.$children)
+        }
+      }
+    }
+  }
+  broadcast(children)
+}
+
+// 使用方式
+this.$broadcast('error', ['son'], 123)
 ```
 
 
@@ -98,6 +201,8 @@ export default {
 </script>
 ```
 
+
+
 #### 先辈组件统一通知
 
 > 让所有正在监听这个 error 事件的后辈组件都能被触发执行
@@ -105,7 +210,7 @@ export default {
 
 ```javascript
 // 比如去根组件触发  App.vue
-this.$broadcast('error')
+this.$broadcast('error', 123)
 ```
 
 
@@ -135,6 +240,8 @@ this.$broadcast('error')
 props: ['first']
 ```
 
+
+
 没有被接收的变为子组件根节点的属性
 
 ```vue
@@ -148,6 +255,8 @@ created() {
   console.log('没有被绑定的属性>>>', this.$attrs); // {second："secondMessage"}
 }
 ```
+
+
 
 - 子组件中使用 inheritAttrs：false
 
@@ -228,55 +337,11 @@ props : [ 'second' , 'third']
 
 
 
-## Provide 和 injects 后辈组件继承遗产
-
-就是为了让后辈组件能够拿到前辈组件的数据，反过来让后辈给祖先组件传值就不行。<br />注意，一般用于组件开发，尽量不要用于日常开发。
-
-
-
-### Provide 生产
-
-> 由先辈组件创建内容
-> 也可以传 this 这样的引用对象
-
-```javascript
-export default {
-  // 作为祖先，给后人留下的数据遗产。可以跨代传递。跟 data 钩子的用法一致。
-  provide() {
-    return {
-      someValue: '来自祖先的神秘遗产'，
-      parent:this // 把自己实例给传下去（使用最多的场景）
-    }
-  },
-  
-  // 对象形式也可以
-  provide:{
-  	someValue: '来自祖先的神秘遗产'
-  }
-}
-```
-
-
-
-### injects 注入
-
-> 子组件去消费内容。相当于是 consumer
-
-
-```javascript
-export default {
-  // 继承祖先遗产。用法和 props 一致。可以直接使用 {{someValue}}
-  // 所以不要与 data 重名
-  inject: ['someValue' 'parent'],
-}
-```
-
-
-
 ## ref 拿到组件实例
 
 - 用在元素上就是获取 DOM
 - 用在组件上就是获取组件实例
+- 用 `v-for` 出来的 DOM 是一个数组，普通渲染出来的 DOM 就是单个的属性
 
 
 
@@ -289,7 +354,7 @@ export default {
 
 #### 父组件拿到子组件实例
 
-```javascript
+```jsx
 <son ref="id" ></son>
 
 create(){

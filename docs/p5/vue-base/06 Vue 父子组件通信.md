@@ -1,260 +1,32 @@
 # Vue 父子组件通信
 
-## 组件双向绑定 v-modle 和 .sync
-### v-modle 语法糖方式
-
-
-#### 元素中使用 v-model 原理
-
-监听的 input 事件(H5中新事件，类似 change)。将事件对象中响应到的 value 值给更新
-
-```html
-<input
-  :value="something"
-  @:input="() => this.something = $event.target.value">
-```
+## 父向子通信 props
 
 
 
-#### 组件中使用 v-model 原理
+### 父传子
 
-`v-modle` 是基于 `input` 输入框定制的，`value`是固定写法，是 input 内置的变量。
+- 传属性。`:title="titleVar" `, 这样就是绑定了变量，动态传值。经过 v-bind 里的就是一个表达式。
+- 传普通值。`title="xxxx"`, 静态的传值，就是把这个字符串传过去了。只限于字符串类型。如果是数字，也是需要 `:`
+- 传方法。`:fn="fn"` 还可以传递一个方法，在子组件可以直接使用比如 `@click="fn"`
 
-然后通过回调的第一个参数(`arguments[0]`)赋值给 value，实现双向绑定。
+```vue
+<son :title1="titleVar" title2="xxxx" :fn="fn"></son>
 
-```html
-<custom-input
-  :value="something"
-  @:input="(value) => this.something = value">
-</custom-input>
-```
-
-基于这个定制，Vue 实现了 `v-modle` 语法糖，可以简化写法
-
-- 父组件：用 v-model 绑定变量 show。并且省略 input 的事件监听写法（内部已实现）
-
-```html
-<demo v-model="show"></demo>
-
+// 定义
 <script>
-import Demo from './Demo.vue'
-export default {
-  components: { Demo },
-  data () {
+export default{
+  data() {
     return {
-      show: false
+      titleVar: ‘xxx1’
     }
-  }
-}
-</script>
-```
-
-- 子组件
-  - 用props拿到值
-  - 然后绑定派发改变该值的 `input` 事件，传入参数
-
-这也是为什么，语法糖里 `arguments[0]`要取第一个参数了。
-
-```vue
-<template>
-   <div v-show="value">
-      <div>
-         <p>这是一个Model框</p>
-         <button @click="close">关闭model</button>
-      </div>
-   </div>
-</template>
-
-<script>
-export default {
-  props: ['value'],
+  },
   methods: {
-    close () {
-      // 子组件最核心的就是指定了 input 事件触发
-      // 且规定 v-model 改的就是 "Value" 变量的值
-      this.$emit('input',false)
-    }
+    fn(){}
   }
 }
 </script>
 ```
-
-
-
-### 定制组件 v-model
-
-> 解决的问题：避免 value 值被占用，或表单和自定义的 `$emit('input')`事件发生冲突。
-
-
-- props代替掉原本 value 的值，可以自定义值
-- event代表掉原本 input 的触发事件，可以自定义触发事件
-
-
-
-#### 父组件传值
-
-```vue
-<button @click="show=true">打开model</button>
-<demo v-model="show" ></demo>
-
-<script>
-  import Demo from './Demo.vue'
-  export default {
-    name: 'hello',
-    components: { Demo },
-    data () {
-      return {
-        show: false
-      }
-    }
-  }
-</script>
-```
-
-
-
-#### 定制子组件
-
-```vue
-<input type="text" v-model="value">
-{{value}}
-<button @click="closeModel">关闭model</button>
-
-<script>
-  export default {
-    // 把 props 从原本的value换成了show，input触发的事件换成了close
-    model: {
-      prop: 'show',
-      event: 'close'
-    },
-    props: ['show'],
-    data () {
-      return {
-        value: 10
-      }
-    },
-    methods: {
-      closeModel () {
-        this.$emit('close',false)
-      }
-    }
-  }
-</script>
-```
-
-
-
-### .sync 修饰符
-
-> 用于对 props 进行双向绑定。
-> Vue1.0版本时，破坏了单项数据流。
-> Vue2.3版本后，被扩展成了编译时的语法糖，自动更新父组件属性的v-on侦听器。
-> 无论怎么封装，跟 `v-model`一样都是基于 `$emit`和 `v-on`来封装的，主要目的是为了保证数据的正确单向流动与显示流动。
-
-
-与 `v-model` 的区别
-
-- v-model 内置只能写 value
-  - 父组件里写 `v-model="xxx"`
-  - 子组件见里只能是接受 `value`，当然派发的事件是
-- .sync 可以写任何变量名
-  - 父组件传入 `:eee.sync="123"`
-  - 子组件派发事件:`this.$emit('update:eee', xxx)`这是需要对应的
-
-
-
-#### 语法糖解析
-
-父组件中使用`<demo :foo.sync="value"></demo>`， 这个语法糖的扩展为
-
-- foo， 是子组件需要的数据，也就是 props 拿到的数据
-- @update:foo ，显式监听该 props 数据（foo）。通过回调参数赋值给 foo，实现双向绑定。这里的行内函数，做的事情就是改变父组件自己的值，然后子组件自然就会被响应
-
-```html
-<demo :foo="value" @update:foo="val => this.value = val"></demo>
-```
-
-- 若子组件需要更新 foo 值，需要显示调用更新事件
-
-```javascript
-// 参数1：更新事件 Update， 后跟要对应改变的 props 值
-// 参数2：希望父组件触发 update 事件时更新的回传数据
-this.$emit('update:foo', newValue)
-```
-
-
-
-#### 多个 props 数据双绑
-
-- 子组件
-
-同时对 `msg,show` 这2个props数据绑定显式的 `update` 事件。分别使用了两种事件写法
-
-- 直接写表达式
-- 指定回调函数
-
-其中 `update` 后跟的 `:xxx` 参数跟父组件传进来的值是同步的，两者要一一对应。
-
-```vue
-<template>
-   <div v-show="show">
-      <p>{{msg}}</p>
-      <button @click="closeModel">关闭model</button>
-     <button @click="$emit('update:msg','改变了model文案')">改变文案</button>
-   </div>
-</template>
-<script>
-export default {
-  props: ['show', 'msg'],
-  methods: {
-    closeModel () {
-      this.$emit('update:show',false)
-    }
-  }
-}
-</script>
-```
-
-- 父组件
-
-父组件向子组件 props 里传递了 msg 和 show 两个值，都用了.sync 修饰符，进行双向绑定。
-
-```vue
-<template>
-  <div class="hello">
-    <button @click="show=true">打开model</button>
-    <demo :show.sync="show" :msg.sync="msg"></demo>
-  </div>
-</template>
-
-<script>
-  import Demo from './Demo.vue'
-  export default {
-    name: 'hello',
-    components: {
-      Demo
-    },
-    data () {
-      return {
-        show: false,
-        msg: '这是一个model'
-      }
-    }
-  }
-</script>
-```
-
-
-
-## 父向子通信 - props
-
-
-
-### 父传子的静态或动态值
-
-> :title="titleVar" , 这样就是绑定了变量，动态传值。经过 v-bind 里的就是一个表达式。
-> title="xxxx", 静态的传值，就是把这个字符串传过去了。只限于字符串类型。如果是数字，也是需要 `:`
-> :fn="fn" 还可以传递一个方法，在子组件可以直接使用比如 `@click="fn"`
 
 
 
@@ -293,6 +65,137 @@ props: {
       }
     }
   }
+```
+
+
+
+### 用 ref 拿到子组件方法
+
+
+
+#### 父组件拿到子组件方法
+
+```javascript
+<son ref="Son" @sonFn="fatherFn"></son>
+
+// 1 在 JS 部分拿到子组件实例和 fn 方法
+this.$refs.Son.fn()
+
+// 2 通过调用子组件的 fn 方法，让子组件主动触发它的 `sonFn` 事件，这样父组件就能响应事件
+fatherFn(res){
+	// 能够拿到子组件给的数据
+}
+```
+
+
+
+#### 子组件派发事件
+
+```javascript
+// 1 子组件中定义了一个 fn 方法
+fn() {
+  // 2 触发 `sonFn` 事件并传递数据
+  this.$emit('sonFn', this.data)
+}
+```
+
+
+
+## 子向父通信
+
+遵循单项数据流，就是子组件不能直接更改父组件给的值。所以要用事件去派发传递数据。
+
+### $emit | $on
+
+#### 子组件派发自定义事件 $emit
+
+> 首先要触发子组件的方法，然后去调用核心方法 `this.$emit('event', params)`
+> 这样在父级组件层级，就可以监听事件
+
+
+```html
+<button @click="handleClick">子组件通知父组件</button>
+<script>
+handleClick() {
+  // 第一个参数：自定义事件名，是一个字符串类型
+  // 第二个参数：是要传递的参数。若有多个，要传一个数组
+	this.$emit('lalala', {msg: '子组件通知父组件'})
+}
+</script>
+```
+
+
+
+#### 父组件监听通知 $on
+
+> 首先也是要引入和注册使用子组件，然后才可以像下面一样使用.
+> 对于 emit 派发的事件，可以直接去父组件中绑定该事件的触发，也可以直接去监听该事件
+
+
+
+##### 绑定自定义事件 v-on(@)
+
+这种方法直接在父组件指定的自定义事件回调参数中，拿到子组件的传值
+
+```html
+<w-button @lalala="handleClick"></w-button>
+```
+
+```javascript
+handleClick(obj) { console.log(obj) } // 执行方法,拿到 msg
+```
+
+
+
+##### 事件监听 $on
+
+一般在 created 钩子中去监听自定义事件
+> 可以通过 vm._events 看该 vue 实例绑定了哪些事件，这些都是可以调试源码的时候发现的东西
+
+```javascript
+created(){
+  // 参数1：String类型，自定义事件名。也可以是数组类型，给不同的事件绑定同一个方法
+  // 参数2：回调函数，接受 emit 发出的参数
+  this.$on('lalala', (res) => {
+    // ...
+  })
+}
+```
+
+
+
+### 传递函数：事件触发
+
+父组件可以把函数传递给子组件，然后在子组件中触发该函数，这样就是让子组件管理父组件的数据
+
+```jsx
+// 父组件给子组件传函数
+<son :changeFn="fn">{{var}}</son>
+export default {
+  data() {
+    return {
+      var: 0
+    }
+  },
+  methods: {
+    fn(v) {
+      // this 被 vue 给 bind 过，所以都是指向该组件实例
+      this.var += v
+    }
+  }
+}
+
+// 子组件控制方法执行
+<div @click="changeFn(10)">更改</div>
+
+export default {
+  props: {
+    changeFn: {
+      type:Function,
+      default:() => {}
+    }
+  }
+}
 ```
 
 
@@ -383,104 +286,287 @@ let copyData = JSON.parse(JSON.stringify(this.data))
 
 
 
-### 用 ref 拿到子组件方法
 
 
+## 组件双向绑定 v-modle | .sync
 
-#### 父组件拿到子组件方法
+### v-model 语法糖方式
 
-```javascript
-<son ref="Son" @sonFn="fatherFn"></son>
-
-// 1 在 JS 部分拿到子组件实例和 fn 方法
-this.$refs.Son.fn()
-
-// 2 通过调用子组件的 fn 方法，让子组件主动触发它的 `sonFn` 事件，这样父组件就能响应事件
-fatherFn(res){
-	// 能够拿到子组件给的数据
-}
-```
+就是 `:value` 和 `@input` 的语法糖
 
 
+#### 元素中 v-model 原理
 
-#### 子组件派发事件
-
-```javascript
-// 1 子组件中定义了一个 fn 方法
-fn() {
-  // 2 触发 `sonFn` 事件并传递数据
-  this.$emit('sonFn', this.data)
-}
-```
-
-
-
-## 子向父通信 - $emit &  $on
-
-遵循单项数据流，就是子组件不能直接更改父组件给的值。所以要用事件去派发传递数据。
-
-
-
-### 子组件派发自定义事件 $emit
-
-> 首先要触发子组件的方法，然后去调用核心方法 `this.$emit('event', params)`
-> 这样在父级组件层级，就可以监听事件
-
+监听的 input 事件(H5中新事件，类似 change)。将事件对象中响应到的 value 值给更新
 
 ```html
-<button @click="handleClick">子组件通知父组件</button>
+<input
+  :value="something"
+  @input="e => something = e.target.value">
+```
+
+
+
+#### 组件中 v-model 原理
+
+`v-modle` 是基于 `input` 输入框定制的，`value`是固定写法，是 input 内置的变量。
+
+然后通过回调的第一个参数(`arguments[0]`)赋值给 value，实现双向绑定。
+
+```jsx
+<custom-input
+  :value="something"
+  @input="value => something = value">
+</custom-input>
+
+// 相当于
+<custom-input v-model="something" />
+```
+
+
+
+#### 组件中使用 v-model
+
+基于这个定制，Vue 实现了 `v-modle` 语法糖，可以简化写法
+
+- 父组件：用 v-model 绑定变量 show。并且省略 input 的事件监听写法（内部已实现）
+
+```html
+<demo v-model="show"></demo>
+
 <script>
-handleClick() {
-  // 第一个参数：自定义事件名，是一个字符串类型
-  // 第二个参数：是要传递的参数。若有多个，要传一个数组
-	this.$emit('lalala', {msg: '子组件通知父组件'})
+import Demo from './Demo.vue'
+export default {
+  components: { Demo },
+  data () {
+    return {
+      show: false
+    }
+  }
+}
+</script>
+```
+
+- 子组件
+  - 用props拿到值, 名字默认是固定的 `value`
+  - 然后绑定派发改变该值的 `input` 事件，传入参数
+
+>  这也是为什么，语法糖里 `arguments[0]` 要取第一个参数了。
+
+```vue
+<template>
+   <div v-show="value">
+      <div>
+         <p>这是一个Model框</p>
+         <button @click="close">关闭model</button>
+      </div>
+   </div>
+</template>
+
+<script>
+export default {
+  props: ['value'],
+  methods: {
+    close () {
+      // 子组件最核心的就是指定了 input 事件触发
+      // 且规定 v-model 改的就是 "Value" 变量的值
+      this.$emit('input',false)
+    }
+  }
 }
 </script>
 ```
 
 
 
-### 父组件监听通知
+### 定制组件 v-model
 
-> 首先也是要引入和注册使用子组件，然后才可以像下面一样使用.
-> 对于 emit 派发的事件，可以直接去父组件中绑定该事件的触发，也可以直接去监听该事件
-
+> 解决的问题：避免 value 值被占用，或表单和自定义的 `$emit('input')`事件发生冲突。
 
 
-#### 绑定自定义事件 v-on(@)
 
-这种方法直接在父组件指定的自定义事件回调参数中，拿到子组件的传值
+#### 父组件传值
+
+没有什么变化
+
+```vue
+<button @click="()=>show=true">打开model</button>
+<demo v-model="show" ></demo>
+
+<script>
+  import Demo from './Demo.vue'
+  export default {
+    name: 'hello',
+    components: { Demo },
+    data () {
+      return {
+        show: false
+      }
+    }
+  }
+</script>
+```
+
+
+
+#### 定制子组件
+
+- props 代替掉原本 value 的值，可以自定义值
+- event 代表掉原本 input 的触发事件，可以自定义触发事件
+
+```vue
+<input type="text" v-model="value">
+{{value}}
+<button @click="$emit('close',false)">关闭model</button>
+
+<script>
+  export default {
+    // 把 props 从原本的value换成了show，input触发的事件换成了close
+    model: {
+      prop: 'show',
+      event: 'close'
+    },
+    props: ['show'], // 响应改成 show
+    data () {
+      return {
+        value: 10
+      }
+    }
+  }
+</script>
+```
+
+
+
+### .sync 修饰符
+
+用于对 props 进行双向绑定，也是一个语法糖
+
+- Vue1.0版本时，破坏了单项数据流。
+- Vue2.3版本后，被扩展成了编译时的语法糖，自动更新父组件属性的v-on侦听器。
+- 无论怎么封装，跟 `v-model`一样都是基于 `$emit`和 `v-on`来封装的，主要目的是为了保证数据的正确单向流动与显示流动。
+
+
+
+与 `v-model` 的区别
+
+- v-model 内置只能写 value（虽然可以改，但是写起来还是很麻烦）
+  - 父组件里写 `v-model="xxx"`
+  - 子组件见里只能是接受 `value`，当然派发的事件是 `input`
+- .sync 可以写任何变量名
+  - 父组件传入 `:eee.sync="123"`
+  - 子组件派发事件:`this.$emit('update:eee', xxx)`这是需要对应的
+
+
+
+#### 语法糖解析
+
+>  就是 `:v="xxx"` 和 `@update:v="fn"` 的语法糖
+
+父组件中使用`<demo :foo.sync="value"></demo>`， 这个语法糖的扩展为
+
+- foo， 是子组件需要的数据，也就是 props 拿到的数据
+- `@update:foo` ，显式监听该 props 数据（foo）。
+  - 通过回调参数赋值给 foo，实现双向绑定。
+  - 这里的行内函数，做的事情就是改变父组件自己的值，然后子组件自然就会被响应
 
 ```html
-<w-button @lalala="handleClick"></w-button>
-```
-
-```javascript
-handleClick(obj) { console.log(obj) } // 执行方法,拿到 msg
+<demo :foo="value" @update:foo="val => value = val"></demo>
 ```
 
 
 
-#### 事件监听 $on
-
-一般在 created 钩子中去监听自定义事件
-> 可以通过 vm._events 看该 vue 实例绑定了哪些事件，这些都是可以调试源码的时候发现的东西
+若子组件需要更新 foo 值，需要显示调用更新事件
 
 ```javascript
-created(){
-  // 参数1：String类型，自定义事件名。也可以是数组类型，给不同的事件绑定同一个方法
-  // 参数2：回调函数，接受 emit 发出的参数
-  this.$on('lalala', (res) => {
-    // ...
-  })
-}
+// 参数1：更新事件 Update， 后跟要对应改变的 props 值
+// 参数2：希望父组件触发 update 事件时更新的回传数据
+this.$emit('update:foo', newValue)
+```
+
+
+
+等同于 .sync 的写法
+
+```jsx
+// 父组件
+<son :foo.sync="value" />
+```
+
+
+
+
+
+#### 多个 props 数据双绑
+
+##### 子组件
+
+同时对 `msg,show` 这2个props数据绑定显式的 `update` 事件。分别使用了两种事件写法
+
+- 直接写表达式
+- 指定回调函数
+
+其中 `update` 后跟的 `:xxx` 参数跟父组件传进来的值是同步的，两者要一一对应。
+
+```vue
+<template>
+	<div v-show="show">
+    <p>{{msg}}</p>
+    <button @click="closeModel">关闭model</button>
+    <button @click="$emit('update:msg','改变了model文案')">改变文案</button>
+  </div>
+</template>
+<script>
+  export default {
+    props: ['show', 'msg'],
+    methods: {
+      closeModel () {
+        this.$emit('update:show',false)
+      }
+    }
+  }
+</script>
+```
+
+
+
+##### 父组件
+
+父组件向子组件 props 里传递了 msg 和 show 两个值，都用了.sync 修饰符，进行双向绑定。
+
+```vue
+<template>
+  <div class="hello">
+    <button @click="show=true">打开model</button>
+    <demo :show.sync="show" :msg.sync="msg"></demo>
+  </div>
+</template>
+
+<script>
+  import Demo from './Demo.vue'
+  export default {
+    name: 'hello',
+    components: {
+      Demo
+    },
+    data () {
+      return {
+        show: false,
+        msg: '这是一个model'
+      }
+    }
+  }
+</script>
 ```
 
 
 
 ## 异步 Props 解决方案
 
-> 出现的场景：父组件通过 props 给子组件传值，这个值在父组件这里是由异步操作获得的。也就是当子组件渲染调用 `created, mounted` 时，这个 props 值都是没有的。
+> 出现的场景：父组件通过 props 给子组件传值，这个值在父组件这里是由异步操作获得的。
+>
+> 也就是当子组件渲染调用 `created, mounted` 时，这个 props 值都是没有的。
+>
 > 子组件的渲染是在父组件在 created -> mounted 期间进行的，而子组件的 props 是在子组件在 created 钩子时期进行创建的。
 
 

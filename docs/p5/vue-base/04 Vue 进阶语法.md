@@ -3,15 +3,16 @@
 ## 数据响应式
 ### data 数据劫持
 
-> 只有定义在 data 中的数据才能响应，vue 把响应式系统的数据放在了 `data选项中`
+> 只有定义在 data 中的数据才能响应，vue 把响应式系统的数据放在了 `data 选项中`
 
 
 #### 响应式原理
 
-> vue 是通过数据劫持，达到数据绑定。也就是在 data 第一次初始化注入的时候就决定了数据的绑定；
-> 1 Vue 底层将遍历 `data`选项中所有的属性，并在实例初始化时用 `Object.defineProperty` （ES5 中无法被 shim 的属性[就是在低级环境下无法实现的属性功能]，所以不支持 IE8 及更低的浏览器）把属性全转为 `getter/setter`
-> 2 同时，被劫持的 data（setter/getter） ，也必须在 template 模板中被使用才会被依赖收集后监听（由 watcher 去监听，把接触过的数据属性记录为依赖）。这些记录可以通过 `vue-devtools` 来查看追踪
-> 3 最后的视图其实是当 `setter` 被触发，再由 `watcher`（每个组件实例都有一个自己的 watcher）去通知更新的。
+vue 是通过数据劫持，达到数据绑定。也就是在 data 第一次初始化注入的时候就决定了数据的绑定；
+
+- Vue 底层将遍历 `data`选项中所有的属性，并在实例初始化时用 `Object.defineProperty` （ES5 中无法被 shim 的属性[就是在低级环境下无法实现的属性功能]，所以不支持 IE8 及更低的浏览器）把属性全转为 `getter/setter`
+- 同时，被劫持的 data（setter/getter） ，也必须在 template 模板中被使用才会被依赖收集后监听（由 watcher 去监听，把接触过的数据属性记录为依赖）。这些记录可以通过 `vue-devtools` 来查看追踪
+- 最后的视图其实是当 `setter` 被触发，再由 `watcher`（每个组件实例都有一个自己的 渲染watcher）去通知更新的。
 
 
 ```javascript
@@ -26,7 +27,7 @@ export default {
     }
   },
   created(){
-    this.foo.abc='aa'//这种方式是不会响应的
+    this.foo.abc='aa'// 这种方式是不会响应的(abc 属性没有被定义)
     // 1 这样才能响应，动态增加属性
     this.$set(this.foo,'abc','aa')
     // 2 也可以调用全局方法
@@ -69,16 +70,37 @@ export default{
 
 #### 不被感知的修改方式及其解决方案
 
-**数组中不被感知的2种情况**：
+以下这些问题是 vue2.x 版本的问题，在 Vue3 中使用 `proxy` 解决了这些问题 	
+
+##### 数组中不被感知的2种情况
 
 - `arr[index] = newItem`， 通过索引设置
-  - 解决1：`Vue.set(arr, indexItem, newValue)` 或者 `this.$set()`手动增加某个索引下值的响应
+  - 解决1：`Vue.set(arr, index, newValue)` 或者 `this.$set(arr. index, value)`手动增加某个索引下值的响应
+    - 内部也是调用了被重写的 `splice` 方法
   - 解决2：通过`splice`解决。`arr.splice(indexItem, 1, newValue)`。
     - 因为数组是引用对象，splice 方法是直接修改原引用对象
 - `arr.length = newLength`，修改数组长度
   - 解决：利用 `splice` 方法去改变原数组
+- 反过来说，要删除的话，不能直接用 `delete` 关键字。要用 `vm.$delete(arr, index)`
+- 另外还有一种情况就是，数组中元素是对象（普通值无法被劫持）， Vue 也会对其进行劫持，所以是有响应的。
 
-**对象中不被感知的情况**：vue 不能检测对象属性的增删（因为受到现代 JS 的限制）
+
+
+##### 数组的定义技巧
+
+```js
+// 数组中的普通值无法被响应
+arr: [1,2,3]
+
+// 若数组中的元素是引用类型，则会被响应
+arr: [{value:1}， {value:2]
+```
+
+
+
+##### 对象中不被感知的情况
+
+vue 不能检测对象属性的增删（因为受到现代 JS 的限制）
 
 - 解决1：手动增加响应式属性， `Vue.set(obj, key, value)`， `this.$set`是这个方法的别名
   - 注意，这也仅仅是针对有嵌套情况的数据对象（因为有引用）
@@ -89,6 +111,59 @@ export default{
 
 
 
+### Proxy 优化
+
+在 Vue 3 中解决了关于数组、对象上述问题。就是浏览器兼容性不好
+
+下面展示基本原理
+
+```js
+// 如何用proxy 来实现响应式原理
+let obj = {
+    name: {
+        name: 'jw'
+    },
+    arr: ['吃', '喝', '玩']
+}
+
+// 兼容性差  可以代理13种方法 set get
+// defineProperty他只能对特定的属性 进行拦截
+let handler = {
+    // target 就是原对象 key就是当前取的是哪个值
+    get(target,key){
+        // ...console.log('收集依赖');
+        if(typeof target[key] === 'object' && target[key] !== null){
+            // 递归代理 只有取到对应值的时候 才会进行代理
+            return new Proxy(target[key],handler);
+        }
+        return Reflect.get(target,key); // target[key]
+    },
+    // 知道这个机制 先更改索引 在更新长度
+    set(target,key,value){ 
+      	// [1,2,3].length = 4; 数组的 push 操作会先 length改变，再去增删元素
+        // 判断一下 当前是新增操作还是修改操作
+        let oldValue = target[key]; // [1,2,3,123]
+        if(!oldValue){
+            console.log('新增属性')
+        }else if(oldValue !== value){
+            console.log('修改属性')
+        }
+        // target[key] = value; 
+      	// Reflect.set主要解决设置时 如果设置不成功，设置不成功不会报错，如对象不可配置
+        return Reflect.set(target,key,value);
+    }
+}
+
+// 因为是代理对象，所以要用代理后返回的 proxy 对象去操作，而不是直接操作原对象
+let proxy = new Proxy(obj,handler)
+// 懒代理
+proxy.name.name  = 123; // 1 对象深层属性
+proxy.arr[0] = 100;  // 2 数组索引修改值
+proxy.xxx =  100; // 3 属性新增
+```
+
+
+
 ### 数据来源
 
 只有三种方式
@@ -96,6 +171,15 @@ export default{
 - 父组件属性 props
 - 自身组件状态 data
 - 状态管理器， vuex， Vue.observable
+- 计算属性和 watch
+
+
+
+### computed | watch | methods 区别
+
+- computed 内部不会立马获取值，只有取值的时候才执行。（有缓存，若值没有变化则不更新结果）
+- watch 默认在内部执行一次，因为要算出一个老值，若数据变化则执行回调函数
+- methods 不具备缓存。若在模板中利用 methods 算出结果值，这样对性能不好。因为每次模板更新都要重新执行一次
 
 
 
@@ -103,6 +187,9 @@ export default{
 
 > 监听的数据必须是在响应式数据中的，普通变量无法监听。
 > 且是基于依赖的响应式数据进行缓存，只有相关依赖发生变化才会重新求值
+
+- 一般来说，`set` 方法不太使用，主要是配合 `v-model` 完成一些特定的需求
+- 另外 set 不要改自己，会死循环。出现要改自己的情况，要利用第三个变量来存储操作结果
 
 
 ```javascript
@@ -138,11 +225,12 @@ export default {
 
 ### watch 监听器
 
-> 可以执行任何逻辑，如异步操作和DOM操作。
-> 是一个键值对象。键是要观察的表达式，值是对应回调函数（也可以是方法名或包含选项的对象）
-> 虽然 computed 能做的 watch 都可以做，但是推荐尽量使用 computed。
-> watch 适用于在数据变化时执行异步或开销很大的操作情况。
-> 下面为了笔记方便采用了箭头函数，可能会有问题，注意实际使用
+可以执行任何逻辑，如异步操作和DOM操作。
+
+- 是一个键值对象。键是要观察的表达式，值是对应回调函数（也可以是方法名或包含选项的对象）
+  虽然 computed 能做的 watch 都可以做，但是推荐尽量使用 computed。
+- watch 适用于在数据变化时执行异步或开销很大的操作情况。
+  下面为了笔记方便采用了箭头函数，可能会有问题，注意实际使用
 
 
 ```javascript
@@ -161,10 +249,12 @@ export default {
     a:(val, oldVal)=>{
       this.b.c += 1
     },
+    
     // 2 对象属性使用
     "b.c":(val, oldVal)=>{
       this.b.c += 1
     },
+    
     // 3 深层对象使用，只要某个属性值变了就触发
     e:{
       handler:(val, oldVal) => {
@@ -173,8 +263,10 @@ export default {
       deep:true,
       immediate: true // 运行时立马执行一次。执行时机其实是 created 钩子的时期
     },
+    
     // 4 简写
     h(val, oldVal) => {},
+  
   	// 5 绑定方法
   	fn: 'handlerFn'
   },
@@ -185,6 +277,8 @@ export default {
   }
 }
 ```
+
+
 
 #### 子组件获取异步数据
 
@@ -391,7 +485,7 @@ async function () {
 - 除了`el`，其他属性都是仅可读的。所以尽量不要去修改
 - 当我们需要对 DOM 做底层逻辑处理时，就可能需要用到自定义指令
 
-### 钩子函数
+### 生命周期函数
 
 提供给指令的钩子函数
 
@@ -405,7 +499,7 @@ async function () {
 
 ### 钩子函数的参数
 
-每个钩子都有这些参数
+每个钩子（生命周期函数）都有这些参数
 
 - el， 绑定的元素，可以直接操作 DOM
 - binding，对象
@@ -416,11 +510,14 @@ async function () {
   - arg，传给指令的参数， `v-tooltip="msg"`，参数就是变量 msg。如果是动态绑定 `v-tooltip:msg="xxx"` 的 msg
   - modfiers,包含修饰符的对象， `v-tooltip.foo.bar` 就是 {foo:true,bar:true}
 - vnode，vue编译生成的虚拟节点
+  - 主要是里面的 context 上下文对象，一般是当前组件的 vue 实例
 - oldVnode，上一个虚拟节点
 
 
 
-### 钩子的函数简写
+### 指令定义方式
+
+#### 全局指令
 
 ```javascript
 Vue.directive('color-swatch', function(el, binding) {
@@ -430,7 +527,7 @@ Vue.directive('color-swatch', function(el, binding) {
 
 
 
-### 钩子的对象字面量形式
+#### 组件指令
 
 ```javascript
 export default {
@@ -502,9 +599,107 @@ Vue.use(directives);
 
 
 
+### 常见案例实现思路
+
+#### 日历组件的显隐
+
+主要是有几个点，在业务实现中比较常见。代码不重要，主要的是思路
+
+- 输入框，点击显示其他组件，失焦隐藏其他组件
+- 上面显示的组件可能是日历组件
+  - 满足点击输入框显示这个日历
+  - 还要满足就算输入框失焦，但是点击还是在规定范围之内，保持显示
+
+```jsx
+<div v-click-outside="hide">
+  <input type"text" @focus="show" />
+  <div v-if="isShow">
+    ===显示面板===
+    时间
+  </div>
+</div>
+
+// vue 定义
+data() {
+  return {
+    isShow: false
+  }
+}
+
+// 方法
+show() {
+  this.isShow = true
+}
+hide() {
+  this.isShow = false
+}
+
+// 局部指令
+directives: {
+  clickOutside： {
+    bind(el, bindings, vnode) {
+      // 将事件方法放到 el 上
+      el.handler = function(e) {
+        if (!el.contains(e.target)) { // 判断被点击对象是否在自己内部
+          // 自定义指令的表达式值
+          let methods = bindings.expression
+          // vnode.contex 就是当前组件的 vue 实例
+          vnode.context[method]()
+        }
+      }
+      
+      // 绑定点击事件
+      document.addEventListener('click', el.handler)
+    },
+      
+    // 卸载指令
+		unbind(el) {
+      document.removeEventListener('click', el.handler)
+    }
+  }
+}
+```
+
+
+
+#### 输入框自动聚焦
+
+场景：希望输入框在页面加载后自动聚焦
+
+问题：原生可以使用 `autofocus`，但是 Vue 是先把模板进行编译，此时对于原生 DOM 是已经渲染了。编译完成后才会插入到页面中。所以有时候可以看到页面会闪一下
+
+```jsx
+ <input type="text" v-focus />
+
+// 指令
+directives: {
+  focus:{
+    // 方式1： 使用 bind 钩子时，Vue.nextTick
+    bind(el, bindings, vnode) {
+      // bind 的执行实际是挂在后，然后 update 后
+      // vm.nextTick 无法使用，因为此时没有生成 vm 实例，所以只能用全局方法
+      Vue.nextTick(() => {
+        el.focus()
+      })
+    }
+     
+    // 方式2：选择更加合适的生命周期钩子
+    inserted(el, bingdings, vnode) {
+      el.focus()
+    }
+  }
+}
+```
+
+
+
 ## 过滤器Filter的使用
 
 > 全局的话还是在main**.**js中写：过滤器一般都是通用的，写在全局中比较好
+
+不是很常用了，因为可以用 methos 和 计算属性代替
+
+
 
 
 ### 定义
@@ -539,7 +734,12 @@ new Vue({
 
 混入 (mixin) 提供了一种非常灵活的方式，来分发 Vue 组件中的可复用功能。一个混入对象可以包含任意组件选项。
 
-### Vue.extend
+- 公共方法抽离
+- 编写插件
+
+
+
+### Vue.mixin
 
 返回组件构造器，创建一个子类，参数就是包含组件选项的对象。
 
@@ -548,11 +748,19 @@ new Vue({
 ```javascript
 // 为自定义的选项 'myOption' 注入一个处理器。
 Vue.mixin({
+  beforeCreate() {
+    // 一般用于写公共的初始化逻辑
+  }
   created: function () {
     var myOption = this.$options.myOption
     if (myOption) {
       console.log(myOption)
     }
+  }
+
+	// 还可以写一些公共方法
+	methods:{
+    fn(){}
   }
 })
 

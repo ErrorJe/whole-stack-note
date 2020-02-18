@@ -2,6 +2,79 @@
 
 ## 组件基础知识
 
+1. 
+
+
+
+### 开发思路和步骤
+
+- 定义组件
+- 引入组件，并注册
+- 组件使用
+- props 传值
+- 组件事件
+- 扩展组件 - 插槽
+
+
+
+### 组件化优势
+
+- 抽离组件实现复用
+- 增加代码可维护性
+- 组件级更新，底层给每个组件增加了一个 `watcher` 
+- 能抽离的尽量抽离独立，这样可以减少更新
+
+
+
+### 组件注册
+
+#### 全局注册
+
+一般是在 main.js 中进行全局注册，这样在任何 vue 实例中都可以直接当模板使用。
+
+```javascript
+// 1 普通的注册方式
+// data 必须是函数。防止组件之间的数据相互引用
+Vue.component('componentA', { /* 如vue实例中的配置项 */ })
+
+// 2 插件的形式注册，前提是该组件是支持模块化开发的
+Vue.use(componentA)
+```
+
+```html
+<div id="app">
+  <!-- html 中不区分大小写，驼峰命名用 - 隔开单词 -->
+	<component-a></component-a>  
+</div>
+```
+
+
+
+#### 局部注册
+
+> 就是之前一直使用的模式，编写组件 - 引入组件 - 注册组件 - 使用组件
+> 局部注册组件的好处，就是可以追溯组件依赖关系。
+
+```js
+import Parent from '@components/Parent'
+components: {
+  Parent,
+  // 可以重命名
+  'xxx': Parent
+}
+```
+
+
+
+#### 组件命名
+
+定义和引入的时候用 `小驼峰`，使用的时候用 `A-B`连接符的形式
+
+
+
+
+## 组件开发基础
+
 ### 组件的分类
 
 1. 通用组件：基础组件，UI库
@@ -10,9 +83,149 @@
 
 
 
+### 动态组件
+
+Vue 还可以将多个子组件，都挂载在同一个位置，通过变量来切换组件，实现 tab 菜单这样的效果
+
+#### keep-alive 缓存作用
+##### 引入多个组件并注册
+
+```javascript
+import s1 from '@/components/s1.vue'
+import s2 from '@/components/s2.vue'
+import s3 from '@/components/s3.vue'
+
+export default {
+  components: {
+		s1, s2, s3
+  },
+  data(){
+    return{
+      tabView:'s2'
+    }
+  }
+}
+```
+
+
+
+##### 使用方式 is
+
+使用 is 去绑定要显示的子组件，然后用变量控制子组件的切换。
+
+这种方式， URL 是不会变的，每次切换组件都会重新渲染，无法保留组件上的数据和状态。
+
+```html
+<component :is="tabView"></component>
+```
+
+
+
+##### 使用 keep-alive 缓存组件状态
+
+跟路由配合的话，要求路由配置中的 `name` 属性要和组件内的 `name` 属性要一致
+
+```html
+<!-- 失活的组件将会被缓存！-->
+<keep-alive>
+  <component v-bind:is="currentTabComponent"></component>
+</keep-alive>
+```
+
+
+
+#### 内置组件 keep-alive
+
+> 用于包裹动态组件， 会缓存不活动的组件实例数据和状态，而不是销毁它们
+
+
+
+##### 组件传值和属性
+
+- include：字符串或正则。匹配到名字的组件将被缓存
+  - 先匹配组件的 name 属性，再匹配在父组件中组件的名字（components 属性中定义的key），匿名组件不可被匹配
+- exclude：与 include 作用相反
+- max：最多可以缓存的组件实例数量
+
+```jsx
+<!-- 1 逗号分隔字符串 -->
+<keep-alive include="a,b">
+  <component :is="view"></component>
+</keep-alive>
+
+<!-- 2 正则表达式 (使用 `v-bind`) -->
+<keep-alive :include="/a|b/">
+  <component :is="view"></component>
+</keep-alive>
+
+<!-- 3 数组 (使用 `v-bind`) -->
+<keep-alive :include="['a', 'b']">
+  <component :is="view"></component>
+</keep-alive>
+
+<!-- 到达最大数字，最先被缓存的会被顶掉 -->
+<keep-alive :max="10">
+  <component :is="view"></component>
+</keep-alive>
+```
+
+
+
+##### activated 和 deactivated 钩子
+
+当组件在 `<keep-alive>` 内被切换，这两个钩子就会被触发
+
+
+
+##### 基本用法
+
+要求只有一个组件实例被有效使用，所以 `v-for` 无效
+
+```jsx
+<!-- 基本 -->
+<keep-alive>
+  <component :is="view"></component>
+</keep-alive>
+
+<!-- 多个条件判断的子组件 -->
+<keep-alive>
+  <comp-a v-if="a > 1"></comp-a>
+  <comp-b v-else></comp-b>
+</keep-alive>
+
+<!-- 和 `<transition>` 一起使用 -->
+<transition>
+  <keep-alive>
+    <component :is="view"></component>
+  </keep-alive>
+</transition>
+```
+
+
+
+### 递归组件
+
+利用 name 属性，可以在自己组件内部调用自己。要注意用 v-if 防止无限递归。
+
+```vue
+<template>
+	<s2 :tree="item" v-if="tree.children"></s2>
+</template>
+
+<script>
+	export default {
+    name:'s2',
+    props:['tree']
+  }
+</script>
+```
+
+
+
 ### 智能组件和木偶组件
 
 #### 木偶组件
+
 > 为了业务页面进行拆分而形成的组件模式。
 > 木偶组件：子组件只能有一个爹，必须是唯一的，而且父子俩长得一模一模，谁离开谁都活不了。
 
@@ -243,186 +456,6 @@ accordion-item 通过`$parent`调用 accordion 父组件的 open 方法
       Accordion,
       AccordionItem
     }
-  }
-</script>
-```
-
-
-
-
-## Vue组件开发基础
-
-### 开发思路和步骤
-> 组件注册
-> 组件使用
-> props传值
-> 组件事件
-> 扩展组件 - 插槽
-
-
-
-### 组件注册
-
-#### 全局注册
-一般是在 main.js 中进行全局注册，这样在任何 vue 实例中都可以直接当模板使用。
-
-```javascript
-// 1 普通的注册方式
-Vue.component('componentA', { /* 如vue实例中的配置项 */ })
-
-// 2 插件的形式注册，前提是该组件是支持模块化开发的
-Vue.use(componentA)
-```
-
-```html
-<div id="app">
-  <!-- html 中不区分大小写，驼峰命名用 - 隔开单词 -->
-	<component-a></component-a>  
-</div>
-```
-
-
-
-#### 局部注册
-
-> 就是之前一直使用的模式，编写组件 - 引入组件 - 注册组件 - 使用组件
-> 局部注册组件的好处，就是可以追溯组件依赖关系。
-
-
-
-### 动态组件
-
-Vue 还可以将多个子组件，都挂载在同一个位置，通过变量来切换组件，实现 tab 菜单这样的效果
-
-#### keep-alive 缓存作用
-##### 引入多个组件并注册
-
-```javascript
-import s1 from '@/components/s1.vue'
-import s2 from '@/components/s2.vue'
-import s3 from '@/components/s3.vue'
-
-export default {
-  components: {
-		s1, s2, s3
-  },
-  data(){
-    return{
-      tabView:'s2'
-    }
-  }
-}
-```
-
-
-
-##### 使用方式 is
-
-使用 is 去绑定要显示的子组件，然后用变量控制子组件的切换。
-
-这种方式， URL 是不会变的，每次切换组件都会重新渲染，无法保留组件上的数据和状态。
-
-```html
-<component :is="tabView"></component>
-```
-
-
-
-##### 使用 keep-alive 缓存组件状态
-
-跟路由配合的话，要求路由配置中的 `name` 属性要和组件内的 `name` 属性要一致
-
-```html
-<!-- 失活的组件将会被缓存！-->
-<keep-alive>
-  <component v-bind:is="currentTabComponent"></component>
-</keep-alive>
-```
-
-
-
-#### 内置组件 keep-alive
-
-> 用于包裹动态组件， 会缓存不活动的组件实例数据和状态，而不是销毁它们
-
-
-
-##### 组件传值和属性
-
-- include：字符串或正则。匹配到名字的组件将被缓存
-  - 先匹配组件的 name 属性，再匹配在父组件中组件的名字（components 属性中定义的key），匿名组件不可被匹配
-- exclude：与 include 作用相反
-- max：最多可以缓存的组件实例数量
-
-```jsx
-<!-- 1 逗号分隔字符串 -->
-<keep-alive include="a,b">
-  <component :is="view"></component>
-</keep-alive>
-
-<!-- 2 正则表达式 (使用 `v-bind`) -->
-<keep-alive :include="/a|b/">
-  <component :is="view"></component>
-</keep-alive>
-
-<!-- 3 数组 (使用 `v-bind`) -->
-<keep-alive :include="['a', 'b']">
-  <component :is="view"></component>
-</keep-alive>
-
-<!-- 到达最大数字，最先被缓存的会被顶掉 -->
-<keep-alive :max="10">
-  <component :is="view"></component>
-</keep-alive>
-```
-
-
-
-##### activated 和 deactivated 钩子
-
-当组件在 `<keep-alive>` 内被切换，这两个钩子就会被触发
-
-
-
-##### 基本用法
-
-要求只有一个组件实例被有效使用，所以 `v-for` 无效
-
-```jsx
-<!-- 基本 -->
-<keep-alive>
-  <component :is="view"></component>
-</keep-alive>
-
-<!-- 多个条件判断的子组件 -->
-<keep-alive>
-  <comp-a v-if="a > 1"></comp-a>
-  <comp-b v-else></comp-b>
-</keep-alive>
-
-<!-- 和 `<transition>` 一起使用 -->
-<transition>
-  <keep-alive>
-    <component :is="view"></component>
-  </keep-alive>
-</transition>
-```
-
-
-
-### 递归组件
-
-利用 name 属性，可以在自己组件内部调用自己。要注意用 v-if 防止无限递归。
-
-```vue
-<template>
-	<s2 :tree="item" v-if="tree.children"></s2>
-</template>
-
-<script>
-	export default {
-    name:'s2',
-    props:['tree']
   }
 </script>
 ```
