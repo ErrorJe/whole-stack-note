@@ -54,6 +54,7 @@ props: {
     // 5 数组/对象的默认值应当由一个工厂函数返回
     propE: {
       type: Object,
+      // 若默认值是空对象，要返回 () => ({})。保证对象之间没有联系，是独立的
       default: function () {
         return { message: 'hello' }
       }

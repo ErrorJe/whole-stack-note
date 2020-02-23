@@ -54,7 +54,7 @@ export default {
 
 
 
-## 孙向前辈通信（向上通知 $dispatch）
+## 孙向前辈通信（向上通知 $dispatch | $parent）
 
 > 首先这个 dispatch 是自己实现在 main.js 且挂载到 `Vue.prototype` 上的
 
@@ -129,7 +129,7 @@ this.$dispatch('input', 'parent1', 200)
 
 
 
-## 祖向后辈通信（向下传递 $broadcast）
+## 祖向后辈通信（向下传递 $broadcast | $children）
 
 > 也是广播的方式。这里要递归实现了，因为每个子组件可能有自己的很多个子组件
 
@@ -345,14 +345,12 @@ props : [ 'second' , 'third']
 
 
 
-### 由父组件派发
+### 父组件拿到子组件实例
 
 > 对应于上面的 provide 和 inject， 让父组件可以拿到子组件数据和调用子组件方法
 
 
 父组件通过 `ref` 属性去拿到子组件实例，然后就可以拿到子组件里面的方法。
-
-#### 父组件拿到子组件实例
 
 ```jsx
 <son ref="id" ></son>
@@ -362,11 +360,65 @@ create(){
 }
 ```
 
-#### 子组件
+### 子组件
 
 ```javascript
 methods:{
   fn(){} // 定义了子组件方法
+}
+```
+
+
+
+## 总线通信 $bus
+
+> 专门弄一个 vue 实例用于通信，如同级组件之间。
+> 缺陷就是必须定义到全局上了。容易触发同名的全部事件（当多人开发时）
+
+- 任意组件之间的通信。因是自由度较大，所以只适合小规模的更新（不好维护），大规模还是要用到 `Vuex`
+- 监听父组件的 `mounted` 事件：组件挂载的顺序是 -> 父组件 -> 渲染子组件 -> 子组件 mounted -> 父 mounted
+
+
+
+### 根组件 main.js
+
+这种方式也可以用来扩展 vue。相当于是公开的发布订阅
+
+```javascript
+// 修改 vue 的原型
+Vue.prototype.$bus = new Vue()
+```
+
+
+
+### 兄弟组件
+
+- 触发事件
+
+```javascript
+// 派发事件, 并传入数据
+this.$bus.$emit('eventName', good)
+```
+
+- 绑定事件
+
+```javascript
+// 1 一般我们会选择 mounted 中去挂载
+// 且一个事件可以触发多个函数，按定义顺序执行
+mounted() {
+  this.$bus.$on('eventName', this.fn1)  
+  this.$bus.$on('eventName', this.fn2)  
+}
+
+// 2 利用方法
+methods:{
+  fn1(){}
+  fn2(){}
+}
+
+// 3 适时消除监听
+beforeDestroy(){
+  this.$bus.$off('eventName')
 }
 ```
 
@@ -389,35 +441,3 @@ mounted:{
 
 
 
-## 总线通信 $bus
-
-> 专门弄一个 vue 实例用于通信，如同级组件之间。
-> 缺陷就是必须定义到全局上了。容易触发同名的全部事件（当多人开发时）
-
-
-
-### 根组件 main.js
-
-这种方式也可以用来扩展 vue。相当于是公开的发布订阅
-
-```javascript
-// 修改 vue 的原型
-Vue.prototype.$bus = new Vue()
-```
-
-
-
-### 兄弟组件
-
-- 触发事件
-
-```javascript
-// 派发事件
-this.$bus.$emit('addCart', good)
-```
-
-- 绑定事件
-
-```javascript
-this.$bus.$on('addCart', good => {})
-```

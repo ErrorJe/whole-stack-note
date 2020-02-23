@@ -1,4 +1,4 @@
-# Vue 进阶语法
+# `Vue 进阶语法
 
 ## 数据响应式
 ### data 数据劫持
@@ -392,18 +392,23 @@ async function () {
 > 用于容器类的组件。实际上是一行注释，是一个占位符，用到的时候会被调换成真实的内容DOM。
 > 有具名插槽和匿名插槽，如果内容没有指定插槽，那就会分配到默认插槽空位中
 
-
 ### slot 基本用法
 
-> 创建一个 Win.vue 容器插槽。这里混合里两种插槽（匿名插槽和具名插槽）
+#### slot 定义
+
+创建一个 `Win.vue` 容器插槽。这里混合里两种插槽（匿名插槽和具名插槽）
+
+- 具名插槽就是 `name='xxx'`
+- 默认的可以直接写 `slot` 标签，可以省略 `name='default'` 的写法
 
 
 ```html
 <div class="win">
   <div class="head">
-    <!-- 传入一个数据 -->
+    <!-- 具名插槽：传入一个数据 -->
     <slot name="head" :item="123"></slot>
   </div>
+  <!-- 匿名插槽 -->
   <slot></slot>
   <div class="food">
     <slot name="food"></slot>
@@ -411,13 +416,24 @@ async function () {
 </div>
 ```
 
-> 使用时，也要引入注册组件。
-> `v-slot` 是 2.6 版本之后具名插槽的 API 用法。缩写是 `#`，如 `#footer`
+
+
+#### slot 使用和传值
+
+使用时，也要引入注册组件。
+
+>  `v-slot` 是 2.6 版本之后具名插槽的 API 用法。
+
+- 使用 `v-slot` 的新写法，就必须是在 `template` 标签上。这是因为 `vue` 之前的老写法觉得是在操作 DOM，所以不太好
+- 缩写是 `#`，如 `#footer`
+- 还可以传值， `v-slot:head="{a}"`，将数据 a 传给具名 `head` 的插槽
+  - 传值了，就是用传入的值解构出来的数据
+  - 没有传值，`{{}}`写法用的是当前父组件的数据
 
 
 ```html
 <win>
-	<template v-slot:head="{item}"><h2>具名插槽 head且解构出数据</h2></template>
+	<template v-slot:head="{a, b, item}"><h2>{{a}}, {{b}}, {{item}}</h2></template>
   <p>...其他没有名字的内容分配到默认的插槽中</p>
   <template v-slot:default>
     <p>也可以显式地说明这个是默认内容，使用默认插槽坑位</p>
@@ -428,11 +444,27 @@ async function () {
 
 
 
+之前的老写法，没有限定一定要用 `template` 
+
+```html
+<div slot="header"></div>
+```
+
+老版本的作用域插槽
+
+```jsx
+<div slot="footer" slot-scope="{a, b, isShow}">{{a}}</div>
+```
+
+
+
 ### 插槽也是父子组件的概念
 
 通过自定义属性，同样有参数父传子的用法。
 
-> 这里还有一个`编译作用域`的概念，也就是定义出来的插槽组件和使用这个插槽组件的父级组件之间，作用域是无关的。也就是父级组件在使用这个插槽组件的时候，无法直接使用插槽组件里的变量。
+> 这里还有一个`编译作用域`的概念，也就是定义出来的插槽组件和使用这个插槽组件的父级组件之间，作用域是无关的。
+>
+> 也就是父级组件在使用这个插槽组件的时候，无法直接使用插槽组件里的变量。
 
 
 #### 定义插槽组件（子）
@@ -471,10 +503,10 @@ async function () {
 </button>
   
 <!--2 使用该插槽组件时，没有给出 slot 的内容-->
- <submit-button></submit-button>
+<submit-button></submit-button>
 
 <!--3 最后渲染的是默认的内容-->
-<button type="submit">Submit </button>
+<button type="submit"> Submit </button>
 ```
 
 
@@ -601,7 +633,7 @@ Vue.use(directives);
 
 ### 常见案例实现思路
 
-#### 日历组件的显隐
+#### 日历组件的显隐 v-click-outside
 
 主要是有几个点，在业务实现中比较常见。代码不重要，主要的是思路
 
@@ -662,7 +694,7 @@ directives: {
 
 
 
-#### 输入框自动聚焦
+#### 输入框自动聚焦 v-focus
 
 场景：希望输入框在页面加载后自动聚焦
 
@@ -690,6 +722,211 @@ directives: {
   }
 }
 ```
+
+
+
+#### 图片懒加载 v-lazyload
+
+##### 基本用法
+
+这原本是一个 github 上 vue 的插件，就是 `npm i vue-lazyload`
+
+```js
+// 引入插件
+import VuelazyLoad from 'vue-lazyload'
+// 引入图片
+import loading from './liading.png'
+
+// 注册插件
+Vue.use(VuelazyLoad, {
+  preLoad: 1.3, // 当前DOM可见区域的 1.3 倍
+  loading, // loading 的加载图
+  error: 错误的图片url
+}) 
+
+// 基本用法
+<img v-lazy='img' />
+```
+
+
+
+##### 源码实现
+
+自己去实现一下，既然网上有现成的实际项目就用那个插件库就好了。
+
+`vue-lazyload` 主要就是提供一个指令，应用场景主要有三块
+
+- 注册一些全局组件
+- 给 vue 原型扩展属性
+- 赋予一些全局指令和过滤器
+
+```js
+// vue-lazyload/index.js
+// 实现 v-lozyLoad
+// 通常作为插件，我们还会 let _Vue 来保存引入的 vue 构造函数
+
+import Lazy from './lazy'
+
+export default {
+  // vue.use 会默认调用插件的 install 方法
+  // 参数1：vue 构造函数。为了避免手动引入而导致只能使用某个版本，所以索性 Vue 直接提供给我们的插件
+  // 参数2：用户要传入的插件参数对象
+  install(Vue, options) {
+    const LazyClass = Lazy(Vue)
+    const lazy = new LazyClass(options)
+    
+    // 全局指令
+    // 把各个指令钩子都作为方法抽离到 lazy.js 中
+    Vue.directive('lazy', {
+      // 保证当前 add 方法执行时，this 永远指向 lazy 实例
+      bind: lazy.add.bind(lazy),
+    })
+  }
+}
+```
+
+
+
+分离代码
+
+- 面向对象思想、实例状态管理
+- 利用`getBoundingClientRect` 获取元素高度判断是否在可视区域
+- 防抖（最后只触发一次）节流（每隔固定时间触发一次）
+
+```js
+// vue-lazyload/lazy.js
+
+// 节流 | 防抖方法
+import {throttle, debounce} from 'lodash'
+
+// 存放懒加载功能的文件
+export default (Vue) => {
+  // 判断当前图片是否在可见区域内的图片类
+  class ReactiveListener {
+    constructor({el, src, elRenderer, options}) {
+      this.el = el
+      this.src = src
+      this.elRenderer = elRenderer
+      this.options = options
+      this.state = {loading:false} // 默认是没有加载的状态
+    } 		
+
+    // 判断是否渲染
+    checkInView(){ 
+      let {top} = this.el.getBoundingClientRect(); // 高度就是图片的位置
+      return top < window.innerHeight * this.options.preLoad // 浏览器高度*扩展值
+    }
+
+    // 加载当前的listener
+    load(){ 
+      // 开始渲染 渲染前 需要默认渲染loading状态
+      this.elRenderer(this,'loading');
+
+      // 异步加载图片
+      loadImageAsync(this.src,()=>{ 
+        this.state.loading = true; // 加载完毕了
+        this.elRenderer(this,'loaded');
+      },()=>{ // 加载失败
+        this.elRenderer(this,'error');
+      }); 
+    }
+  }
+	
+  // 异步加载图片
+  function loadImageAsync(src,resolve,reject){
+    let image = new Image();
+    image.src = src;
+    image.onload = resolve;
+    image.onerror = reject
+  }
+
+  return class LazyClass {
+    constructor(options) {
+      this.options = options // 保存用户传入的数据
+      this.listenerQueue = [] // 图片实例
+      this.bindHandler = false
+
+      // 图片状态和可视区域判断方法（最核心方法）
+      lazyLoadHandler:throttle(() => { // 节流
+        let catIn = false
+        this.listenerQueue.forEach(listener => {
+          if(listener.state.loading) return ; // 如果已经渲染过的图片就不在进行渲染了
+          catIn = listener.checkInView() // 判断是否应该渲染
+          catIn && listener.load() // 加载对应的 listener
+        })
+      }, 300) // 一般是 200-300 用户无感知
+    }
+
+    // 就是指令的 bind 钩子要执行的方法
+    // 经过绑定， this 一直指向 lazy 实例
+    add(el, bingdings, vnode) {
+      // 监控父亲 DOM 的滚动事件，滚动时检查当前图片是否在 可视区域内
+
+      // 因为 el 此时获取的不是真实 DOM，所以要用 NextTick
+      Vue.nextTick(() => {
+        // 找到有滚动事件的爸爸 DOM 容器
+        function scrollParent() {
+          let parent = el.parentNode
+          while(parent) {
+            if (/scroll/.test(getComputedStyle(parent)['overflow'])) {
+              return parent
+            }
+            parent = parent.parentNode // 不停向上找带 overflow 属性的容器
+          }
+          return parent
+        }
+
+        let parent = scrollParent()
+
+        // 判断当前图片需要加载
+        let listener = new ReactiveListener({
+          el, // 真实的 dom
+          src: bingings.value, // 对应 v-lazy 的值
+          // 图片可渲染时调用的方法
+          // 因为该方法可以给别人用，所以可能有 this 的影响，因而要做一次 this 绑定
+          elRenderer: this.elRenderer.bind(this), 
+          options: this.options
+        })
+        this.listenerQueue.push(listener)
+
+        if (!this.bindHandler) {
+          // 该 DOM 已经绑定过事件
+          this.bindHandler = true
+          // 绑定滚动时判断图片加载事件
+          parent.addEventListener('scroll', this.lazyLoadHandler)
+        }
+
+        // 默认也需要一次判断
+        this.lazyLoadHandler()
+      })
+    }
+
+    // 渲染当前实例的状态图
+    elRenderer(listener, state) {
+      let {el} = listener
+      let src =' '
+
+      // 当前什么状态就渲染什么
+      switch (state) {
+        case 'laoding':
+          src = listener.options.loading || ''
+          break;
+        case 'error':
+          src = listener.options.errpr || ''
+        default:
+          src = listener.src
+          break 
+      }
+
+      // 绑定属性值
+      el.setAttribute('src', src)
+    }
+  }
+}
+
+```
+
+
 
 
 

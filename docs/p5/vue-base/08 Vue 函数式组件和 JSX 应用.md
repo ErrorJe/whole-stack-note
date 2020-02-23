@@ -6,11 +6,11 @@
 
 
 
-### 基本认识
+### render 函数
 
 #### 创建函数式组件和 h 函数
 
-作为组件的一种，用的是 JSX 语法，其实也就是模仿的 React JSX。当然文件是 JS 而不是 vue 了。
+作为组件的一种，用的是 JSX 语法（js + xml，写法更灵活），其实也就是模仿的 React JSX。当然文件是 JS 而不是 vue 了。
 
 - h 函数就是 createElement 渲染函数
 
@@ -22,15 +22,31 @@
 ```javascript
 // @/component/jsx.js
 export default {
-  props: {
-    t: {}
+  props:{
+    type:String | Number
   },
-  render(h) {
-    let tag = "h"+this.t;
-    
-    return h(tag, {}, this.$slots.default)
+  methods:{
+    handleClick(e){
+      console.log(e.target)
+    },
+    handleInput(e){
+      this.msg = e.target.value
+    }
+  },
+  data(){
+    return {msg:'xxx'}
+  },
+  mounted(){
+  },
+  render(h){ // jsx => js + xml 去写代码
+    let tag = 'h' + this.type
+    return <tag>
+      <input type="text" value={this.msg} onInput={this.handleInput}/>
+      <span  onClick={this.handleClick}>{this.$slots.default}</span>
+        {this.msg}
+    	</tag>
   }
-};
+}
 ```
 
 
@@ -44,10 +60,8 @@ export default {
 ```vue
 <template>
   <div id="app">
-    <jsx :t="1">xx</jsx>
-    <jsx :t="2">xx</jsx>
-    <jsx :t="3">xx</jsx>
-    <jsx :t="4">xx</jsx>
+    <jsx type="1">xx</jsx>
+    <jsx type="2">xx</jsx>
   </div>
 </template>
 
@@ -61,6 +75,14 @@ export default {
 </script>
 <style></style>
 ```
+
+
+
+#### vue2.x 关于 jsx 的其他用法
+
+ https://github.com/vuejs/babel-plugin-transform-vue-jsx#difference-from-react-jsx 
+
+<a data-fancybox title="" href="https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200223001906.png">![](https://raw.githubusercontent.com/ErrorJe/ErrorJE.github.io/images/img/20200223001906.png)</a>
 
 
 
@@ -169,7 +191,11 @@ export default {
 
 
 
-### element-ui 作用域插槽
+
+
+## 常见应用
+
+### element-ui 列表组件实现（作用域插槽）
 
 > element-ui 用这种方式比较多
 > 相当于数据在子组件中执行，然后传出来给父组件用
@@ -223,12 +249,12 @@ export default {
 
 
 
-## iView 可编辑表格的实现
+### iView 可编辑表格的实现（render）
 
 > 自己感受下就 OK
 
 
-```vue
+```jsx
 <template>
 <Table :columns="columns" :data="data"></Table>
 </template>
