@@ -1,0 +1,15 @@
+{
+  "name":"ErrorJE 的博客",
+  "short_name":"ErrorJE",
+  "description":"ErrorJE 前端研究所",
+  "icons": [
+    {
+      "src":"/logo.jpg",
+      "type":"image/png",
+      "sizes":"144x144"
+    }
+  ],
+  "backgroud_color":"#2196f3",
+  "display":"standalone",
+  "start_url":"index.html"
+}
