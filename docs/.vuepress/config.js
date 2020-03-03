@@ -13,7 +13,7 @@ const sbackBase = require("./sidebar-libs/back-base.js");
 const sbackPro = require("./sidebar-libs/back-pro.js");
 
 module.exports = {
-  base: "/ErrorFE/", // 站点的基础路径, 可以随意改
+  base: "/whole-stack-note/", // 站点的基础路径
   title: "FE 前端研究所", // 网站的标题
   description: "ErrorJE 直辖 Blog | FE 前端研究所", // 网站的描述
   // 配置时间等语言格式
