@@ -85,7 +85,7 @@ footer: MIT Licensed | Copyright © 2020-present Error JE
 
 ```js
 module.exports = {
-  base: "/blog/", // 站点的基础路径, 可以随意改
+  base: "/blog/", // 站点的基础路径, 要跟仓库名对应
   title: "FE 研究所", // 网站的标题
   description: "ErrorJE 直辖 Blog", // 网站的描述，有助于 SEO
   // 配置时间等语言格式
