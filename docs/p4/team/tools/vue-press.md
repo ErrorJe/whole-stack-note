@@ -102,7 +102,7 @@ module.exports = {
     repo: "ErrorJe/whole-stack-note", // 你的GitHub仓库，请正确填写
     editLinks: true, // 开启直接编辑 md
     editLinkText: '编辑文档', // 链接文字
-    docsBranch: 'gh-pages', // 仓库分支
+    docsDir: 'docs', // md 文档所在路径
     
     sidebarDepth: 2, // 侧边栏深度到 h3
     displayAllHeaders: false, // 全部展开
