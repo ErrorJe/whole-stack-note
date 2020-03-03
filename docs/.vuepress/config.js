@@ -13,12 +13,18 @@ const sbackBase = require("./sidebar-libs/back-base.js");
 const sbackPro = require("./sidebar-libs/back-pro.js");
 
 module.exports = {
-  base: "/whole-stack-note/", // 站点的基础路径
+  base: "/ErrorFE/", // 站点的基础路径, 可以随意改
   title: "FE 前端研究所", // 网站的标题
-  description: "ErrorJE 直辖 Blog", // 网站的描述
+  description: "ErrorJE 直辖 Blog | FE 前端研究所", // 网站的描述
+  // 配置时间等语言格式
+  locales: {
+    "/": {
+      lang: "zh-CN"
+    }
+  },
   // favicon
   head: [
-    ["link", { rel: "icon", href: "/logo.jpg" }], 
+    ["link", { rel: "icon", href: "/logo.jpg" }],
     // 增加下面三个实现图片预览
     // <a data-fancybox title="xx" href="sss">![xx](sss)</a>
     // vscode 插件 vuepress-img-format
@@ -50,16 +56,16 @@ module.exports = {
 
   // 主题配置
   themeConfig: {
-    // 自定义仓库链接文字。
-    repoLabel: "GitHub",
-    // 你的GitHub仓库，请正确填写
-    repo: "https://github.com/ErrorJe",
-    // 侧边栏深度到 h3
-    sidebarDepth: 2,
-    // 全部展开
-    displayAllHeaders: false,
-    // 基于 git 的更新时间
-    lastUpdated: "上次更新时间",
+    // 本文档的仓库配置
+    repoLabel: "GitHub", // 自定义仓库链接文字。
+    repo: "ErrorJe/whole-stack-note", // 你的GitHub仓库，请正确填写
+    editLinks: true, // 开启直接编辑 md
+    editLinkText: '编辑文档', // 链接文字
+    docsBranch: 'gh-pages', // 仓库分支
+    
+    sidebarDepth: 2, // 侧边栏深度到 h3
+    displayAllHeaders: false, // 全部展开
+    lastUpdated: "上次更新", // 基于 git 的更新时间
     smoothScroll: true, // 滚动效果
 
     // 导航栏配置:路径配置 / 以 docs/ 开始

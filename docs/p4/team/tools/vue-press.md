@@ -85,22 +85,28 @@ footer: MIT Licensed | Copyright © 2020-present Error JE
 
 ```js
 module.exports = {
-  base: "/blog/", // 站点的基础路径
+  base: "/blog/", // 站点的基础路径, 可以随意改
   title: "FE 研究所", // 网站的标题
-  description: "ErrorJE 直辖 Blog", // 网站的描述
+  description: "ErrorJE 直辖 Blog", // 网站的描述，有助于 SEO
+  // 配置时间等语言格式
+  locales: {
+    "/": {
+      lang: "zh-CN"
+    }
+  },
 
   // 主题配置
   themeConfig: {
-    // 自定义仓库链接文字。
-    repoLabel: "GitHub",
-    // 你的GitHub仓库，请正确填写
-    repo: "https://github.com/ErrorJe",
-    // 侧边栏深度到 h3
-    sidebarDepth: 2,
-    // 全部展开
-    displayAllHeaders: true,
-    // 基于 git 的更新时间
-    lastUpdated: "上次更新时间",
+    // 本文档的仓库配置
+    repoLabel: "GitHub", // 自定义仓库链接文字。
+    repo: "ErrorJe/whole-stack-note", // 你的GitHub仓库，请正确填写
+    editLinks: true, // 开启直接编辑 md
+    editLinkText: '编辑文档', // 链接文字
+    docsBranch: 'gh-pages', // 仓库分支
+    
+    sidebarDepth: 2, // 侧边栏深度到 h3
+    displayAllHeaders: false, // 全部展开
+    lastUpdated: "上次更新", // 基于 git 的更新时间
     smoothScroll: true, // 滚动效果
     nav: [
       // 1 单个页面
