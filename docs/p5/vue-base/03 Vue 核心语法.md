@@ -126,6 +126,14 @@ data() {
 
 
 
+条件判断
+
+```vue
+<p :style="{'max-height':formExtend?'calc(100% - 241px)':'calc(100% - 170px)'}">test</p>
+```
+
+
+
 ## 条件渲染
 
 ### v-if 的使用
